@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - bandlink_db:/var/lib/postgresql/data
+      - ./db/sql:/db/sql:ro
 
 volumes:
   bandlink_db:
