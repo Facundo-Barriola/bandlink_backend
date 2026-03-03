@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: bandlink-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bandlink
+    ports:
+      - "5432:5432"
+    volumes:
+      - bandlink_db:/var/lib/postgresql/data
+
+volumes:
+  bandlink_db:
