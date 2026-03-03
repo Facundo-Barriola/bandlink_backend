@@ -1,14 +1,928 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
+  previewFeatures = ["partialIndexes"]
 }
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["auth", "bands", "bookings", "chat", "events", "geo", "media", "music", "notifications", "payments", "prisma", "public", "reviews", "social", "studios"]
+}
+
+model email_verification_tokens {
+  token_id    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String    @db.Uuid
+  token_hash  String    @unique(map: "uq_email_verification_token_hash")
+  expires_at  DateTime  @db.Timestamptz(6)
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  consumed_at DateTime? @db.Timestamptz(6)
+  ip          String?   @db.Inet
+  user_agent  String?
+  users       users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([consumed_at], map: "ix_email_verif_tokens_consumed")
+  @@index([expires_at], map: "ix_email_verif_tokens_expires")
+  @@index([user_id], map: "ix_email_verif_tokens_user_id")
+  @@schema("auth")
+}
+
+model oauth_accounts {
+  oauth_account_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String    @db.Uuid
+  provider         String
+  provider_user_id String    @db.Uuid
+  access_token     String?
+  refresh_token    String?
+  token_expires_at DateTime? @db.Timestamptz(6)
+  scopes           String?
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+  users            users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_oauth_accounts_user_id")
+
+  @@unique([user_id, provider])
+  @@unique([provider, provider_user_id], map: "uq_oauth_accounts_provider_provider_user_id")
+  @@unique([user_id, provider], map: "uq_oauth_accounts_user_id_provider")
+  @@index([user_id], map: "ix_oauth_accounts_user_id")
+  @@schema("auth")
+}
+
+model password_reset_tokens {
+  token_id    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String    @db.Uuid
+  token_hash  String    @unique(map: "uq_password_reset_token_hash")
+  expires_at  DateTime  @db.Timestamptz(6)
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  consumed_at DateTime? @db.Timestamptz(6)
+  ip          String?   @db.Inet
+  user_agent  String?
+  users       users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([consumed_at], map: "ix_pwreset_tokens_consumed")
+  @@index([expires_at], map: "ix_pwreset_tokens_expires")
+  @@index([user_id], map: "ix_pwreset_tokens_user_id")
+  @@schema("auth")
+}
+
+model sessions {
+  session_id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String    @db.Uuid
+  refresh_token_hash String?   @unique(map: "uq_sessions_refresh_token_hash")
+  user_agent         String?
+  ip                 String?   @db.Inet
+  expires_at         DateTime? @db.Timestamptz(6)
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  revoked_at         DateTime? @db.Timestamptz(6)
+  users              users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_sessions_user_id")
+
+  @@index([expires_at], map: "ix_sessions_expires_at")
+  @@index([user_id], map: "ix_sessions_user_id")
+  @@schema("auth")
+}
+
+model user_roles {
+  user_role_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String   @db.Uuid
+  role         String?
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  users        users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_roles_user_id")
+
+  @@unique([user_id, role], map: "uq_user_roles_user_id_role")
+  @@unique([user_id, role])
+  @@index([role], map: "ix_user_roles_role")
+  @@index([user_id], map: "ix_user_roles_user_id")
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  user_id                                             String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                                               String                      @unique(map: "uq_users_email") @db.Citext
+  username                                            String                      @unique(map: "uq_users_username") @db.Citext
+  password_hash                                       String
+  display_name                                        String?
+  bio                                                 String?
+  phone                                               String?
+  birthdate                                           DateTime?                   @db.Date
+  place_id                                            String?                     @db.Uuid
+  profile_visibility                                  String?
+  is_active                                           Boolean?                    @default(true)
+  email_verified                                      Boolean                     @default(false)
+  created_at                                          DateTime                    @default(now()) @db.Timestamptz(6)
+  updated_at                                          DateTime?                   @default(now()) @db.Timestamptz(6)
+  email_verification_tokens                           email_verification_tokens[]
+  oauth_accounts                                      oauth_accounts[]
+  password_reset_tokens                               password_reset_tokens[]
+  sessions                                            sessions[]
+  user_roles                                          user_roles[]
+  places                                              places?                     @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_users_place_id")
+  band_invite_band_invite_from_user_idTousers         band_invite[]               @relation("band_invite_from_user_idTousers")
+  band_invite_band_invite_to_user_idTousers           band_invite[]               @relation("band_invite_to_user_idTousers")
+  band_members                                        band_members[]
+  bands                                               bands[]
+  opening_applications                                opening_applications[]
+  booking_status_history                              booking_status_history[]
+  bookings                                            bookings[]
+  conversation_members                                conversation_members[]
+  message_reads                                       message_reads[]
+  messages                                            messages[]
+  event_attendees                                     event_attendees[]
+  event_invites_event_invites_from_user_idTousers     event_invites[]             @relation("event_invites_from_user_idTousers")
+  event_invites_event_invites_to_user_idTousers       event_invites[]             @relation("event_invites_to_user_idTousers")
+  events                                              events[]
+  user_media                                          user_media[]
+  musician_genre                                      musician_genre[]
+  musician_instrument                                 musician_instrument[]
+  musician_profile                                    musician_profile?
+  email_outbox                                        email_outbox[]
+  notifications                                       notifications[]
+  push_subscriptions                                  push_subscriptions[]
+  reports_reports_reporter_user_idTousers             reports[]                   @relation("reports_reporter_user_idTousers")
+  reports_reports_resolved_byTousers                  reports[]                   @relation("reports_resolved_byTousers")
+  studio_reviews                                      studio_reviews[]
+  user_reviews_user_reviews_user_reviewed_idTousers   user_reviews[]              @relation("user_reviews_user_reviewed_idTousers")
+  user_reviews_user_reviews_user_reviewer_idTousers   user_reviews[]              @relation("user_reviews_user_reviewer_idTousers")
+  blocks_blocks_blocked_user_idTousers                blocks[]                    @relation("blocks_blocked_user_idTousers")
+  blocks_blocks_blocker_user_idTousers                blocks[]                    @relation("blocks_blocker_user_idTousers")
+  follows                                             follows[]
+  friend_requests_friend_requests_from_user_idTousers friend_requests[]           @relation("friend_requests_from_user_idTousers")
+  friend_requests_friend_requests_to_user_idTousers   friend_requests[]           @relation("friend_requests_to_user_idTousers")
+  friendships_friendships_user_id1Tousers             friendships[]               @relation("friendships_user_id1Tousers")
+  friendships_friendships_user_id2Tousers             friendships[]               @relation("friendships_user_id2Tousers")
+  room_blocks                                         room_blocks[]
+  studios                                             studios[]
+
+  @@index([place_id], map: "ix_users_place_id")
+  @@schema("auth")
+}
+
+model band_genres {
+  band_genre_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  band_id       String   @db.Uuid
+  genre_id      String   @db.Uuid
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  bands         bands    @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_genres_band_id")
+  genres        genres   @relation(fields: [genre_id], references: [genre_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_genres_genre_id")
+
+  @@unique([band_id, genre_id], map: "uq_band_genres_band_id_genre_id")
+  @@schema("bands")
+}
+
+model band_invite {
+  invite_id                             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  band_id                               String    @db.Uuid
+  from_user_id                          String    @db.Uuid
+  to_user_id                            String    @db.Uuid
+  message                               String?
+  status                                String?
+  created_at                            DateTime  @default(now()) @db.Timestamptz(6)
+  responded_at                          DateTime? @db.Timestamptz(6)
+  bands                                 bands     @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_invite_band_id")
+  users_band_invite_from_user_idTousers users     @relation("band_invite_from_user_idTousers", fields: [from_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_invite_from_user_id")
+  users_band_invite_to_user_idTousers   users     @relation("band_invite_to_user_idTousers", fields: [to_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_invite_to_user_id")
+
+  @@index([band_id], map: "ix_band_invite_band_id")
+  @@index([to_user_id], map: "ix_band_invite_to_user_id")
+  @@schema("bands")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model band_members {
+  band_member_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  band_id        String    @unique(map: "uq_band_members_one_owner", where: raw("((role = 'owner'::text) AND (left_at IS NULL))")) @db.Uuid
+  user_id        String    @db.Uuid
+  role           String?
+  status         String?
+  joined_at      DateTime? @db.Timestamptz(6)
+  left_at        DateTime? @db.Timestamptz(6)
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  description    String?
+  bands          bands     @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_members_band_id")
+  users          users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_members_user_id")
+
+  @@unique([band_id, user_id], map: "uq_band_members_band_id_user_id")
+  @@index([band_id], map: "ix_band_members_band_id")
+  @@index([status], map: "ix_band_members_status")
+  @@index([user_id], map: "ix_band_members_user_id")
+  @@schema("bands")
+}
+
+model band_openings {
+  opening_id           String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  band_id              String                @db.Uuid
+  instrument_id        String                @db.Uuid
+  description          String?
+  place_id             String?               @db.Uuid
+  status               String?
+  created_at           DateTime              @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?             @default(now()) @db.Timestamptz(6)
+  bands                bands                 @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_openings_band_id")
+  instrument           instrument            @relation(fields: [instrument_id], references: [instrument_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_band_openings_instrument_id")
+  places               places?               @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_band_openings_place_id")
+  opening_applications opening_applications?
+
+  @@index([band_id], map: "ix_band_openings_band_id")
+  @@index([instrument_id], map: "ix_band_openings_instrument_id")
+  @@index([place_id], map: "ix_band_openings_place_id")
+  @@schema("bands")
+}
+
+model bands {
+  band_id               String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_user_id         String                  @db.Uuid
+  name                  String
+  description           String?
+  place_id              String?                 @db.Uuid
+  is_active             Boolean?                @default(true)
+  created_at            DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  band_genres           band_genres[]
+  band_invite           band_invite[]
+  band_members          band_members?
+  band_openings         band_openings[]
+  users                 users                   @relation(fields: [owner_user_id], references: [user_id], onUpdate: NoAction, map: "fk_bands_owner_user_id")
+  places                places?                 @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_bands_place_id")
+  event_band_attendance event_band_attendance[]
+  events                events[]
+
+  @@index([owner_user_id], map: "ix_bands_owner_user_id")
+  @@index([place_id], map: "ix_bands_place_id")
+  @@schema("bands")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model opening_applications {
+  application_id String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  opening_id     String        @unique(map: "uq_opening_applications_one_accepted", where: raw("(status = 'Aceptada'::text)")) @db.Uuid
+  user_id        String        @db.Uuid
+  message        String?
+  status         String?
+  created_at     DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?     @default(now()) @db.Timestamptz(6)
+  band_openings  band_openings @relation(fields: [opening_id], references: [opening_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_opening_applications_opening_id")
+  users          users         @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_opening_applications_user_id")
+
+  @@unique([opening_id, user_id], map: "uq_opening_applications_opening_id_user_id")
+  @@index([opening_id], map: "ix_opening_applications_opening_id")
+  @@index([user_id], map: "ix_opening_applications_user_id")
+  @@schema("bands")
+}
+
+model booking_status_history {
+  history_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  booking_id String    @db.Uuid
+  status     String?
+  changed_at DateTime? @db.Timestamptz(6)
+  changed_by String?   @db.Uuid
+  note       String?
+  bookings   bookings  @relation(fields: [booking_id], references: [booking_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_booking_status_history_booking_id")
+  users      users?    @relation(fields: [changed_by], references: [user_id], onUpdate: NoAction, map: "fk_booking_status_history_changed_by")
+
+  @@index([booking_id, changed_at], map: "ix_booking_status_history_booking_id_changed_at")
+  @@schema("bookings")
+}
+
+/// This table contains exclusion constraints and requires additional setup for migrations. Visit https://pris.ly/d/exclusion-constraints for more info.
+model bookings {
+  booking_id             String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room_id                String                   @db.Uuid
+  user_id                String                   @db.Uuid
+  starts_at              DateTime                 @db.Timestamptz(6)
+  ends_at                DateTime                 @db.Timestamptz(6)
+  status                 String?
+  total_amount           Decimal?                 @db.Decimal(12, 2)
+  notes                  String?
+  cancelled_at           DateTime?                @db.Timestamptz(6)
+  cancellation_reasons   String?
+  created_at             DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  booking_status_history booking_status_history[]
+  rehearsal_rooms        rehearsal_rooms          @relation(fields: [room_id], references: [room_id], onUpdate: NoAction, map: "fk_bookings_room_id")
+  users                  users                    @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "fk_bookings_user_id")
+  receipts               receipts?
+  payments               payments[]
+
+  @@index([room_id, starts_at], map: "ix_bookings_room_id_starts_at")
+  @@index([room_id, starts_at, ends_at], map: "ix_bookings_room_time")
+  @@index([status], map: "ix_bookings_status")
+  @@index([user_id, starts_at], map: "ix_bookings_user_id_starts_at")
+  @@schema("bookings")
+}
+
+model receipts {
+  receipt_id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  booking_id          String    @unique(map: "uq_receipts_booking_id") @db.Uuid
+  pdf_url             String?
+  emailed_to_user_at  DateTime? @db.Timestamptz(6)
+  emailed_to_owner_at DateTime? @db.Timestamptz(6)
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  bookings            bookings  @relation(fields: [booking_id], references: [booking_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_receipts_booking_id")
+
+  @@schema("bookings")
+}
+
+model conversation_members {
+  conversation_id String        @db.Uuid
+  user_id         String        @db.Uuid
+  role            String?
+  joined_at       DateTime?     @db.Timestamptz(6)
+  left_at         DateTime?     @db.Timestamptz(6)
+  conversations   conversations @relation(fields: [conversation_id], references: [conversation_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_conversation_members_conversation_id")
+  users           users         @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_conversation_members_user_id")
+
+  @@id([conversation_id, user_id], map: "uq_conversation_members_conversation_id_user_id")
+  @@index([user_id], map: "ix_conversation_members_user_id")
+  @@schema("chat")
+}
+
+model conversations {
+  conversation_id      String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  conversation_type    String?
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?              @default(now()) @db.Timestamptz(6)
+  conversation_members conversation_members[]
+  messages             messages[]
+
+  @@index([conversation_type, created_at], map: "ix_conversations_conversation_type_created_at")
+  @@schema("chat")
+}
+
+model message_reads {
+  message_read_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  message_id      String    @db.Uuid
+  user_id         String    @db.Uuid
+  read_at         DateTime? @db.Timestamptz(6)
+  messages        messages  @relation(fields: [message_id], references: [message_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_reads_message_id")
+  users           users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_reads_user_id")
+
+  @@unique([message_id, user_id], map: "uq_message_reads_message_id_user_id")
+  @@index([user_id, read_at], map: "ix_message_reads_user_id_read_at")
+  @@schema("chat")
+}
+
+model messages {
+  message_id          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  conversation_id     String                @db.Uuid
+  sender_user_id      String                @db.Uuid
+  body                String?
+  created_at          DateTime              @default(now()) @db.Timestamptz(6)
+  edited_at           DateTime?             @db.Timestamptz(6)
+  deleted_at          DateTime?             @db.Timestamptz(6)
+  message_reads       message_reads[]
+  conversations       conversations         @relation(fields: [conversation_id], references: [conversation_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_messages_conversation_id")
+  users               users                 @relation(fields: [sender_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_messages_sender_user_id")
+  message_attachments message_attachments[]
+
+  @@index([conversation_id, created_at], map: "ix_messages_conversation_id_created_at")
+  @@index([sender_user_id, created_at], map: "ix_messages_sender_user_id_created_at")
+  @@schema("chat")
+}
+
+model event_attendees {
+  event_attendee_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_id          String    @db.Uuid
+  user_id           String    @db.Uuid
+  status            String?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @db.Timestamptz(6)
+  events            events    @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_attendees_event_id")
+  users             users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_attendees_user_id")
+
+  @@unique([event_id, user_id], map: "uq_event_attendees_event_id_user_id")
+  @@index([user_id], map: "ix_event_attendees_user_id")
+  @@schema("events")
+}
+
+model event_band_attendance {
+  event_id   String   @db.Uuid
+  band_id    String   @db.Uuid
+  status     String?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  bands      bands    @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_band_attendance_band_id")
+  events     events   @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_band_attendance_event_id")
+
+  @@id([event_id, band_id])
+  @@index([band_id], map: "ix_event_band_attendance_band_id")
+  @@schema("events")
+}
+
+model event_invites {
+  invite_id                               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_id                                String    @db.Uuid
+  from_user_id                            String    @db.Uuid
+  to_user_id                              String    @db.Uuid
+  status                                  String?
+  created_at                              DateTime  @default(now()) @db.Timestamptz(6)
+  responded_at                            DateTime? @db.Timestamptz(6)
+  events                                  events    @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_invites_event_id")
+  users_event_invites_from_user_idTousers users     @relation("event_invites_from_user_idTousers", fields: [from_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_invites_from_user_id")
+  users_event_invites_to_user_idTousers   users     @relation("event_invites_to_user_idTousers", fields: [to_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_event_invites_to_user_id")
+
+  @@unique([event_id, to_user_id], map: "uq_event_invites_event_id_to_user_id")
+  @@index([to_user_id], map: "ix_event_invites_to_user_id")
+  @@schema("events")
+}
+
+model events {
+  event_id              String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  host_user_id          String                  @db.Uuid
+  host_band_id          String?                 @db.Uuid
+  title                 String
+  description           String?
+  starts_at             DateTime?               @db.Timestamptz(6)
+  ends_at               DateTime?               @db.Timestamptz(6)
+  timezone              String?
+  capacity              Int?
+  visibility            String?
+  place_id              String?                 @db.Uuid
+  is_cancelled          Boolean?                @default(false)
+  cancel_reason         String?
+  created_at            DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  event_attendees       event_attendees[]
+  event_band_attendance event_band_attendance[]
+  event_invites         event_invites[]
+  bands                 bands?                  @relation(fields: [host_band_id], references: [band_id], onUpdate: NoAction, map: "fk_events_host_band_id")
+  users                 users                   @relation(fields: [host_user_id], references: [user_id], onUpdate: NoAction, map: "fk_events_host_user_id")
+  places                places?                 @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_events_place_id")
+
+  @@index([host_band_id], map: "ix_events_host_band_id")
+  @@index([host_user_id], map: "ix_events_host_user_id")
+  @@index([place_id, starts_at], map: "ix_events_place_id_starts_at")
+  @@schema("events")
+}
+
+model places {
+  place_id      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  address_line1 String?
+  address_line2 String?
+  city          String?
+  region        String?
+  postal_code   String?
+  country       String?
+  lat           Float?
+  lng           Float?
+  geom          Unsupported("geometry")?
+  created_at    DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?                @default(now()) @db.Timestamptz(6)
+  provider      String?
+  external_id   String?
+  users         users[]
+  band_openings band_openings[]
+  bands         bands[]
+  events        events[]
+  studios       studios[]
+
+  @@unique([provider, external_id], map: "uq_places_provider_external_id", where: raw("((provider IS NOT NULL) AND (external_id IS NOT NULL))"))
+  @@index([city, region], map: "ix_places_city_region")
+  @@index([country], map: "ix_places_country")
+  @@index([geom], map: "ix_places_geom", type: Gist)
+  @@index([geom], map: "ix_places_geom_gist", type: Gist)
+  @@schema("geo")
+}
+
+model media {
+  media_id            String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url                 String?
+  media_type          String?
+  mime_type           String?
+  width               Int?
+  height              Int?
+  duration_seconds    Int?
+  size_bytes          BigInt?
+  created_at          DateTime              @default(now()) @db.Timestamptz(6)
+  message_attachments message_attachments[]
+  post_media          post_media[]
+  user_media          user_media[]
+
+  @@schema("media")
+}
+
+model message_attachments {
+  message_id String   @db.Uuid
+  media_id   String   @db.Uuid
+  media      media    @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_attachments_media_id")
+  messages   messages @relation(fields: [message_id], references: [message_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_message_attachments_message_id")
+
+  @@id([message_id, media_id])
+  @@index([message_id], map: "ix_message_attachments_message_id")
+  @@schema("media")
+}
+
+model post_media {
+  post_id    String @db.Uuid
+  media_id   String @db.Uuid
+  sort_order Int?
+  media      media  @relation(fields: [media_id], references: [media_id], onUpdate: NoAction, map: "fk_post_media_media_id")
+
+  @@id([post_id, media_id])
+  @@index([post_id], map: "ix_post_media_post_id")
+  @@schema("media")
+}
+
+model user_media {
+  user_id    String   @db.Uuid
+  media_id   String   @db.Uuid
+  kind       String
+  sort_order Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  media      media    @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_media_media_id")
+  users      users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_media_user_id")
+
+  @@id([user_id, media_id, kind])
+  @@index([media_id], map: "ix_user_media_media_id")
+  @@index([user_id], map: "ix_user_media_user_id")
+  @@schema("media")
+}
+
+model genres {
+  genre_id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  normalized_name String?          @unique(map: "uq_genres_normalized_name")
+  source          String?
+  external_id     String           @db.Uuid
+  created_at      DateTime         @default(now()) @db.Timestamptz(6)
+  band_genres     band_genres[]
+  musician_genre  musician_genre[]
+
+  @@schema("music")
+}
+
+model instrument {
+  instrument_id       String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String
+  normalized_name     String?               @unique(map: "uq_instrument_normalized_name")
+  category            String?
+  source              String?
+  external_id         String                @db.Uuid
+  created_at          DateTime              @default(now()) @db.Timestamptz(6)
+  band_openings       band_openings[]
+  musician_instrument musician_instrument[]
+
+  @@index([category], map: "ix_instrument_category")
+  @@schema("music")
+}
+
+model musician_genre {
+  musician_genre_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String   @db.Uuid
+  genre_id          String   @db.Uuid
+  created_at        DateTime @default(now()) @db.Timestamptz(6)
+  genres            genres   @relation(fields: [genre_id], references: [genre_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_musician_genre_genre_id")
+  users             users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_musician_genre_user_id")
+
+  @@unique([user_id, genre_id], map: "uq_musician_genre_user_id_genre_id")
+  @@index([genre_id], map: "ix_musician_genre_genre_id")
+  @@index([user_id], map: "ix_musician_genre_user_id")
+  @@schema("music")
+}
+
+model musician_instrument {
+  musician_instrument_id String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String     @db.Uuid
+  instrument_id          String     @db.Uuid
+  level                  String?
+  is_primary             Boolean?   @default(false)
+  created_at             DateTime   @default(now()) @db.Timestamptz(6)
+  instrument             instrument @relation(fields: [instrument_id], references: [instrument_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_musician_instrument_instrument_id")
+  users                  users      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_musician_instrument_user_id")
+
+  @@unique([user_id, instrument_id], map: "uq_musician_instrument_user_id_instrument_id")
+  @@index([instrument_id], map: "ix_musician_instrument_instrument_id")
+  @@index([user_id], map: "ix_musician_instrument_user_id")
+  @@schema("music")
+}
+
+model musician_profile {
+  musician_id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String    @unique(map: "uq_musician_profile_user_id") @db.Uuid
+  years_experience Int?
+  skill_summary    String?
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+  users            users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_musician_profile_user_id")
+
+  @@schema("music")
+}
+
+model email_outbox {
+  email_id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String    @db.Uuid
+  to_email            String?   @db.Citext
+  template            String?
+  subject             String?
+  payload             Json?
+  status              String?
+  provider_message_id String    @db.Uuid
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  sent_at             DateTime? @db.Timestamptz(6)
+  error               String?
+  users               users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_email_outbox_user_id")
+
+  @@index([status, created_at], map: "ix_email_outbox_status_created_at")
+  @@index([to_email], map: "ix_email_outbox_to_email")
+  @@schema("notifications")
+}
+
+model notifications {
+  notification_id   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String    @db.Uuid
+  notification_type String?
+  payload           Json?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  read_at           DateTime? @db.Timestamptz(6)
+  delivered_at      DateTime? @db.Timestamptz(6)
+  users             users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_notifications_user_id")
+
+  @@index([user_id], map: "ix_notifications_user_id", where: raw("(read_at IS NULL)"))
+  @@index([user_id, created_at], map: "ix_notifications_user_id_created_at")
+  @@schema("notifications")
+}
+
+model push_subscriptions {
+  subscription_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String    @db.Uuid
+  platform        String?
+  token           String?
+  device_id       String    @db.Uuid
+  is_active       Boolean?  @default(true)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  last_seen_at    DateTime? @db.Timestamptz(6)
+  users           users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_push_subscriptions_user_id")
+
+  @@unique([platform, token], map: "uq_push_subscriptions_platform_token")
+  @@index([user_id], map: "ix_push_subscriptions_user_id")
+  @@schema("notifications")
+}
+
+model payment_webhooks {
+  payment_webhook_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webhook_id         String    @db.Uuid
+  payment_id         String    @db.Uuid
+  provider           String?
+  event_type         String?
+  payload            Json?
+  received_at        DateTime? @db.Timestamptz(6)
+  processed_at       DateTime? @db.Timestamptz(6)
+  processing_error   String?
+  payments           payments  @relation(fields: [payment_id], references: [payment_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_payment_webhooks_payment_id")
+
+  @@index([payment_id, received_at], map: "ix_payment_webhooks_payment_id_received_at")
+  @@schema("payments")
+}
+
+model payments {
+  payment_id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  booking_id           String             @db.Uuid
+  provider             String?
+  amount               Decimal?           @db.Decimal(12, 2)
+  currency             String?            @db.Char(3)
+  status               String?
+  status_detail        String?
+  mp_preference_id     String             @db.Uuid
+  mp_payment_id        String             @db.Uuid
+  mp_merchant_order_id String             @db.Uuid
+  external_reference   String?
+  raw_last_response    Json?
+  created_at           DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?          @default(now()) @db.Timestamptz(6)
+  approved_at          DateTime?          @db.Timestamptz(6)
+  payment_webhooks     payment_webhooks[]
+  bookings             bookings           @relation(fields: [booking_id], references: [booking_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_payments_booking_id")
+  refunds              refunds[]
+
+  @@index([booking_id], map: "ix_payments_booking_id")
+  @@index([provider], map: "ix_payments_provider")
+  @@index([status], map: "ix_payments_status")
+  @@schema("payments")
+}
+
+model refunds {
+  refund_id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  payment_id         String    @db.Uuid
+  provider_refund_id String    @db.Uuid
+  amount             Decimal?  @db.Decimal(12, 2)
+  status             String?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  payments           payments  @relation(fields: [payment_id], references: [payment_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_refunds_payment_id")
+
+  @@index([payment_id], map: "ix_refunds_payment_id")
+  @@schema("payments")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+
+  @@schema("public")
+}
+
+model reports {
+  report_id                             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reporter_user_id                      String    @db.Uuid
+  target_type                           String?
+  target_id                             String    @db.Uuid
+  reason                                String?
+  details                               String?
+  status                                String?
+  created_at                            DateTime  @default(now()) @db.Timestamptz(6)
+  resolved_at                           DateTime? @db.Timestamptz(6)
+  resolved_by                           String?   @db.Uuid
+  users_reports_reporter_user_idTousers users     @relation("reports_reporter_user_idTousers", fields: [reporter_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_reports_reporter_user_id")
+  users_reports_resolved_byTousers      users?    @relation("reports_resolved_byTousers", fields: [resolved_by], references: [user_id], onUpdate: NoAction, map: "fk_reports_resolved_by")
+
+  @@index([status, created_at], map: "ix_reports_status_created_at")
+  @@index([target_type, target_id], map: "ix_reports_target_type_target_id")
+  @@schema("reviews")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model studio_reviews {
+  studio_review_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studio_id        String   @db.Uuid
+  user_id          String   @db.Uuid
+  rating           Int?     @db.SmallInt
+  comment          String?
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  studios          studios  @relation(fields: [studio_id], references: [studio_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_studio_reviews_studio_id")
+  users            users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_studio_reviews_user_id")
+
+  @@unique([studio_id, user_id], map: "uq_studio_reviews_studio_id_user_id")
+  @@index([studio_id], map: "ix_studio_reviews_studio_id")
+  @@index([user_id], map: "ix_studio_reviews_user_id")
+  @@schema("reviews")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model user_reviews {
+  user_review_id                             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_reviewed_id                           String   @db.Uuid
+  user_reviewer_id                           String   @db.Uuid
+  rating                                     Int?     @db.SmallInt
+  comment                                    String?
+  created_at                                 DateTime @default(now()) @db.Timestamptz(6)
+  users_user_reviews_user_reviewed_idTousers users    @relation("user_reviews_user_reviewed_idTousers", fields: [user_reviewed_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_reviews_user_reviewed_id")
+  users_user_reviews_user_reviewer_idTousers users    @relation("user_reviews_user_reviewer_idTousers", fields: [user_reviewer_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_reviews_user_reviewer_id")
+
+  @@unique([user_reviewed_id, user_reviewer_id], map: "uq_user_reviews_user_reviewed_id_user_reviewer_id")
+  @@index([user_reviewed_id], map: "ix_user_reviews_user_reviewed_id")
+  @@schema("reviews")
+}
+
+model blocks {
+  block_id                            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  blocker_user_id                     String   @db.Uuid
+  blocked_user_id                     String   @db.Uuid
+  reason                              String?
+  created_at                          DateTime @default(now()) @db.Timestamptz(6)
+  users_blocks_blocked_user_idTousers users    @relation("blocks_blocked_user_idTousers", fields: [blocked_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_blocks_blocked_user_id")
+  users_blocks_blocker_user_idTousers users    @relation("blocks_blocker_user_idTousers", fields: [blocker_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_blocks_blocker_user_id")
+
+  @@unique([blocker_user_id, blocked_user_id], map: "uq_blocks_blocker_user_id_blocked_user_id")
+  @@index([blocked_user_id], map: "ix_blocks_blocked_user_id")
+  @@schema("social")
+}
+
+model follows {
+  follower_user_id String   @db.Uuid
+  target_type      String
+  target_id        String   @db.Uuid
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  users            users    @relation(fields: [follower_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_follows_follower_user_id")
+
+  @@id([follower_user_id, target_type, target_id])
+  @@index([target_type, target_id], map: "ix_follows_target_type_target_id")
+  @@schema("social")
+}
+
+model friend_requests {
+  request_id                                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  from_user_id                              String    @db.Uuid
+  to_user_id                                String    @db.Uuid
+  message                                   String?
+  status                                    String?
+  created_at                                DateTime  @default(now()) @db.Timestamptz(6)
+  responded_at                              DateTime? @db.Timestamptz(6)
+  users_friend_requests_from_user_idTousers users     @relation("friend_requests_from_user_idTousers", fields: [from_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_friend_requests_from_user_id")
+  users_friend_requests_to_user_idTousers   users     @relation("friend_requests_to_user_idTousers", fields: [to_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_friend_requests_to_user_id")
+
+  @@unique([from_user_id, to_user_id], map: "uq_friend_requests_from_user_id_to_user_id")
+  @@index([from_user_id], map: "ix_friend_requests_from_user_id")
+  @@index([to_user_id, status], map: "ix_friend_requests_to_user_id_status")
+  @@schema("social")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model friendships {
+  friendship_id                     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id1                          String   @db.Uuid
+  user_id2                          String   @db.Uuid
+  created_at                        DateTime @default(now()) @db.Timestamptz(6)
+  users_friendships_user_id1Tousers users    @relation("friendships_user_id1Tousers", fields: [user_id1], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_friendships_user_id1")
+  users_friendships_user_id2Tousers users    @relation("friendships_user_id2Tousers", fields: [user_id2], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_friendships_user_id2")
+
+  @@unique([user_id1, user_id2], map: "uq_friendships_user_id1_user_id2")
+  @@index([user_id1], map: "ix_friendships_user_id1")
+  @@index([user_id2], map: "ix_friendships_user_id2")
+  @@schema("social")
+}
+
+model equipment {
+  equipment_id   String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String
+  category       String?
+  created_at     DateTime         @default(now()) @db.Timestamptz(6)
+  room_equipment room_equipment[]
+
+  @@schema("studios")
+}
+
+model rehearsal_rooms {
+  room_id                 String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studio_id               String                    @db.Uuid
+  name                    String
+  description             String?
+  capacity                Int?
+  base_hourly_price       Decimal?                  @db.Decimal(12, 2)
+  min_booking_minutes     Int?
+  created_at              DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?                 @default(now()) @db.Timestamptz(6)
+  bookings                bookings[]
+  studios                 studios                   @relation(fields: [studio_id], references: [studio_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_rehearsal_rooms_studio_id")
+  room_availability_rules room_availability_rules[]
+  room_blocks             room_blocks[]
+  room_equipment          room_equipment[]
+
+  @@index([studio_id], map: "ix_rehearsal_rooms_studio_id")
+  @@schema("studios")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model room_availability_rules {
+  rule_id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room_id         String          @db.Uuid
+  day_of_week     Int?            @db.SmallInt
+  start_time      DateTime?       @db.Time(6)
+  end_time        DateTime?       @db.Time(6)
+  timezone        String?
+  created_at      DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?       @default(now()) @db.Timestamptz(6)
+  rehearsal_rooms rehearsal_rooms @relation(fields: [room_id], references: [room_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_room_availability_rules_room_id")
+
+  @@index([room_id, day_of_week], map: "ix_room_availability_rules_room_id_day_of_week")
+  @@schema("studios")
+}
+
+model room_blocks {
+  block_id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room_id         String          @db.Uuid
+  starts_at       DateTime        @db.Timestamptz(6)
+  ends_at         DateTime        @db.Timestamptz(6)
+  reason          String?
+  created_by      String?         @db.Uuid
+  created_at      DateTime        @default(now()) @db.Timestamptz(6)
+  users           users?          @relation(fields: [created_by], references: [user_id], onUpdate: NoAction, map: "fk_room_blocks_created_by")
+  rehearsal_rooms rehearsal_rooms @relation(fields: [room_id], references: [room_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_room_blocks_room_id")
+
+  @@index([room_id, starts_at], map: "ix_room_blocks_room_id_starts_at")
+  @@index([room_id, starts_at, ends_at], map: "ix_room_blocks_room_time")
+  @@schema("studios")
+}
+
+model room_equipment {
+  room_equipment_id String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room_id           String          @db.Uuid
+  equipment_id      String          @db.Uuid
+  quantity          String?
+  created_at        DateTime        @default(now()) @db.Timestamptz(6)
+  equipment         equipment       @relation(fields: [equipment_id], references: [equipment_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_room_equipment_equipment_id")
+  rehearsal_rooms   rehearsal_rooms @relation(fields: [room_id], references: [room_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_room_equipment_room_id")
+
+  @@unique([room_id, equipment_id], map: "uq_room_equipment_room_id_equipment_id")
+  @@index([room_id], map: "ix_room_equipment_room_id")
+  @@schema("studios")
+}
+
+model studios {
+  studio_id       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_user_id   String            @db.Uuid
+  name            String
+  description     String?
+  place_id        String?           @db.Uuid
+  phone           String?
+  is_active       Boolean?          @default(true)
+  created_at      DateTime          @default(now()) @db.Timestamptz(6)
+  studio_reviews  studio_reviews[]
+  rehearsal_rooms rehearsal_rooms[]
+  users           users             @relation(fields: [owner_user_id], references: [user_id], onUpdate: NoAction, map: "fk_studios_owner_user_id")
+  places          places?           @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_studios_place_id")
+
+  @@index([owner_user_id], map: "ix_studios_owner_user_id")
+  @@index([place_id], map: "ix_studios_place_id")
+  @@schema("studios")
 }
