@@ -5,6 +5,10 @@ import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
+import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
+import { ResetPasswordDTO } from './dto/resetPassword.dto';
+import { RefreshTokenDTO } from './dto/refresh-token.dto';
+import { createHash, randomBytes } from 'node:crypto';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +17,35 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ){}
 
-    async login(dto: LoginDTO){
+    private hashRefreshToken(token: string) {
+      return createHash('sha256').update(token).digest('hex');
+    }
+
+    private generateRefreshToken() {
+      return randomBytes(48).toString('hex');
+    }
+
+    private getRefreshTokenExpiresAt() {
+      const days = Number(process.env.REFRESH_TOKEN_TTL_DAYS ?? 30);
+      return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+    }
+
+    private async signAccessToken(user: {
+      user_id: string;
+      email: string;
+      username: string;
+    }, sessionId: string) {
+      return this.jwtService.signAsync({
+        sub: user.user_id,
+        email: user.email,
+        username: user.username,
+        sid: sessionId,
+      });
+    }
+
+    async login(dto: LoginDTO,
+        meta?: { userAgent?: string | null; ip?: string | null },
+    ){
         const user = await this.prisma.users.findFirst({
             where: {
                 email: dto.email,
@@ -42,24 +74,41 @@ export class AuthService {
             throw new UnauthorizedException('Email o contraseña Incorrectos');
             
         }
-        
-        const payload = {
-            sub: user.user_id,
-            email: user.email,
-            username: user.username,
-        };
 
-        const access_token = await this.jwtService.signAsync(payload);
+        const refreshToken = this.generateRefreshToken();
+        const refreshTokenHash = this.hashRefreshToken(refreshToken);
+        const refreshExpiresAt = this.getRefreshTokenExpiresAt();
+
+        const session = await this.prisma.sessions.create({
+          data: {
+            user_id: user.user_id,
+            refresh_token_hash: refreshTokenHash,
+            user_agent: meta?.userAgent ?? null,
+            ip: meta?.ip ?? null,
+            expires_at: refreshExpiresAt,
+            revoked_at: null,
+          },
+          select: {
+            session_id: true,
+            expires_at: true,
+          },
+        });
+    
+        const access_token = await this.signAccessToken(user, session.session_id);        
+
         
         return {
             access_token,
+            refresh_token: refreshToken,
+            session_id: session.session_id,
+            refresh_expires_at: session.expires_at,
             message: 'Login correcto',
             user: {
                 userId: user.user_id,
                 email: user.email,
                 username: user.username,
                 displayName: user.display_name,
-                emailVerfied: user.email_verified,
+                emailVerified: user.email_verified,
             }
         };
     }
@@ -126,5 +175,256 @@ export class AuthService {
             }
             throw new InternalServerErrorException('No se pudo crear el usuario');
         }
+    }
+
+    async forgotPassword(dto: ForgotPasswordDTO){
+        const genericMessage = 'Te enviamos instrucciones para restablecer la contraseña';
+        const user = await this.prisma.users.findFirst({
+            where: {
+                email: dto.email,
+                is_active: true,
+            },
+            select: {
+                user_id: true,
+                email: true,
+                display_name: true,
+            },
+        });
+
+        if (!user) {
+            return { message: genericMessage };
+        }
+        const rawToken = randomBytes(32).toString('hex');
+        const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+        const ttlMinutes = Number(process.env.RESET_PASSWORD_TOKEN_TTL_MINUTES ?? 15);
+        const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000);
+
+        await this.prisma.password_reset_tokens.updateMany({
+            where: {
+                user_id: user.user_id,
+                consumed_at: null,
+            },
+            data: {
+                consumed_at: new Date(),
+            },
+        });
+
+        await this.prisma.password_reset_tokens.create({
+          data: {
+            user_id: user.user_id,
+            token_hash: tokenHash,
+            expires_at: expiresAt,
+            ip: null,
+            user_agent: null,
+          },
+        });
+
+        const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+        const resetLink = `${frontendUrl}/reset-password?token=${rawToken}`;
+
+        return {
+          message: genericMessage,
+          ...(process.env.NODE_ENV !== 'production' && {
+            resetToken: rawToken,
+            resetLink,
+          }),
+        };
+
+    }
+
+    async resetPassword(dto: ResetPasswordDTO){
+        const tokenHash = createHash('sha256')
+        .update(dto.token)
+        .digest('hex');
+
+        const resetToken = await this.prisma.password_reset_tokens.findFirst({
+          where: {
+            token_hash: tokenHash,
+          },
+          select: {
+            token_id: true,
+            user_id: true,
+            expires_at: true,
+            consumed_at: true,
+          },
+        });
+
+        if (!resetToken) {
+            throw new UnauthorizedException('Token inválido o expirado');
+        }
+
+        if (resetToken.consumed_at) {
+          throw new UnauthorizedException('Token inválido o expirado');
+        }
+
+        if (resetToken.expires_at < new Date()) {
+          throw new UnauthorizedException('Token inválido o expirado');
+        }
+
+        const newPasswordHash = await bcrypt.hash(dto.newPassword, 10);
+        
+        await this.prisma.$transaction([
+
+            this.prisma.users.update({
+                where: {
+                  user_id: resetToken.user_id,
+                },
+                data: {
+                  password_hash: newPasswordHash,
+                  updated_at: new Date(),
+                },
+            }),
+
+            this.prisma.password_reset_tokens.update({
+                where: {
+                  token_id: resetToken.token_id,
+                },
+                data: {
+                  consumed_at: new Date(),
+                },
+            }),
+
+            this.prisma.sessions.updateMany({
+                where: {
+                  user_id: resetToken.user_id,
+                  revoked_at: null,
+                },
+                data: {
+                  revoked_at: new Date(),
+                },
+            }),
+        ]);
+
+        return {
+            message: 'Contraseña actualizada correctamente. Inicia sesión nuevamente.',
+        };
+    }
+    async refreshToken(
+      dto: RefreshTokenDTO,
+      meta?: { userAgent?: string | null; ip?: string | null },
+    ) {
+      const session = await this.prisma.sessions.findUnique({
+        where: {
+          session_id: dto.sessionId,
+        },
+        select: {
+          session_id: true,
+          user_id: true,
+          refresh_token_hash: true,
+          expires_at: true,
+          revoked_at: true,
+          users: {
+            select: {
+              user_id: true,
+              email: true,
+              username: true,
+              display_name: true,
+              email_verified: true,
+              is_active: true,
+            },
+          },
+        },
+      });
+
+      if (!session) {
+        throw new UnauthorizedException('Sesión inválida');
+      }
+
+      if (session.revoked_at) {
+        throw new UnauthorizedException('Sesión revocada');
+      }
+
+      if (!session.expires_at || session.expires_at < new Date()) {
+        throw new UnauthorizedException('Refresh token expirado');
+      }
+
+      if (!session.users.is_active) {
+        throw new UnauthorizedException('Usuario inactivo');
+      }
+
+      const incomingHash = this.hashRefreshToken(dto.refreshToken);
+      const newRefreshToken = this.generateRefreshToken();
+      const newRefreshTokenHash = this.hashRefreshToken(newRefreshToken);
+      const newExpiresAt = this.getRefreshTokenExpiresAt();
+
+      const rotated = await this.prisma.sessions.updateMany({
+        where: {
+          session_id: dto.sessionId,
+          refresh_token_hash: incomingHash,
+          revoked_at: null,
+          expires_at: {
+            gt: new Date(),
+          },
+        },
+        data: {
+          refresh_token_hash: newRefreshTokenHash,
+          expires_at: newExpiresAt,
+          user_agent: meta?.userAgent ?? undefined,
+          ip: meta?.ip ?? undefined,
+        },
+      });
+
+      if (rotated.count !== 1) {
+        throw new UnauthorizedException('Refresh token inválido o reutilizado');
+      }
+
+      const access_token = await this.signAccessToken(
+        {
+          user_id: session.users.user_id,
+          email: session.users.email,
+          username: session.users.username,
+        },
+        session.session_id,
+      );
+
+      return {
+        access_token,
+        refresh_token: newRefreshToken,
+        session_id: session.session_id,
+        refresh_expires_at: newExpiresAt,
+        user: {
+          userId: session.users.user_id,
+          email: session.users.email,
+          username: session.users.username,
+          displayName: session.users.display_name,
+          emailVerified: session.users.email_verified,
+        },
+      };
+    }
+
+    async logout(userId: string, sessionId: string) {
+      await this.prisma.sessions.updateMany({
+        where: {
+          session_id: sessionId,
+          user_id: userId,
+          revoked_at: null,
+        },
+        data: {
+          revoked_at: new Date(),
+          refresh_token_hash: null,
+        },
+      });
+  
+      return {
+        message: 'Sesión cerrada correctamente',
+      };
+    }
+    
+    async logoutAll(userId: string) {
+      const result = await this.prisma.sessions.updateMany({
+        where: {
+          user_id: userId,
+          revoked_at: null,
+        },
+        data: {
+          revoked_at: new Date(),
+          refresh_token_hash: null,
+        },
+      });
+  
+      return {
+        message: 'Todas las sesiones fueron revocadas',
+        revokedSessions: result.count,
+      };
     }
 }
