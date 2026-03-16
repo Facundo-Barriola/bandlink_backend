@@ -1,8 +1,8 @@
 import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '../../generated/prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
+import { Prisma} from '../generated/prisma/client';
+import { PrismaService } from './../prisma/prisma.service';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
@@ -146,6 +146,7 @@ export class AuthService {
                     display_name: dto.display_name,
                     password_hash,
                     bio: dto.bio ?? null,
+                    phone: dto.phone ?? null,
                     birthdate: dto.birthdate ? new Date(dto.birthdate) : null,
                     profile_visibility: 'public',
                     place_id: null,
@@ -170,9 +171,25 @@ export class AuthService {
                 user,
             };
         } catch (error){
-            if( error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002' ){
-                throw new ConflictException(' El mail o username ya está registrado');
+            if( error instanceof Prisma.PrismaClientKnownRequestError ){
+
+               if (error.code === 'P2002') {
+                    throw new ConflictException('El mail o username ya está registrado');
+                  }
+                
+                  if (error.code === 'P2003') {
+                    throw new ConflictException('Referencia inválida en una clave foránea');
+                  }
+                
+                  if (error.code === 'P2022') {
+                    throw new InternalServerErrorException('La base no coincide con el schema de Prisma');
+                  }
+                
+                  if (error.code === 'P2004') {
+                    throw new ConflictException('Violación de restricción en base de datos');
+                  }
             }
+            console.error('ERROR REGISTER USER =>', error)
             throw new InternalServerErrorException('No se pudo crear el usuario');
         }
     }

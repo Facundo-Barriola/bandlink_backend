@@ -1,6 +1,9 @@
 generator client {
   provider        = "prisma-client"
-  output          = "../generated/prisma"
+  output          = "../src/generated/prisma"
+  moduleFormat           = "cjs"
+  generatedFileExtension = "ts"
+  importFileExtension    = "js"
   previewFeatures = ["partialIndexes"]
 }
 
