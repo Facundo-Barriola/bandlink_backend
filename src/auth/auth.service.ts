@@ -9,12 +9,14 @@ import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
 import { RefreshTokenDTO } from './dto/refresh-token.dto';
 import { createHash, randomBytes } from 'node:crypto';
-
+import { MailerService } from '../mailer/resend.service';
+ 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly jwtService: JwtService,
+        private readonly mailerService: MailerService,
     ){}
 
     private hashRefreshToken(token: string) {
@@ -166,10 +168,20 @@ export class AuthService {
                     created_at: true,
                 },
             });
-            return{
+          const verificationToken = await this.createEmailVerificationToken(user.user_id);
+          
+          try {
+            await this.mailerService.sendVerificationMail(user.email, verificationToken);
+          } catch (mailError) {
+            console.error('ERROR SEND VERIFICATION MAIL =>', mailError);
+          }
+
+            
+          return{
                 message: 'Usuario creado correctamente',
                 user,
             };
+
         } catch (error){
             if( error instanceof Prisma.PrismaClientKnownRequestError ){
 
@@ -235,6 +247,12 @@ export class AuthService {
             user_agent: null,
           },
         });
+
+        try {
+          await this.mailerService.sendResetPasswordEmail(user.email, rawToken);
+        } catch (mailError) {
+          console.error('ERROR SEND RESET PASSWORD MAIL =>', mailError);
+        }        
 
         const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000';
         const resetLink = `${frontendUrl}/reset-password?token=${rawToken}`;
@@ -444,4 +462,62 @@ export class AuthService {
         revokedSessions: result.count,
       };
     }
+
+    async verifyEmail(token: string) {
+      const tokenHash = createHash('sha256').update(token).digest('hex');
+
+      const verificationToken = await this.prisma.email_verification_tokens.findFirst({
+        where: {
+          token_hash: tokenHash,
+          consumed_at: null,
+          expires_at: {
+            gt: new Date(),
+          },
+        },
+      });
+    
+      if (!verificationToken) {
+        throw new UnauthorizedException('Token inválido o expirado');
+      }
+    
+      await this.prisma.$transaction([
+        this.prisma.users.update({
+          where: { user_id: verificationToken.user_id },
+          data: { email_verified: true },
+        }),
+        this.prisma.email_verification_tokens.update({
+          where: { token_id: verificationToken.token_id },
+          data: { consumed_at: new Date() },
+        }),
+      ]);
+    
+      return { message: 'Email verificado correctamente' };
+    }
+
+    private async createEmailVerificationToken(userId: string) {
+      const rawToken = randomBytes(32).toString('hex');
+      const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+      
+      const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24);
+      await this.prisma.email_verification_tokens.updateMany({
+        where: {
+          user_id: userId,
+          consumed_at: null,
+        },
+        data: {
+          consumed_at: new Date(),
+        },
+      });       
+      
+      await this.prisma.email_verification_tokens.create({
+        data: {
+          user_id: userId,
+          token_hash: tokenHash,
+          expires_at: expiresAt,
+          consumed_at: null,
+        },
+      });
+    
+      return rawToken;
+  }
 }

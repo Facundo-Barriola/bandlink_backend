@@ -6,6 +6,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
 import { ForgotPasswordDTO } from './dto/forgotPassword.dto';
 import { RefreshTokenDTO } from './dto/refresh-token.dto';
+import { VerifyEmailDTO } from './dto/verify-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -68,5 +69,10 @@ export class AuthController {
     @Get('me')
     me(@Req() req: any) {
         return req.user;
+    }
+
+    @Post('verifyEmail')
+    verifyEmail(@Body() dto: VerifyEmailDTO){
+        return this.authService.verifyEmail(dto.token);
     }
 }
