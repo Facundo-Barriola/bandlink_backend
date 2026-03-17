@@ -71,6 +71,13 @@ export class AuthController {
         return req.user;
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('getUserById/:userId')
+    async getUserById(@Req() req: any) {
+        const userId = req.params.userId;
+        return this.authService.getUserById(userId);
+    }
+
     @Post('verifyEmail')
     verifyEmail(@Body() dto: VerifyEmailDTO){
         return this.authService.verifyEmail(dto.token);

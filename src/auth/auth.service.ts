@@ -267,6 +267,23 @@ export class AuthService {
 
     }
 
+    async getUserById(userId: string) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                user_id: userId,
+            },
+            select: {
+              email: true,
+              username: true,
+              display_name: true,
+              bio: true,
+              phone: true,
+              birthdate: true,}
+        });
+        return user;
+
+    }
+
     async resetPassword(dto: ResetPasswordDTO){
         const tokenHash = createHash('sha256')
         .update(dto.token)
