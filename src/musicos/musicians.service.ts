@@ -115,6 +115,7 @@ export class MusicianService{
         const bandsWhereUserIsMemeber = await this.prisma.band_members.findMany({
             where: {
                 user_id: userId,
+                status: 'ACTIVE'
             },include: {
                 bands: {
                     select: {
