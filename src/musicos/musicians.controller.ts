@@ -21,4 +21,18 @@ export class MusiciansController {
         return this.musicianService.getMyProfilePage(userId);
     }
 
+    @Get('profile/:userId')
+    @UseGuards(JwtAuthGuard)
+    getMusicianProfile(@Req() req: Request & {user: any}, @Body() dto: CreateMusicianDTO  ){
+        const userId = req.user.sub;
+        return this.musicianService.getMyProfilePage(userId);
+    }
+
+    @Get('profile/bands')
+    @UseGuards(JwtAuthGuard)
+    getBandsForMusician(@Req() req: Request & {user: any}){
+        const userId = req.user.sub;
+        return this.musicianService.getBandsForMusician(userId);
+    }
+
 }
