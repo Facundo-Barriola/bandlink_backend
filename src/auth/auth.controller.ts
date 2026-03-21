@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Get, Req } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get, Req, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
@@ -71,6 +71,17 @@ export class AuthController {
         return req.user;
     }
 
+        @Post('verifyEmail')
+    verifyEmail(@Body() dto: VerifyEmailDTO){
+        return this.authService.verifyEmail(dto.token);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('delete')
+    deleteAccount(@Req() req: any) {
+        return this.authService.deleteAccount(req.user.userId);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Get('getUserById/:userId')
     async getUserById(@Req() req: any) {
@@ -78,8 +89,5 @@ export class AuthController {
         return this.authService.getUserById(userId);
     }
 
-    @Post('verifyEmail')
-    verifyEmail(@Body() dto: VerifyEmailDTO){
-        return this.authService.verifyEmail(dto.token);
-    }
+
 }

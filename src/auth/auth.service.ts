@@ -284,6 +284,17 @@ export class AuthService {
 
     }
 
+    async deleteAccount(userId: string) {
+        await this.prisma.users.delete({
+            where: {
+                user_id: userId,
+            },
+        });
+        return {
+            message: 'Usuario eliminado correctamente',
+        };
+    }
+
     async resetPassword(dto: ResetPasswordDTO){
         const tokenHash = createHash('sha256')
         .update(dto.token)
