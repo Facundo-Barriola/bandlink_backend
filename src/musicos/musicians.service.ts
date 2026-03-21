@@ -44,6 +44,7 @@ export class MusicianService {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw new ConflictException('Ya existe un perfil de músico para este usuario');
       }
+      console.error('ERROR REGISTER USER =>', error);
       throw new InternalServerErrorException('Error en la creación del perfil de músico');
     }
   }
