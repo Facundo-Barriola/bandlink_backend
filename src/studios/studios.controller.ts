@@ -78,22 +78,24 @@ export class StudiosController {
     return this.studiosService.getRoomsByStudio(studioId);
   }
 
-  @Patch('rooms/:roomId')
+  @Patch(':studioId/rooms/:roomId')
   @UseGuards(JwtAuthGuard)
   updateRoom(
     @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
     @Param('roomId') roomId: string,
     @Body() dto: UpdateRoomDTO,
   ) {
-    return this.studiosService.updateRoom(req.user.userId, roomId, dto);
+    return this.studiosService.updateRoom(req.user.userId, studioId, roomId, dto);
   }
 
-  @Delete('rooms/:roomId')
+  @Delete(':studioId/rooms/:roomId')
   @UseGuards(JwtAuthGuard)
   deleteRoom(
     @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
     @Param('roomId') roomId: string,
   ) {
-    return this.studiosService.deleteRoom(req.user.userId, roomId);
+    return this.studiosService.deleteRoom(req.user.userId, studioId, roomId);
   }
 }
