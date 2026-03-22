@@ -49,6 +49,12 @@ export type MediaMinAggregateOutputType = {
   height: number | null
   duration_seconds: number | null
   size_bytes: bigint | null
+  provider: string | null
+  storage_key: string | null
+  original_filename: string | null
+  uploaded_by: string | null
+  status: string | null
+  checksum_sha256: string | null
   created_at: Date | null
 }
 
@@ -61,6 +67,12 @@ export type MediaMaxAggregateOutputType = {
   height: number | null
   duration_seconds: number | null
   size_bytes: bigint | null
+  provider: string | null
+  storage_key: string | null
+  original_filename: string | null
+  uploaded_by: string | null
+  status: string | null
+  checksum_sha256: string | null
   created_at: Date | null
 }
 
@@ -73,6 +85,12 @@ export type MediaCountAggregateOutputType = {
   height: number
   duration_seconds: number
   size_bytes: number
+  provider: number
+  storage_key: number
+  original_filename: number
+  uploaded_by: number
+  status: number
+  checksum_sha256: number
   created_at: number
   _all: number
 }
@@ -101,6 +119,12 @@ export type MediaMinAggregateInputType = {
   height?: true
   duration_seconds?: true
   size_bytes?: true
+  provider?: true
+  storage_key?: true
+  original_filename?: true
+  uploaded_by?: true
+  status?: true
+  checksum_sha256?: true
   created_at?: true
 }
 
@@ -113,6 +137,12 @@ export type MediaMaxAggregateInputType = {
   height?: true
   duration_seconds?: true
   size_bytes?: true
+  provider?: true
+  storage_key?: true
+  original_filename?: true
+  uploaded_by?: true
+  status?: true
+  checksum_sha256?: true
   created_at?: true
 }
 
@@ -125,6 +155,12 @@ export type MediaCountAggregateInputType = {
   height?: true
   duration_seconds?: true
   size_bytes?: true
+  provider?: true
+  storage_key?: true
+  original_filename?: true
+  uploaded_by?: true
+  status?: true
+  checksum_sha256?: true
   created_at?: true
   _all?: true
 }
@@ -224,6 +260,12 @@ export type MediaGroupByOutputType = {
   height: number | null
   duration_seconds: number | null
   size_bytes: bigint | null
+  provider: string | null
+  storage_key: string | null
+  original_filename: string | null
+  uploaded_by: string | null
+  status: string | null
+  checksum_sha256: string | null
   created_at: Date
   _count: MediaCountAggregateOutputType | null
   _avg: MediaAvgAggregateOutputType | null
@@ -259,10 +301,20 @@ export type mediaWhereInput = {
   height?: Prisma.IntNullableFilter<"media"> | number | null
   duration_seconds?: Prisma.IntNullableFilter<"media"> | number | null
   size_bytes?: Prisma.BigIntNullableFilter<"media"> | bigint | number | null
+  provider?: Prisma.StringNullableFilter<"media"> | string | null
+  storage_key?: Prisma.StringNullableFilter<"media"> | string | null
+  original_filename?: Prisma.StringNullableFilter<"media"> | string | null
+  uploaded_by?: Prisma.UuidNullableFilter<"media"> | string | null
+  status?: Prisma.StringNullableFilter<"media"> | string | null
+  checksum_sha256?: Prisma.StringNullableFilter<"media"> | string | null
   created_at?: Prisma.DateTimeFilter<"media"> | Date | string
   message_attachments?: Prisma.Message_attachmentsListRelationFilter
   post_media?: Prisma.Post_mediaListRelationFilter
   user_media?: Prisma.User_mediaListRelationFilter
+  room_media?: Prisma.Room_mediaListRelationFilter
+  studio_media?: Prisma.Studio_mediaListRelationFilter
+  band_media?: Prisma.Band_mediaListRelationFilter
+  event_media?: Prisma.Event_mediaListRelationFilter
 }
 
 export type mediaOrderByWithRelationInput = {
@@ -274,10 +326,20 @@ export type mediaOrderByWithRelationInput = {
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   duration_seconds?: Prisma.SortOrderInput | Prisma.SortOrder
   size_bytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  provider?: Prisma.SortOrderInput | Prisma.SortOrder
+  storage_key?: Prisma.SortOrderInput | Prisma.SortOrder
+  original_filename?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploaded_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrderInput | Prisma.SortOrder
+  checksum_sha256?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   message_attachments?: Prisma.message_attachmentsOrderByRelationAggregateInput
   post_media?: Prisma.post_mediaOrderByRelationAggregateInput
   user_media?: Prisma.user_mediaOrderByRelationAggregateInput
+  room_media?: Prisma.room_mediaOrderByRelationAggregateInput
+  studio_media?: Prisma.studio_mediaOrderByRelationAggregateInput
+  band_media?: Prisma.band_mediaOrderByRelationAggregateInput
+  event_media?: Prisma.event_mediaOrderByRelationAggregateInput
 }
 
 export type mediaWhereUniqueInput = Prisma.AtLeast<{
@@ -292,10 +354,20 @@ export type mediaWhereUniqueInput = Prisma.AtLeast<{
   height?: Prisma.IntNullableFilter<"media"> | number | null
   duration_seconds?: Prisma.IntNullableFilter<"media"> | number | null
   size_bytes?: Prisma.BigIntNullableFilter<"media"> | bigint | number | null
+  provider?: Prisma.StringNullableFilter<"media"> | string | null
+  storage_key?: Prisma.StringNullableFilter<"media"> | string | null
+  original_filename?: Prisma.StringNullableFilter<"media"> | string | null
+  uploaded_by?: Prisma.UuidNullableFilter<"media"> | string | null
+  status?: Prisma.StringNullableFilter<"media"> | string | null
+  checksum_sha256?: Prisma.StringNullableFilter<"media"> | string | null
   created_at?: Prisma.DateTimeFilter<"media"> | Date | string
   message_attachments?: Prisma.Message_attachmentsListRelationFilter
   post_media?: Prisma.Post_mediaListRelationFilter
   user_media?: Prisma.User_mediaListRelationFilter
+  room_media?: Prisma.Room_mediaListRelationFilter
+  studio_media?: Prisma.Studio_mediaListRelationFilter
+  band_media?: Prisma.Band_mediaListRelationFilter
+  event_media?: Prisma.Event_mediaListRelationFilter
 }, "media_id">
 
 export type mediaOrderByWithAggregationInput = {
@@ -307,6 +379,12 @@ export type mediaOrderByWithAggregationInput = {
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   duration_seconds?: Prisma.SortOrderInput | Prisma.SortOrder
   size_bytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  provider?: Prisma.SortOrderInput | Prisma.SortOrder
+  storage_key?: Prisma.SortOrderInput | Prisma.SortOrder
+  original_filename?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploaded_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrderInput | Prisma.SortOrder
+  checksum_sha256?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   _count?: Prisma.mediaCountOrderByAggregateInput
   _avg?: Prisma.mediaAvgOrderByAggregateInput
@@ -327,6 +405,12 @@ export type mediaScalarWhereWithAggregatesInput = {
   height?: Prisma.IntNullableWithAggregatesFilter<"media"> | number | null
   duration_seconds?: Prisma.IntNullableWithAggregatesFilter<"media"> | number | null
   size_bytes?: Prisma.BigIntNullableWithAggregatesFilter<"media"> | bigint | number | null
+  provider?: Prisma.StringNullableWithAggregatesFilter<"media"> | string | null
+  storage_key?: Prisma.StringNullableWithAggregatesFilter<"media"> | string | null
+  original_filename?: Prisma.StringNullableWithAggregatesFilter<"media"> | string | null
+  uploaded_by?: Prisma.UuidNullableWithAggregatesFilter<"media"> | string | null
+  status?: Prisma.StringNullableWithAggregatesFilter<"media"> | string | null
+  checksum_sha256?: Prisma.StringNullableWithAggregatesFilter<"media"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"media"> | Date | string
 }
 
@@ -339,10 +423,20 @@ export type mediaCreateInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
   post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
 }
 
 export type mediaUncheckedCreateInput = {
@@ -354,10 +448,20 @@ export type mediaUncheckedCreateInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
   post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type mediaUpdateInput = {
@@ -369,10 +473,20 @@ export type mediaUpdateInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
   post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaUncheckedUpdateInput = {
@@ -384,10 +498,20 @@ export type mediaUncheckedUpdateInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
   post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaCreateManyInput = {
@@ -399,6 +523,12 @@ export type mediaCreateManyInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
 }
 
@@ -411,6 +541,12 @@ export type mediaUpdateManyMutationInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -423,6 +559,12 @@ export type mediaUncheckedUpdateManyInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -435,6 +577,12 @@ export type mediaCountOrderByAggregateInput = {
   height?: Prisma.SortOrder
   duration_seconds?: Prisma.SortOrder
   size_bytes?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  storage_key?: Prisma.SortOrder
+  original_filename?: Prisma.SortOrder
+  uploaded_by?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  checksum_sha256?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -454,6 +602,12 @@ export type mediaMaxOrderByAggregateInput = {
   height?: Prisma.SortOrder
   duration_seconds?: Prisma.SortOrder
   size_bytes?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  storage_key?: Prisma.SortOrder
+  original_filename?: Prisma.SortOrder
+  uploaded_by?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  checksum_sha256?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -466,6 +620,12 @@ export type mediaMinOrderByAggregateInput = {
   height?: Prisma.SortOrder
   duration_seconds?: Prisma.SortOrder
   size_bytes?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  storage_key?: Prisma.SortOrder
+  original_filename?: Prisma.SortOrder
+  uploaded_by?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  checksum_sha256?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -531,6 +691,62 @@ export type mediaUpdateOneRequiredWithoutUser_mediaNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.mediaUpdateToOneWithWhereWithoutUser_mediaInput, Prisma.mediaUpdateWithoutUser_mediaInput>, Prisma.mediaUncheckedUpdateWithoutUser_mediaInput>
 }
 
+export type mediaCreateNestedOneWithoutRoom_mediaInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutRoom_mediaInput, Prisma.mediaUncheckedCreateWithoutRoom_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutRoom_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+}
+
+export type mediaUpdateOneRequiredWithoutRoom_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutRoom_mediaInput, Prisma.mediaUncheckedCreateWithoutRoom_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutRoom_mediaInput
+  upsert?: Prisma.mediaUpsertWithoutRoom_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mediaUpdateToOneWithWhereWithoutRoom_mediaInput, Prisma.mediaUpdateWithoutRoom_mediaInput>, Prisma.mediaUncheckedUpdateWithoutRoom_mediaInput>
+}
+
+export type mediaCreateNestedOneWithoutStudio_mediaInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutStudio_mediaInput, Prisma.mediaUncheckedCreateWithoutStudio_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutStudio_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+}
+
+export type mediaUpdateOneRequiredWithoutStudio_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutStudio_mediaInput, Prisma.mediaUncheckedCreateWithoutStudio_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutStudio_mediaInput
+  upsert?: Prisma.mediaUpsertWithoutStudio_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mediaUpdateToOneWithWhereWithoutStudio_mediaInput, Prisma.mediaUpdateWithoutStudio_mediaInput>, Prisma.mediaUncheckedUpdateWithoutStudio_mediaInput>
+}
+
+export type mediaCreateNestedOneWithoutBand_mediaInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutBand_mediaInput, Prisma.mediaUncheckedCreateWithoutBand_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutBand_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+}
+
+export type mediaUpdateOneRequiredWithoutBand_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutBand_mediaInput, Prisma.mediaUncheckedCreateWithoutBand_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutBand_mediaInput
+  upsert?: Prisma.mediaUpsertWithoutBand_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mediaUpdateToOneWithWhereWithoutBand_mediaInput, Prisma.mediaUpdateWithoutBand_mediaInput>, Prisma.mediaUncheckedUpdateWithoutBand_mediaInput>
+}
+
+export type mediaCreateNestedOneWithoutEvent_mediaInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutEvent_mediaInput, Prisma.mediaUncheckedCreateWithoutEvent_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutEvent_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+}
+
+export type mediaUpdateOneRequiredWithoutEvent_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.mediaCreateWithoutEvent_mediaInput, Prisma.mediaUncheckedCreateWithoutEvent_mediaInput>
+  connectOrCreate?: Prisma.mediaCreateOrConnectWithoutEvent_mediaInput
+  upsert?: Prisma.mediaUpsertWithoutEvent_mediaInput
+  connect?: Prisma.mediaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mediaUpdateToOneWithWhereWithoutEvent_mediaInput, Prisma.mediaUpdateWithoutEvent_mediaInput>, Prisma.mediaUncheckedUpdateWithoutEvent_mediaInput>
+}
+
 export type mediaCreateWithoutMessage_attachmentsInput = {
   media_id?: string
   url?: string | null
@@ -540,9 +756,19 @@ export type mediaCreateWithoutMessage_attachmentsInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
 }
 
 export type mediaUncheckedCreateWithoutMessage_attachmentsInput = {
@@ -554,9 +780,19 @@ export type mediaUncheckedCreateWithoutMessage_attachmentsInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type mediaCreateOrConnectWithoutMessage_attachmentsInput = {
@@ -584,9 +820,19 @@ export type mediaUpdateWithoutMessage_attachmentsInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaUncheckedUpdateWithoutMessage_attachmentsInput = {
@@ -598,9 +844,19 @@ export type mediaUncheckedUpdateWithoutMessage_attachmentsInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaCreateWithoutPost_mediaInput = {
@@ -612,9 +868,19 @@ export type mediaCreateWithoutPost_mediaInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
 }
 
 export type mediaUncheckedCreateWithoutPost_mediaInput = {
@@ -626,9 +892,19 @@ export type mediaUncheckedCreateWithoutPost_mediaInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
   user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type mediaCreateOrConnectWithoutPost_mediaInput = {
@@ -656,9 +932,19 @@ export type mediaUpdateWithoutPost_mediaInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaUncheckedUpdateWithoutPost_mediaInput = {
@@ -670,9 +956,19 @@ export type mediaUncheckedUpdateWithoutPost_mediaInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
   user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaCreateWithoutUser_mediaInput = {
@@ -684,9 +980,19 @@ export type mediaCreateWithoutUser_mediaInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
   post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
 }
 
 export type mediaUncheckedCreateWithoutUser_mediaInput = {
@@ -698,9 +1004,19 @@ export type mediaUncheckedCreateWithoutUser_mediaInput = {
   height?: number | null
   duration_seconds?: number | null
   size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
   created_at?: Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
   post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
 }
 
 export type mediaCreateOrConnectWithoutUser_mediaInput = {
@@ -728,9 +1044,19 @@ export type mediaUpdateWithoutUser_mediaInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
   post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
 }
 
 export type mediaUncheckedUpdateWithoutUser_mediaInput = {
@@ -742,9 +1068,467 @@ export type mediaUncheckedUpdateWithoutUser_mediaInput = {
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
   post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaCreateWithoutRoom_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
+}
+
+export type mediaUncheckedCreateWithoutRoom_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type mediaCreateOrConnectWithoutRoom_mediaInput = {
+  where: Prisma.mediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.mediaCreateWithoutRoom_mediaInput, Prisma.mediaUncheckedCreateWithoutRoom_mediaInput>
+}
+
+export type mediaUpsertWithoutRoom_mediaInput = {
+  update: Prisma.XOR<Prisma.mediaUpdateWithoutRoom_mediaInput, Prisma.mediaUncheckedUpdateWithoutRoom_mediaInput>
+  create: Prisma.XOR<Prisma.mediaCreateWithoutRoom_mediaInput, Prisma.mediaUncheckedCreateWithoutRoom_mediaInput>
+  where?: Prisma.mediaWhereInput
+}
+
+export type mediaUpdateToOneWithWhereWithoutRoom_mediaInput = {
+  where?: Prisma.mediaWhereInput
+  data: Prisma.XOR<Prisma.mediaUpdateWithoutRoom_mediaInput, Prisma.mediaUncheckedUpdateWithoutRoom_mediaInput>
+}
+
+export type mediaUpdateWithoutRoom_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaUncheckedUpdateWithoutRoom_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaCreateWithoutStudio_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
+}
+
+export type mediaUncheckedCreateWithoutStudio_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type mediaCreateOrConnectWithoutStudio_mediaInput = {
+  where: Prisma.mediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.mediaCreateWithoutStudio_mediaInput, Prisma.mediaUncheckedCreateWithoutStudio_mediaInput>
+}
+
+export type mediaUpsertWithoutStudio_mediaInput = {
+  update: Prisma.XOR<Prisma.mediaUpdateWithoutStudio_mediaInput, Prisma.mediaUncheckedUpdateWithoutStudio_mediaInput>
+  create: Prisma.XOR<Prisma.mediaCreateWithoutStudio_mediaInput, Prisma.mediaUncheckedCreateWithoutStudio_mediaInput>
+  where?: Prisma.mediaWhereInput
+}
+
+export type mediaUpdateToOneWithWhereWithoutStudio_mediaInput = {
+  where?: Prisma.mediaWhereInput
+  data: Prisma.XOR<Prisma.mediaUpdateWithoutStudio_mediaInput, Prisma.mediaUncheckedUpdateWithoutStudio_mediaInput>
+}
+
+export type mediaUpdateWithoutStudio_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaUncheckedUpdateWithoutStudio_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaCreateWithoutBand_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaCreateNestedManyWithoutMediaInput
+}
+
+export type mediaUncheckedCreateWithoutBand_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  event_media?: Prisma.event_mediaUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type mediaCreateOrConnectWithoutBand_mediaInput = {
+  where: Prisma.mediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.mediaCreateWithoutBand_mediaInput, Prisma.mediaUncheckedCreateWithoutBand_mediaInput>
+}
+
+export type mediaUpsertWithoutBand_mediaInput = {
+  update: Prisma.XOR<Prisma.mediaUpdateWithoutBand_mediaInput, Prisma.mediaUncheckedUpdateWithoutBand_mediaInput>
+  create: Prisma.XOR<Prisma.mediaCreateWithoutBand_mediaInput, Prisma.mediaUncheckedCreateWithoutBand_mediaInput>
+  where?: Prisma.mediaWhereInput
+}
+
+export type mediaUpdateToOneWithWhereWithoutBand_mediaInput = {
+  where?: Prisma.mediaWhereInput
+  data: Prisma.XOR<Prisma.mediaUpdateWithoutBand_mediaInput, Prisma.mediaUncheckedUpdateWithoutBand_mediaInput>
+}
+
+export type mediaUpdateWithoutBand_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaUncheckedUpdateWithoutBand_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  event_media?: Prisma.event_mediaUncheckedUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaCreateWithoutEvent_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutMediaInput
+}
+
+export type mediaUncheckedCreateWithoutEvent_mediaInput = {
+  media_id?: string
+  url?: string | null
+  media_type?: string | null
+  mime_type?: string | null
+  width?: number | null
+  height?: number | null
+  duration_seconds?: number | null
+  size_bytes?: bigint | number | null
+  provider?: string | null
+  storage_key?: string | null
+  original_filename?: string | null
+  uploaded_by?: string | null
+  status?: string | null
+  checksum_sha256?: string | null
+  created_at?: Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedCreateNestedManyWithoutMediaInput
+  post_media?: Prisma.post_mediaUncheckedCreateNestedManyWithoutMediaInput
+  user_media?: Prisma.user_mediaUncheckedCreateNestedManyWithoutMediaInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutMediaInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutMediaInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutMediaInput
+}
+
+export type mediaCreateOrConnectWithoutEvent_mediaInput = {
+  where: Prisma.mediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.mediaCreateWithoutEvent_mediaInput, Prisma.mediaUncheckedCreateWithoutEvent_mediaInput>
+}
+
+export type mediaUpsertWithoutEvent_mediaInput = {
+  update: Prisma.XOR<Prisma.mediaUpdateWithoutEvent_mediaInput, Prisma.mediaUncheckedUpdateWithoutEvent_mediaInput>
+  create: Prisma.XOR<Prisma.mediaCreateWithoutEvent_mediaInput, Prisma.mediaUncheckedCreateWithoutEvent_mediaInput>
+  where?: Prisma.mediaWhereInput
+}
+
+export type mediaUpdateToOneWithWhereWithoutEvent_mediaInput = {
+  where?: Prisma.mediaWhereInput
+  data: Prisma.XOR<Prisma.mediaUpdateWithoutEvent_mediaInput, Prisma.mediaUncheckedUpdateWithoutEvent_mediaInput>
+}
+
+export type mediaUpdateWithoutEvent_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutMediaNestedInput
+}
+
+export type mediaUncheckedUpdateWithoutEvent_mediaInput = {
+  media_id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  duration_seconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  size_bytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_filename?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  checksum_sha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  message_attachments?: Prisma.message_attachmentsUncheckedUpdateManyWithoutMediaNestedInput
+  post_media?: Prisma.post_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  user_media?: Prisma.user_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutMediaNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutMediaNestedInput
 }
 
 
@@ -756,12 +1540,20 @@ export type MediaCountOutputType = {
   message_attachments: number
   post_media: number
   user_media: number
+  room_media: number
+  studio_media: number
+  band_media: number
+  event_media: number
 }
 
 export type MediaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   message_attachments?: boolean | MediaCountOutputTypeCountMessage_attachmentsArgs
   post_media?: boolean | MediaCountOutputTypeCountPost_mediaArgs
   user_media?: boolean | MediaCountOutputTypeCountUser_mediaArgs
+  room_media?: boolean | MediaCountOutputTypeCountRoom_mediaArgs
+  studio_media?: boolean | MediaCountOutputTypeCountStudio_mediaArgs
+  band_media?: boolean | MediaCountOutputTypeCountBand_mediaArgs
+  event_media?: boolean | MediaCountOutputTypeCountEvent_mediaArgs
 }
 
 /**
@@ -795,6 +1587,34 @@ export type MediaCountOutputTypeCountUser_mediaArgs<ExtArgs extends runtime.Type
   where?: Prisma.user_mediaWhereInput
 }
 
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountRoom_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.room_mediaWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountStudio_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.studio_mediaWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountBand_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.band_mediaWhereInput
+}
+
+/**
+ * MediaCountOutputType without action
+ */
+export type MediaCountOutputTypeCountEvent_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.event_mediaWhereInput
+}
+
 
 export type mediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   media_id?: boolean
@@ -805,10 +1625,20 @@ export type mediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   height?: boolean
   duration_seconds?: boolean
   size_bytes?: boolean
+  provider?: boolean
+  storage_key?: boolean
+  original_filename?: boolean
+  uploaded_by?: boolean
+  status?: boolean
+  checksum_sha256?: boolean
   created_at?: boolean
   message_attachments?: boolean | Prisma.media$message_attachmentsArgs<ExtArgs>
   post_media?: boolean | Prisma.media$post_mediaArgs<ExtArgs>
   user_media?: boolean | Prisma.media$user_mediaArgs<ExtArgs>
+  room_media?: boolean | Prisma.media$room_mediaArgs<ExtArgs>
+  studio_media?: boolean | Prisma.media$studio_mediaArgs<ExtArgs>
+  band_media?: boolean | Prisma.media$band_mediaArgs<ExtArgs>
+  event_media?: boolean | Prisma.media$event_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["media"]>
 
@@ -821,6 +1651,12 @@ export type mediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   height?: boolean
   duration_seconds?: boolean
   size_bytes?: boolean
+  provider?: boolean
+  storage_key?: boolean
+  original_filename?: boolean
+  uploaded_by?: boolean
+  status?: boolean
+  checksum_sha256?: boolean
   created_at?: boolean
 }, ExtArgs["result"]["media"]>
 
@@ -833,6 +1669,12 @@ export type mediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   height?: boolean
   duration_seconds?: boolean
   size_bytes?: boolean
+  provider?: boolean
+  storage_key?: boolean
+  original_filename?: boolean
+  uploaded_by?: boolean
+  status?: boolean
+  checksum_sha256?: boolean
   created_at?: boolean
 }, ExtArgs["result"]["media"]>
 
@@ -845,14 +1687,24 @@ export type mediaSelectScalar = {
   height?: boolean
   duration_seconds?: boolean
   size_bytes?: boolean
+  provider?: boolean
+  storage_key?: boolean
+  original_filename?: boolean
+  uploaded_by?: boolean
+  status?: boolean
+  checksum_sha256?: boolean
   created_at?: boolean
 }
 
-export type mediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"media_id" | "url" | "media_type" | "mime_type" | "width" | "height" | "duration_seconds" | "size_bytes" | "created_at", ExtArgs["result"]["media"]>
+export type mediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"media_id" | "url" | "media_type" | "mime_type" | "width" | "height" | "duration_seconds" | "size_bytes" | "provider" | "storage_key" | "original_filename" | "uploaded_by" | "status" | "checksum_sha256" | "created_at", ExtArgs["result"]["media"]>
 export type mediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   message_attachments?: boolean | Prisma.media$message_attachmentsArgs<ExtArgs>
   post_media?: boolean | Prisma.media$post_mediaArgs<ExtArgs>
   user_media?: boolean | Prisma.media$user_mediaArgs<ExtArgs>
+  room_media?: boolean | Prisma.media$room_mediaArgs<ExtArgs>
+  studio_media?: boolean | Prisma.media$studio_mediaArgs<ExtArgs>
+  band_media?: boolean | Prisma.media$band_mediaArgs<ExtArgs>
+  event_media?: boolean | Prisma.media$event_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.MediaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type mediaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -864,6 +1716,10 @@ export type $mediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     message_attachments: Prisma.$message_attachmentsPayload<ExtArgs>[]
     post_media: Prisma.$post_mediaPayload<ExtArgs>[]
     user_media: Prisma.$user_mediaPayload<ExtArgs>[]
+    room_media: Prisma.$room_mediaPayload<ExtArgs>[]
+    studio_media: Prisma.$studio_mediaPayload<ExtArgs>[]
+    band_media: Prisma.$band_mediaPayload<ExtArgs>[]
+    event_media: Prisma.$event_mediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     media_id: string
@@ -874,6 +1730,12 @@ export type $mediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     height: number | null
     duration_seconds: number | null
     size_bytes: bigint | null
+    provider: string | null
+    storage_key: string | null
+    original_filename: string | null
+    uploaded_by: string | null
+    status: string | null
+    checksum_sha256: string | null
     created_at: Date
   }, ExtArgs["result"]["media"]>
   composites: {}
@@ -1272,6 +2134,10 @@ export interface Prisma__mediaClient<T, Null = never, ExtArgs extends runtime.Ty
   message_attachments<T extends Prisma.media$message_attachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$message_attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$message_attachmentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   post_media<T extends Prisma.media$post_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$post_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$post_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user_media<T extends Prisma.media$user_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$user_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$user_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  room_media<T extends Prisma.media$room_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$room_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$room_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studio_media<T extends Prisma.media$studio_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$studio_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$studio_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  band_media<T extends Prisma.media$band_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$band_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$band_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  event_media<T extends Prisma.media$event_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.media$event_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$event_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1309,6 +2175,12 @@ export interface mediaFieldRefs {
   readonly height: Prisma.FieldRef<"media", 'Int'>
   readonly duration_seconds: Prisma.FieldRef<"media", 'Int'>
   readonly size_bytes: Prisma.FieldRef<"media", 'BigInt'>
+  readonly provider: Prisma.FieldRef<"media", 'String'>
+  readonly storage_key: Prisma.FieldRef<"media", 'String'>
+  readonly original_filename: Prisma.FieldRef<"media", 'String'>
+  readonly uploaded_by: Prisma.FieldRef<"media", 'String'>
+  readonly status: Prisma.FieldRef<"media", 'String'>
+  readonly checksum_sha256: Prisma.FieldRef<"media", 'String'>
   readonly created_at: Prisma.FieldRef<"media", 'DateTime'>
 }
     
@@ -1767,6 +2639,102 @@ export type media$user_mediaArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.User_mediaScalarFieldEnum | Prisma.User_mediaScalarFieldEnum[]
+}
+
+/**
+ * media.room_media
+ */
+export type media$room_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the room_media
+   */
+  select?: Prisma.room_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the room_media
+   */
+  omit?: Prisma.room_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.room_mediaInclude<ExtArgs> | null
+  where?: Prisma.room_mediaWhereInput
+  orderBy?: Prisma.room_mediaOrderByWithRelationInput | Prisma.room_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.room_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Room_mediaScalarFieldEnum | Prisma.Room_mediaScalarFieldEnum[]
+}
+
+/**
+ * media.studio_media
+ */
+export type media$studio_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the studio_media
+   */
+  select?: Prisma.studio_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the studio_media
+   */
+  omit?: Prisma.studio_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.studio_mediaInclude<ExtArgs> | null
+  where?: Prisma.studio_mediaWhereInput
+  orderBy?: Prisma.studio_mediaOrderByWithRelationInput | Prisma.studio_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.studio_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Studio_mediaScalarFieldEnum | Prisma.Studio_mediaScalarFieldEnum[]
+}
+
+/**
+ * media.band_media
+ */
+export type media$band_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the band_media
+   */
+  select?: Prisma.band_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the band_media
+   */
+  omit?: Prisma.band_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.band_mediaInclude<ExtArgs> | null
+  where?: Prisma.band_mediaWhereInput
+  orderBy?: Prisma.band_mediaOrderByWithRelationInput | Prisma.band_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.band_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Band_mediaScalarFieldEnum | Prisma.Band_mediaScalarFieldEnum[]
+}
+
+/**
+ * media.event_media
+ */
+export type media$event_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the event_media
+   */
+  select?: Prisma.event_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the event_media
+   */
+  omit?: Prisma.event_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.event_mediaInclude<ExtArgs> | null
+  where?: Prisma.event_mediaWhereInput
+  orderBy?: Prisma.event_mediaOrderByWithRelationInput | Prisma.event_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.event_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Event_mediaScalarFieldEnum | Prisma.Event_mediaScalarFieldEnum[]
 }
 
 /**

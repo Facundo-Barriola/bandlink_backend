@@ -261,6 +261,7 @@ export type rehearsal_roomsWhereInput = {
   room_availability_rules?: Prisma.Room_availability_rulesListRelationFilter
   room_blocks?: Prisma.Room_blocksListRelationFilter
   room_equipment?: Prisma.Room_equipmentListRelationFilter
+  room_media?: Prisma.Room_mediaListRelationFilter
 }
 
 export type rehearsal_roomsOrderByWithRelationInput = {
@@ -278,6 +279,7 @@ export type rehearsal_roomsOrderByWithRelationInput = {
   room_availability_rules?: Prisma.room_availability_rulesOrderByRelationAggregateInput
   room_blocks?: Prisma.room_blocksOrderByRelationAggregateInput
   room_equipment?: Prisma.room_equipmentOrderByRelationAggregateInput
+  room_media?: Prisma.room_mediaOrderByRelationAggregateInput
 }
 
 export type rehearsal_roomsWhereUniqueInput = Prisma.AtLeast<{
@@ -298,6 +300,7 @@ export type rehearsal_roomsWhereUniqueInput = Prisma.AtLeast<{
   room_availability_rules?: Prisma.Room_availability_rulesListRelationFilter
   room_blocks?: Prisma.Room_blocksListRelationFilter
   room_equipment?: Prisma.Room_equipmentListRelationFilter
+  room_media?: Prisma.Room_mediaListRelationFilter
 }, "room_id">
 
 export type rehearsal_roomsOrderByWithAggregationInput = {
@@ -346,6 +349,7 @@ export type rehearsal_roomsCreateInput = {
   room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateInput = {
@@ -362,6 +366,7 @@ export type rehearsal_roomsUncheckedCreateInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUpdateInput = {
@@ -378,6 +383,7 @@ export type rehearsal_roomsUpdateInput = {
   room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateInput = {
@@ -394,6 +400,7 @@ export type rehearsal_roomsUncheckedUpdateInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsCreateManyInput = {
@@ -592,6 +599,20 @@ export type rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput = {
   deleteMany?: Prisma.rehearsal_roomsScalarWhereInput | Prisma.rehearsal_roomsScalarWhereInput[]
 }
 
+export type rehearsal_roomsCreateNestedOneWithoutRoom_mediaInput = {
+  create?: Prisma.XOR<Prisma.rehearsal_roomsCreateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput>
+  connectOrCreate?: Prisma.rehearsal_roomsCreateOrConnectWithoutRoom_mediaInput
+  connect?: Prisma.rehearsal_roomsWhereUniqueInput
+}
+
+export type rehearsal_roomsUpdateOneRequiredWithoutRoom_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.rehearsal_roomsCreateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput>
+  connectOrCreate?: Prisma.rehearsal_roomsCreateOrConnectWithoutRoom_mediaInput
+  upsert?: Prisma.rehearsal_roomsUpsertWithoutRoom_mediaInput
+  connect?: Prisma.rehearsal_roomsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.rehearsal_roomsUpdateToOneWithWhereWithoutRoom_mediaInput, Prisma.rehearsal_roomsUpdateWithoutRoom_mediaInput>, Prisma.rehearsal_roomsUncheckedUpdateWithoutRoom_mediaInput>
+}
+
 export type rehearsal_roomsCreateWithoutBookingsInput = {
   room_id?: string
   name: string
@@ -605,6 +626,7 @@ export type rehearsal_roomsCreateWithoutBookingsInput = {
   room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateWithoutBookingsInput = {
@@ -620,6 +642,7 @@ export type rehearsal_roomsUncheckedCreateWithoutBookingsInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsCreateOrConnectWithoutBookingsInput = {
@@ -651,6 +674,7 @@ export type rehearsal_roomsUpdateWithoutBookingsInput = {
   room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateWithoutBookingsInput = {
@@ -666,6 +690,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutBookingsInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsCreateWithoutRoom_availability_rulesInput = {
@@ -681,6 +706,7 @@ export type rehearsal_roomsCreateWithoutRoom_availability_rulesInput = {
   studios: Prisma.studiosCreateNestedOneWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateWithoutRoom_availability_rulesInput = {
@@ -696,6 +722,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_availability_rulesInput = 
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsCreateOrConnectWithoutRoom_availability_rulesInput = {
@@ -727,6 +754,7 @@ export type rehearsal_roomsUpdateWithoutRoom_availability_rulesInput = {
   studios?: Prisma.studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateWithoutRoom_availability_rulesInput = {
@@ -742,6 +770,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_availability_rulesInput = 
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsCreateWithoutRoom_blocksInput = {
@@ -757,6 +786,7 @@ export type rehearsal_roomsCreateWithoutRoom_blocksInput = {
   studios: Prisma.studiosCreateNestedOneWithoutRehearsal_roomsInput
   room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateWithoutRoom_blocksInput = {
@@ -772,6 +802,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_blocksInput = {
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsCreateOrConnectWithoutRoom_blocksInput = {
@@ -803,6 +834,7 @@ export type rehearsal_roomsUpdateWithoutRoom_blocksInput = {
   studios?: Prisma.studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput
   room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateWithoutRoom_blocksInput = {
@@ -818,6 +850,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_blocksInput = {
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsCreateWithoutRoom_equipmentInput = {
@@ -833,6 +866,7 @@ export type rehearsal_roomsCreateWithoutRoom_equipmentInput = {
   studios: Prisma.studiosCreateNestedOneWithoutRehearsal_roomsInput
   room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateWithoutRoom_equipmentInput = {
@@ -848,6 +882,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_equipmentInput = {
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsCreateOrConnectWithoutRoom_equipmentInput = {
@@ -879,6 +914,7 @@ export type rehearsal_roomsUpdateWithoutRoom_equipmentInput = {
   studios?: Prisma.studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput
   room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateWithoutRoom_equipmentInput = {
@@ -894,6 +930,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_equipmentInput = {
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsCreateWithoutStudiosInput = {
@@ -909,6 +946,7 @@ export type rehearsal_roomsCreateWithoutStudiosInput = {
   room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsUncheckedCreateWithoutStudiosInput = {
@@ -924,6 +962,7 @@ export type rehearsal_roomsUncheckedCreateWithoutStudiosInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
   room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_media?: Prisma.room_mediaUncheckedCreateNestedManyWithoutRehearsal_roomsInput
 }
 
 export type rehearsal_roomsCreateOrConnectWithoutStudiosInput = {
@@ -967,6 +1006,86 @@ export type rehearsal_roomsScalarWhereInput = {
   updated_at?: Prisma.DateTimeNullableFilter<"rehearsal_rooms"> | Date | string | null
 }
 
+export type rehearsal_roomsCreateWithoutRoom_mediaInput = {
+  room_id?: string
+  name: string
+  description?: string | null
+  capacity?: number | null
+  base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_booking_minutes?: number | null
+  created_at?: Date | string
+  updated_at?: Date | string | null
+  bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
+  studios: Prisma.studiosCreateNestedOneWithoutRehearsal_roomsInput
+  room_availability_rules?: Prisma.room_availability_rulesCreateNestedManyWithoutRehearsal_roomsInput
+  room_blocks?: Prisma.room_blocksCreateNestedManyWithoutRehearsal_roomsInput
+  room_equipment?: Prisma.room_equipmentCreateNestedManyWithoutRehearsal_roomsInput
+}
+
+export type rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput = {
+  room_id?: string
+  studio_id: string
+  name: string
+  description?: string | null
+  capacity?: number | null
+  base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_booking_minutes?: number | null
+  created_at?: Date | string
+  updated_at?: Date | string | null
+  bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_blocks?: Prisma.room_blocksUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+  room_equipment?: Prisma.room_equipmentUncheckedCreateNestedManyWithoutRehearsal_roomsInput
+}
+
+export type rehearsal_roomsCreateOrConnectWithoutRoom_mediaInput = {
+  where: Prisma.rehearsal_roomsWhereUniqueInput
+  create: Prisma.XOR<Prisma.rehearsal_roomsCreateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput>
+}
+
+export type rehearsal_roomsUpsertWithoutRoom_mediaInput = {
+  update: Prisma.XOR<Prisma.rehearsal_roomsUpdateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedUpdateWithoutRoom_mediaInput>
+  create: Prisma.XOR<Prisma.rehearsal_roomsCreateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput>
+  where?: Prisma.rehearsal_roomsWhereInput
+}
+
+export type rehearsal_roomsUpdateToOneWithWhereWithoutRoom_mediaInput = {
+  where?: Prisma.rehearsal_roomsWhereInput
+  data: Prisma.XOR<Prisma.rehearsal_roomsUpdateWithoutRoom_mediaInput, Prisma.rehearsal_roomsUncheckedUpdateWithoutRoom_mediaInput>
+}
+
+export type rehearsal_roomsUpdateWithoutRoom_mediaInput = {
+  room_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
+  studios?: Prisma.studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput
+  room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
+  room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
+  room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+}
+
+export type rehearsal_roomsUncheckedUpdateWithoutRoom_mediaInput = {
+  room_id?: Prisma.StringFieldUpdateOperationsInput | string
+  studio_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+}
+
 export type rehearsal_roomsCreateManyStudiosInput = {
   room_id?: string
   name: string
@@ -991,6 +1110,7 @@ export type rehearsal_roomsUpdateWithoutStudiosInput = {
   room_availability_rules?: Prisma.room_availability_rulesUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateWithoutStudiosInput = {
@@ -1006,6 +1126,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutStudiosInput = {
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_blocks?: Prisma.room_blocksUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
   room_equipment?: Prisma.room_equipmentUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
+  room_media?: Prisma.room_mediaUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
 }
 
 export type rehearsal_roomsUncheckedUpdateManyWithoutStudiosInput = {
@@ -1029,6 +1150,7 @@ export type Rehearsal_roomsCountOutputType = {
   room_availability_rules: number
   room_blocks: number
   room_equipment: number
+  room_media: number
 }
 
 export type Rehearsal_roomsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1036,6 +1158,7 @@ export type Rehearsal_roomsCountOutputTypeSelect<ExtArgs extends runtime.Types.E
   room_availability_rules?: boolean | Rehearsal_roomsCountOutputTypeCountRoom_availability_rulesArgs
   room_blocks?: boolean | Rehearsal_roomsCountOutputTypeCountRoom_blocksArgs
   room_equipment?: boolean | Rehearsal_roomsCountOutputTypeCountRoom_equipmentArgs
+  room_media?: boolean | Rehearsal_roomsCountOutputTypeCountRoom_mediaArgs
 }
 
 /**
@@ -1076,6 +1199,13 @@ export type Rehearsal_roomsCountOutputTypeCountRoom_equipmentArgs<ExtArgs extend
   where?: Prisma.room_equipmentWhereInput
 }
 
+/**
+ * Rehearsal_roomsCountOutputType without action
+ */
+export type Rehearsal_roomsCountOutputTypeCountRoom_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.room_mediaWhereInput
+}
+
 
 export type rehearsal_roomsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   room_id?: boolean
@@ -1092,6 +1222,7 @@ export type rehearsal_roomsSelect<ExtArgs extends runtime.Types.Extensions.Inter
   room_availability_rules?: boolean | Prisma.rehearsal_rooms$room_availability_rulesArgs<ExtArgs>
   room_blocks?: boolean | Prisma.rehearsal_rooms$room_blocksArgs<ExtArgs>
   room_equipment?: boolean | Prisma.rehearsal_rooms$room_equipmentArgs<ExtArgs>
+  room_media?: boolean | Prisma.rehearsal_rooms$room_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.Rehearsal_roomsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rehearsal_rooms"]>
 
@@ -1140,6 +1271,7 @@ export type rehearsal_roomsInclude<ExtArgs extends runtime.Types.Extensions.Inte
   room_availability_rules?: boolean | Prisma.rehearsal_rooms$room_availability_rulesArgs<ExtArgs>
   room_blocks?: boolean | Prisma.rehearsal_rooms$room_blocksArgs<ExtArgs>
   room_equipment?: boolean | Prisma.rehearsal_rooms$room_equipmentArgs<ExtArgs>
+  room_media?: boolean | Prisma.rehearsal_rooms$room_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.Rehearsal_roomsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type rehearsal_roomsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1157,6 +1289,7 @@ export type $rehearsal_roomsPayload<ExtArgs extends runtime.Types.Extensions.Int
     room_availability_rules: Prisma.$room_availability_rulesPayload<ExtArgs>[]
     room_blocks: Prisma.$room_blocksPayload<ExtArgs>[]
     room_equipment: Prisma.$room_equipmentPayload<ExtArgs>[]
+    room_media: Prisma.$room_mediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     room_id: string
@@ -1567,6 +1700,7 @@ export interface Prisma__rehearsal_roomsClient<T, Null = never, ExtArgs extends 
   room_availability_rules<T extends Prisma.rehearsal_rooms$room_availability_rulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.rehearsal_rooms$room_availability_rulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$room_availability_rulesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   room_blocks<T extends Prisma.rehearsal_rooms$room_blocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.rehearsal_rooms$room_blocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$room_blocksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   room_equipment<T extends Prisma.rehearsal_rooms$room_equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.rehearsal_rooms$room_equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$room_equipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  room_media<T extends Prisma.rehearsal_rooms$room_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.rehearsal_rooms$room_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$room_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2094,6 +2228,30 @@ export type rehearsal_rooms$room_equipmentArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.Room_equipmentScalarFieldEnum | Prisma.Room_equipmentScalarFieldEnum[]
+}
+
+/**
+ * rehearsal_rooms.room_media
+ */
+export type rehearsal_rooms$room_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the room_media
+   */
+  select?: Prisma.room_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the room_media
+   */
+  omit?: Prisma.room_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.room_mediaInclude<ExtArgs> | null
+  where?: Prisma.room_mediaWhereInput
+  orderBy?: Prisma.room_mediaOrderByWithRelationInput | Prisma.room_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.room_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Room_mediaScalarFieldEnum | Prisma.Room_mediaScalarFieldEnum[]
 }
 
 /**

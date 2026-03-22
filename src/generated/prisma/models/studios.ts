@@ -210,6 +210,7 @@ export type studiosWhereInput = {
   rehearsal_rooms?: Prisma.Rehearsal_roomsListRelationFilter
   users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
   places?: Prisma.XOR<Prisma.PlacesNullableScalarRelationFilter, Prisma.placesWhereInput> | null
+  studio_media?: Prisma.Studio_mediaListRelationFilter
 }
 
 export type studiosOrderByWithRelationInput = {
@@ -225,6 +226,7 @@ export type studiosOrderByWithRelationInput = {
   rehearsal_rooms?: Prisma.rehearsal_roomsOrderByRelationAggregateInput
   users?: Prisma.usersOrderByWithRelationInput
   places?: Prisma.placesOrderByWithRelationInput
+  studio_media?: Prisma.studio_mediaOrderByRelationAggregateInput
 }
 
 export type studiosWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +245,7 @@ export type studiosWhereUniqueInput = Prisma.AtLeast<{
   rehearsal_rooms?: Prisma.Rehearsal_roomsListRelationFilter
   users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
   places?: Prisma.XOR<Prisma.PlacesNullableScalarRelationFilter, Prisma.placesWhereInput> | null
+  studio_media?: Prisma.Studio_mediaListRelationFilter
 }, "studio_id">
 
 export type studiosOrderByWithAggregationInput = {
@@ -284,6 +287,7 @@ export type studiosCreateInput = {
   rehearsal_rooms?: Prisma.rehearsal_roomsCreateNestedManyWithoutStudiosInput
   users: Prisma.usersCreateNestedOneWithoutStudiosInput
   places?: Prisma.placesCreateNestedOneWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUncheckedCreateInput = {
@@ -297,6 +301,7 @@ export type studiosUncheckedCreateInput = {
   created_at?: Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedCreateNestedManyWithoutStudiosInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedCreateNestedManyWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUpdateInput = {
@@ -310,6 +315,7 @@ export type studiosUpdateInput = {
   rehearsal_rooms?: Prisma.rehearsal_roomsUpdateManyWithoutStudiosNestedInput
   users?: Prisma.usersUpdateOneRequiredWithoutStudiosNestedInput
   places?: Prisma.placesUpdateOneWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateInput = {
@@ -323,6 +329,7 @@ export type studiosUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedUpdateManyWithoutStudiosNestedInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosCreateManyInput = {
@@ -516,6 +523,20 @@ export type studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.studiosUpdateToOneWithWhereWithoutRehearsal_roomsInput, Prisma.studiosUpdateWithoutRehearsal_roomsInput>, Prisma.studiosUncheckedUpdateWithoutRehearsal_roomsInput>
 }
 
+export type studiosCreateNestedOneWithoutStudio_mediaInput = {
+  create?: Prisma.XOR<Prisma.studiosCreateWithoutStudio_mediaInput, Prisma.studiosUncheckedCreateWithoutStudio_mediaInput>
+  connectOrCreate?: Prisma.studiosCreateOrConnectWithoutStudio_mediaInput
+  connect?: Prisma.studiosWhereUniqueInput
+}
+
+export type studiosUpdateOneRequiredWithoutStudio_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.studiosCreateWithoutStudio_mediaInput, Prisma.studiosUncheckedCreateWithoutStudio_mediaInput>
+  connectOrCreate?: Prisma.studiosCreateOrConnectWithoutStudio_mediaInput
+  upsert?: Prisma.studiosUpsertWithoutStudio_mediaInput
+  connect?: Prisma.studiosWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.studiosUpdateToOneWithWhereWithoutStudio_mediaInput, Prisma.studiosUpdateWithoutStudio_mediaInput>, Prisma.studiosUncheckedUpdateWithoutStudio_mediaInput>
+}
+
 export type studiosCreateWithoutUsersInput = {
   studio_id?: string
   name: string
@@ -526,6 +547,7 @@ export type studiosCreateWithoutUsersInput = {
   studio_reviews?: Prisma.studio_reviewsCreateNestedManyWithoutStudiosInput
   rehearsal_rooms?: Prisma.rehearsal_roomsCreateNestedManyWithoutStudiosInput
   places?: Prisma.placesCreateNestedOneWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUncheckedCreateWithoutUsersInput = {
@@ -538,6 +560,7 @@ export type studiosUncheckedCreateWithoutUsersInput = {
   created_at?: Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedCreateNestedManyWithoutStudiosInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedCreateNestedManyWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosCreateOrConnectWithoutUsersInput = {
@@ -590,6 +613,7 @@ export type studiosCreateWithoutPlacesInput = {
   studio_reviews?: Prisma.studio_reviewsCreateNestedManyWithoutStudiosInput
   rehearsal_rooms?: Prisma.rehearsal_roomsCreateNestedManyWithoutStudiosInput
   users: Prisma.usersCreateNestedOneWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUncheckedCreateWithoutPlacesInput = {
@@ -602,6 +626,7 @@ export type studiosUncheckedCreateWithoutPlacesInput = {
   created_at?: Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedCreateNestedManyWithoutStudiosInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedCreateNestedManyWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosCreateOrConnectWithoutPlacesInput = {
@@ -640,6 +665,7 @@ export type studiosCreateWithoutStudio_reviewsInput = {
   rehearsal_rooms?: Prisma.rehearsal_roomsCreateNestedManyWithoutStudiosInput
   users: Prisma.usersCreateNestedOneWithoutStudiosInput
   places?: Prisma.placesCreateNestedOneWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUncheckedCreateWithoutStudio_reviewsInput = {
@@ -652,6 +678,7 @@ export type studiosUncheckedCreateWithoutStudio_reviewsInput = {
   is_active?: boolean | null
   created_at?: Date | string
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedCreateNestedManyWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosCreateOrConnectWithoutStudio_reviewsInput = {
@@ -680,6 +707,7 @@ export type studiosUpdateWithoutStudio_reviewsInput = {
   rehearsal_rooms?: Prisma.rehearsal_roomsUpdateManyWithoutStudiosNestedInput
   users?: Prisma.usersUpdateOneRequiredWithoutStudiosNestedInput
   places?: Prisma.placesUpdateOneWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateWithoutStudio_reviewsInput = {
@@ -692,6 +720,7 @@ export type studiosUncheckedUpdateWithoutStudio_reviewsInput = {
   is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosCreateWithoutRehearsal_roomsInput = {
@@ -704,6 +733,7 @@ export type studiosCreateWithoutRehearsal_roomsInput = {
   studio_reviews?: Prisma.studio_reviewsCreateNestedManyWithoutStudiosInput
   users: Prisma.usersCreateNestedOneWithoutStudiosInput
   places?: Prisma.placesCreateNestedOneWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosUncheckedCreateWithoutRehearsal_roomsInput = {
@@ -716,6 +746,7 @@ export type studiosUncheckedCreateWithoutRehearsal_roomsInput = {
   is_active?: boolean | null
   created_at?: Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedCreateNestedManyWithoutStudiosInput
+  studio_media?: Prisma.studio_mediaUncheckedCreateNestedManyWithoutStudiosInput
 }
 
 export type studiosCreateOrConnectWithoutRehearsal_roomsInput = {
@@ -744,6 +775,7 @@ export type studiosUpdateWithoutRehearsal_roomsInput = {
   studio_reviews?: Prisma.studio_reviewsUpdateManyWithoutStudiosNestedInput
   users?: Prisma.usersUpdateOneRequiredWithoutStudiosNestedInput
   places?: Prisma.placesUpdateOneWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateWithoutRehearsal_roomsInput = {
@@ -756,6 +788,75 @@ export type studiosUncheckedUpdateWithoutRehearsal_roomsInput = {
   is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedUpdateManyWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutStudiosNestedInput
+}
+
+export type studiosCreateWithoutStudio_mediaInput = {
+  studio_id?: string
+  name: string
+  description?: string | null
+  phone?: string | null
+  is_active?: boolean | null
+  created_at?: Date | string
+  studio_reviews?: Prisma.studio_reviewsCreateNestedManyWithoutStudiosInput
+  rehearsal_rooms?: Prisma.rehearsal_roomsCreateNestedManyWithoutStudiosInput
+  users: Prisma.usersCreateNestedOneWithoutStudiosInput
+  places?: Prisma.placesCreateNestedOneWithoutStudiosInput
+}
+
+export type studiosUncheckedCreateWithoutStudio_mediaInput = {
+  studio_id?: string
+  owner_user_id: string
+  name: string
+  description?: string | null
+  place_id?: string | null
+  phone?: string | null
+  is_active?: boolean | null
+  created_at?: Date | string
+  studio_reviews?: Prisma.studio_reviewsUncheckedCreateNestedManyWithoutStudiosInput
+  rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedCreateNestedManyWithoutStudiosInput
+}
+
+export type studiosCreateOrConnectWithoutStudio_mediaInput = {
+  where: Prisma.studiosWhereUniqueInput
+  create: Prisma.XOR<Prisma.studiosCreateWithoutStudio_mediaInput, Prisma.studiosUncheckedCreateWithoutStudio_mediaInput>
+}
+
+export type studiosUpsertWithoutStudio_mediaInput = {
+  update: Prisma.XOR<Prisma.studiosUpdateWithoutStudio_mediaInput, Prisma.studiosUncheckedUpdateWithoutStudio_mediaInput>
+  create: Prisma.XOR<Prisma.studiosCreateWithoutStudio_mediaInput, Prisma.studiosUncheckedCreateWithoutStudio_mediaInput>
+  where?: Prisma.studiosWhereInput
+}
+
+export type studiosUpdateToOneWithWhereWithoutStudio_mediaInput = {
+  where?: Prisma.studiosWhereInput
+  data: Prisma.XOR<Prisma.studiosUpdateWithoutStudio_mediaInput, Prisma.studiosUncheckedUpdateWithoutStudio_mediaInput>
+}
+
+export type studiosUpdateWithoutStudio_mediaInput = {
+  studio_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studio_reviews?: Prisma.studio_reviewsUpdateManyWithoutStudiosNestedInput
+  rehearsal_rooms?: Prisma.rehearsal_roomsUpdateManyWithoutStudiosNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutStudiosNestedInput
+  places?: Prisma.placesUpdateOneWithoutStudiosNestedInput
+}
+
+export type studiosUncheckedUpdateWithoutStudio_mediaInput = {
+  studio_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  place_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studio_reviews?: Prisma.studio_reviewsUncheckedUpdateManyWithoutStudiosNestedInput
+  rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosCreateManyUsersInput = {
@@ -778,6 +879,7 @@ export type studiosUpdateWithoutUsersInput = {
   studio_reviews?: Prisma.studio_reviewsUpdateManyWithoutStudiosNestedInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUpdateManyWithoutStudiosNestedInput
   places?: Prisma.placesUpdateOneWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateWithoutUsersInput = {
@@ -790,6 +892,7 @@ export type studiosUncheckedUpdateWithoutUsersInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedUpdateManyWithoutStudiosNestedInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateManyWithoutUsersInput = {
@@ -822,6 +925,7 @@ export type studiosUpdateWithoutPlacesInput = {
   studio_reviews?: Prisma.studio_reviewsUpdateManyWithoutStudiosNestedInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUpdateManyWithoutStudiosNestedInput
   users?: Prisma.usersUpdateOneRequiredWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateWithoutPlacesInput = {
@@ -834,6 +938,7 @@ export type studiosUncheckedUpdateWithoutPlacesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studio_reviews?: Prisma.studio_reviewsUncheckedUpdateManyWithoutStudiosNestedInput
   rehearsal_rooms?: Prisma.rehearsal_roomsUncheckedUpdateManyWithoutStudiosNestedInput
+  studio_media?: Prisma.studio_mediaUncheckedUpdateManyWithoutStudiosNestedInput
 }
 
 export type studiosUncheckedUpdateManyWithoutPlacesInput = {
@@ -854,11 +959,13 @@ export type studiosUncheckedUpdateManyWithoutPlacesInput = {
 export type StudiosCountOutputType = {
   studio_reviews: number
   rehearsal_rooms: number
+  studio_media: number
 }
 
 export type StudiosCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   studio_reviews?: boolean | StudiosCountOutputTypeCountStudio_reviewsArgs
   rehearsal_rooms?: boolean | StudiosCountOutputTypeCountRehearsal_roomsArgs
+  studio_media?: boolean | StudiosCountOutputTypeCountStudio_mediaArgs
 }
 
 /**
@@ -885,6 +992,13 @@ export type StudiosCountOutputTypeCountRehearsal_roomsArgs<ExtArgs extends runti
   where?: Prisma.rehearsal_roomsWhereInput
 }
 
+/**
+ * StudiosCountOutputType without action
+ */
+export type StudiosCountOutputTypeCountStudio_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.studio_mediaWhereInput
+}
+
 
 export type studiosSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   studio_id?: boolean
@@ -899,6 +1013,7 @@ export type studiosSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   rehearsal_rooms?: boolean | Prisma.studios$rehearsal_roomsArgs<ExtArgs>
   users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   places?: boolean | Prisma.studios$placesArgs<ExtArgs>
+  studio_media?: boolean | Prisma.studios$studio_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.StudiosCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studios"]>
 
@@ -945,6 +1060,7 @@ export type studiosInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   rehearsal_rooms?: boolean | Prisma.studios$rehearsal_roomsArgs<ExtArgs>
   users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   places?: boolean | Prisma.studios$placesArgs<ExtArgs>
+  studio_media?: boolean | Prisma.studios$studio_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.StudiosCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type studiosIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -963,6 +1079,7 @@ export type $studiosPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     rehearsal_rooms: Prisma.$rehearsal_roomsPayload<ExtArgs>[]
     users: Prisma.$usersPayload<ExtArgs>
     places: Prisma.$placesPayload<ExtArgs> | null
+    studio_media: Prisma.$studio_mediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     studio_id: string
@@ -1371,6 +1488,7 @@ export interface Prisma__studiosClient<T, Null = never, ExtArgs extends runtime.
   rehearsal_rooms<T extends Prisma.studios$rehearsal_roomsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.studios$rehearsal_roomsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$rehearsal_roomsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   users<T extends Prisma.usersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.usersDefaultArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   places<T extends Prisma.studios$placesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.studios$placesArgs<ExtArgs>>): Prisma.Prisma__placesClient<runtime.Types.Result.GetResult<Prisma.$placesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  studio_media<T extends Prisma.studios$studio_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.studios$studio_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$studio_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1868,6 +1986,30 @@ export type studios$placesArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.placesInclude<ExtArgs> | null
   where?: Prisma.placesWhereInput
+}
+
+/**
+ * studios.studio_media
+ */
+export type studios$studio_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the studio_media
+   */
+  select?: Prisma.studio_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the studio_media
+   */
+  omit?: Prisma.studio_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.studio_mediaInclude<ExtArgs> | null
+  where?: Prisma.studio_mediaWhereInput
+  orderBy?: Prisma.studio_mediaOrderByWithRelationInput | Prisma.studio_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.studio_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Studio_mediaScalarFieldEnum | Prisma.Studio_mediaScalarFieldEnum[]
 }
 
 /**

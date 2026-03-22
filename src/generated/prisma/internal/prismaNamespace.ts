@@ -436,7 +436,11 @@ export const ModelName = {
   room_availability_rules: 'room_availability_rules',
   room_blocks: 'room_blocks',
   room_equipment: 'room_equipment',
-  studios: 'studios'
+  studios: 'studios',
+  room_media: 'room_media',
+  studio_media: 'studio_media',
+  band_media: 'band_media',
+  event_media: 'event_media'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -452,7 +456,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "email_verification_tokens" | "oauth_accounts" | "password_reset_tokens" | "sessions" | "user_roles" | "users" | "band_genres" | "band_invite" | "band_members" | "band_openings" | "bands" | "opening_applications" | "booking_status_history" | "bookings" | "receipts" | "conversation_members" | "conversations" | "message_reads" | "messages" | "event_attendees" | "event_band_attendance" | "event_invites" | "events" | "places" | "media" | "message_attachments" | "post_media" | "user_media" | "genres" | "instrument" | "musician_genre" | "musician_instrument" | "musician_profile" | "email_outbox" | "notifications" | "push_subscriptions" | "payment_webhooks" | "payments" | "refunds" | "spatial_ref_sys" | "reports" | "studio_reviews" | "user_reviews" | "blocks" | "follows" | "friend_requests" | "friendships" | "equipment" | "rehearsal_rooms" | "room_availability_rules" | "room_blocks" | "room_equipment" | "studios"
+    modelProps: "email_verification_tokens" | "oauth_accounts" | "password_reset_tokens" | "sessions" | "user_roles" | "users" | "band_genres" | "band_invite" | "band_members" | "band_openings" | "bands" | "opening_applications" | "booking_status_history" | "bookings" | "receipts" | "conversation_members" | "conversations" | "message_reads" | "messages" | "event_attendees" | "event_band_attendance" | "event_invites" | "events" | "places" | "media" | "message_attachments" | "post_media" | "user_media" | "genres" | "instrument" | "musician_genre" | "musician_instrument" | "musician_profile" | "email_outbox" | "notifications" | "push_subscriptions" | "payment_webhooks" | "payments" | "refunds" | "spatial_ref_sys" | "reports" | "studio_reviews" | "user_reviews" | "blocks" | "follows" | "friend_requests" | "friendships" | "equipment" | "rehearsal_rooms" | "room_availability_rules" | "room_blocks" | "room_equipment" | "studios" | "room_media" | "studio_media" | "band_media" | "event_media"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4378,6 +4382,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    room_media: {
+      payload: Prisma.$room_mediaPayload<ExtArgs>
+      fields: Prisma.room_mediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.room_mediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.room_mediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        findFirst: {
+          args: Prisma.room_mediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.room_mediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        findMany: {
+          args: Prisma.room_mediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>[]
+        }
+        create: {
+          args: Prisma.room_mediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        createMany: {
+          args: Prisma.room_mediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.room_mediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>[]
+        }
+        delete: {
+          args: Prisma.room_mediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        update: {
+          args: Prisma.room_mediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.room_mediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.room_mediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.room_mediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.room_mediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$room_mediaPayload>
+        }
+        aggregate: {
+          args: Prisma.Room_mediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRoom_media>
+        }
+        groupBy: {
+          args: Prisma.room_mediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Room_mediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.room_mediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Room_mediaCountAggregateOutputType> | number
+        }
+      }
+    }
+    studio_media: {
+      payload: Prisma.$studio_mediaPayload<ExtArgs>
+      fields: Prisma.studio_mediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.studio_mediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.studio_mediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        findFirst: {
+          args: Prisma.studio_mediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.studio_mediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        findMany: {
+          args: Prisma.studio_mediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>[]
+        }
+        create: {
+          args: Prisma.studio_mediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        createMany: {
+          args: Prisma.studio_mediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.studio_mediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>[]
+        }
+        delete: {
+          args: Prisma.studio_mediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        update: {
+          args: Prisma.studio_mediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.studio_mediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.studio_mediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.studio_mediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.studio_mediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$studio_mediaPayload>
+        }
+        aggregate: {
+          args: Prisma.Studio_mediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudio_media>
+        }
+        groupBy: {
+          args: Prisma.studio_mediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Studio_mediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.studio_mediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Studio_mediaCountAggregateOutputType> | number
+        }
+      }
+    }
+    band_media: {
+      payload: Prisma.$band_mediaPayload<ExtArgs>
+      fields: Prisma.band_mediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.band_mediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.band_mediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        findFirst: {
+          args: Prisma.band_mediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.band_mediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        findMany: {
+          args: Prisma.band_mediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>[]
+        }
+        create: {
+          args: Prisma.band_mediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        createMany: {
+          args: Prisma.band_mediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.band_mediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>[]
+        }
+        delete: {
+          args: Prisma.band_mediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        update: {
+          args: Prisma.band_mediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.band_mediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.band_mediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.band_mediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.band_mediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$band_mediaPayload>
+        }
+        aggregate: {
+          args: Prisma.Band_mediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBand_media>
+        }
+        groupBy: {
+          args: Prisma.band_mediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Band_mediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.band_mediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Band_mediaCountAggregateOutputType> | number
+        }
+      }
+    }
+    event_media: {
+      payload: Prisma.$event_mediaPayload<ExtArgs>
+      fields: Prisma.event_mediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.event_mediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.event_mediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        findFirst: {
+          args: Prisma.event_mediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.event_mediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        findMany: {
+          args: Prisma.event_mediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>[]
+        }
+        create: {
+          args: Prisma.event_mediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        createMany: {
+          args: Prisma.event_mediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.event_mediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>[]
+        }
+        delete: {
+          args: Prisma.event_mediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        update: {
+          args: Prisma.event_mediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.event_mediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.event_mediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.event_mediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.event_mediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$event_mediaPayload>
+        }
+        aggregate: {
+          args: Prisma.Event_mediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEvent_media>
+        }
+        groupBy: {
+          args: Prisma.event_mediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Event_mediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.event_mediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Event_mediaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4756,6 +5056,12 @@ export const MediaScalarFieldEnum = {
   height: 'height',
   duration_seconds: 'duration_seconds',
   size_bytes: 'size_bytes',
+  provider: 'provider',
+  storage_key: 'storage_key',
+  original_filename: 'original_filename',
+  uploaded_by: 'uploaded_by',
+  status: 'status',
+  checksum_sha256: 'checksum_sha256',
   created_at: 'created_at'
 } as const
 
@@ -5114,6 +5420,50 @@ export const StudiosScalarFieldEnum = {
 export type StudiosScalarFieldEnum = (typeof StudiosScalarFieldEnum)[keyof typeof StudiosScalarFieldEnum]
 
 
+export const Room_mediaScalarFieldEnum = {
+  room_id: 'room_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Room_mediaScalarFieldEnum = (typeof Room_mediaScalarFieldEnum)[keyof typeof Room_mediaScalarFieldEnum]
+
+
+export const Studio_mediaScalarFieldEnum = {
+  studio_id: 'studio_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Studio_mediaScalarFieldEnum = (typeof Studio_mediaScalarFieldEnum)[keyof typeof Studio_mediaScalarFieldEnum]
+
+
+export const Band_mediaScalarFieldEnum = {
+  band_id: 'band_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Band_mediaScalarFieldEnum = (typeof Band_mediaScalarFieldEnum)[keyof typeof Band_mediaScalarFieldEnum]
+
+
+export const Event_mediaScalarFieldEnum = {
+  event_id: 'event_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Event_mediaScalarFieldEnum = (typeof Event_mediaScalarFieldEnum)[keyof typeof Event_mediaScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5413,6 +5763,10 @@ export type GlobalOmitConfig = {
   room_blocks?: Prisma.room_blocksOmit
   room_equipment?: Prisma.room_equipmentOmit
   studios?: Prisma.studiosOmit
+  room_media?: Prisma.room_mediaOmit
+  studio_media?: Prisma.studio_mediaOmit
+  band_media?: Prisma.band_mediaOmit
+  event_media?: Prisma.event_mediaOmit
 }
 
 /* Types for Logging */

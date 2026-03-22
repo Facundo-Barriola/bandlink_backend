@@ -103,7 +103,11 @@ export const ModelName = {
   room_availability_rules: 'room_availability_rules',
   room_blocks: 'room_blocks',
   room_equipment: 'room_equipment',
-  studios: 'studios'
+  studios: 'studios',
+  room_media: 'room_media',
+  studio_media: 'studio_media',
+  band_media: 'band_media',
+  event_media: 'event_media'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -461,6 +465,12 @@ export const MediaScalarFieldEnum = {
   height: 'height',
   duration_seconds: 'duration_seconds',
   size_bytes: 'size_bytes',
+  provider: 'provider',
+  storage_key: 'storage_key',
+  original_filename: 'original_filename',
+  uploaded_by: 'uploaded_by',
+  status: 'status',
+  checksum_sha256: 'checksum_sha256',
   created_at: 'created_at'
 } as const
 
@@ -817,6 +827,50 @@ export const StudiosScalarFieldEnum = {
 } as const
 
 export type StudiosScalarFieldEnum = (typeof StudiosScalarFieldEnum)[keyof typeof StudiosScalarFieldEnum]
+
+
+export const Room_mediaScalarFieldEnum = {
+  room_id: 'room_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Room_mediaScalarFieldEnum = (typeof Room_mediaScalarFieldEnum)[keyof typeof Room_mediaScalarFieldEnum]
+
+
+export const Studio_mediaScalarFieldEnum = {
+  studio_id: 'studio_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Studio_mediaScalarFieldEnum = (typeof Studio_mediaScalarFieldEnum)[keyof typeof Studio_mediaScalarFieldEnum]
+
+
+export const Band_mediaScalarFieldEnum = {
+  band_id: 'band_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Band_mediaScalarFieldEnum = (typeof Band_mediaScalarFieldEnum)[keyof typeof Band_mediaScalarFieldEnum]
+
+
+export const Event_mediaScalarFieldEnum = {
+  event_id: 'event_id',
+  media_id: 'media_id',
+  kind: 'kind',
+  sort_order: 'sort_order',
+  created_at: 'created_at'
+} as const
+
+export type Event_mediaScalarFieldEnum = (typeof Event_mediaScalarFieldEnum)[keyof typeof Event_mediaScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -282,3 +282,23 @@ export type room_equipment = Prisma.room_equipmentModel
  * 
  */
 export type studios = Prisma.studiosModel
+/**
+ * Model room_media
+ * 
+ */
+export type room_media = Prisma.room_mediaModel
+/**
+ * Model studio_media
+ * 
+ */
+export type studio_media = Prisma.studio_mediaModel
+/**
+ * Model band_media
+ * 
+ */
+export type band_media = Prisma.band_mediaModel
+/**
+ * Model event_media
+ * 
+ */
+export type event_media = Prisma.event_mediaModel

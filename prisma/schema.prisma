@@ -1,10 +1,10 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
   moduleFormat           = "cjs"
   generatedFileExtension = "ts"
   importFileExtension    = "js"
-  previewFeatures = ["partialIndexes"]
+  previewFeatures        = ["partialIndexes"]
 }
 
 datasource db {
@@ -246,6 +246,7 @@ model bands {
   places                places?                 @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_bands_place_id")
   event_band_attendance event_band_attendance[]
   events                events[]
+  band_media            band_media[]
 
   @@index([owner_user_id], map: "ix_bands_owner_user_id")
   @@index([place_id], map: "ix_bands_place_id")
@@ -447,6 +448,7 @@ model events {
   bands                 bands?                  @relation(fields: [host_band_id], references: [band_id], onUpdate: NoAction, map: "fk_events_host_band_id")
   users                 users                   @relation(fields: [host_user_id], references: [user_id], onUpdate: NoAction, map: "fk_events_host_user_id")
   places                places?                 @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_events_place_id")
+  event_media           event_media[]
 
   @@index([host_band_id], map: "ix_events_host_band_id")
   @@index([host_user_id], map: "ix_events_host_user_id")
@@ -493,10 +495,20 @@ model media {
   height              Int?
   duration_seconds    Int?
   size_bytes          BigInt?
+  provider            String?
+  storage_key         String?
+  original_filename   String?
+  uploaded_by         String?               @db.Uuid
+  status              String? // PENDING | READY | FAILED
+  checksum_sha256     String?
   created_at          DateTime              @default(now()) @db.Timestamptz(6)
   message_attachments message_attachments[]
   post_media          post_media[]
   user_media          user_media[]
+  room_media          room_media[]
+  studio_media        studio_media[]
+  band_media          band_media[]
+  event_media         event_media[]
 
   @@schema("media")
 }
@@ -860,6 +872,7 @@ model rehearsal_rooms {
   room_availability_rules room_availability_rules[]
   room_blocks             room_blocks[]
   room_equipment          room_equipment[]
+  room_media              room_media[]
 
   @@index([studio_id], map: "ix_rehearsal_rooms_studio_id")
   @@schema("studios")
@@ -924,8 +937,73 @@ model studios {
   rehearsal_rooms rehearsal_rooms[]
   users           users             @relation(fields: [owner_user_id], references: [user_id], onUpdate: NoAction, map: "fk_studios_owner_user_id")
   places          places?           @relation(fields: [place_id], references: [place_id], onUpdate: NoAction, map: "fk_studios_place_id")
+  studio_media    studio_media[]
 
   @@index([owner_user_id], map: "ix_studios_owner_user_id")
   @@index([place_id], map: "ix_studios_place_id")
   @@schema("studios")
+}
+
+model room_media {
+  room_id    String   @db.Uuid
+  media_id   String   @db.Uuid
+  kind       String
+  sort_order Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  rehearsal_rooms rehearsal_rooms @relation(fields: [room_id], references: [room_id], onDelete: Cascade, onUpdate: NoAction)
+  media           media           @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([room_id, media_id, kind])
+  @@index([room_id])
+  @@index([media_id])
+  @@schema("media")
+}
+
+model studio_media {
+  studio_id  String   @db.Uuid
+  media_id   String   @db.Uuid
+  kind       String
+  sort_order Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  studios studios @relation(fields: [studio_id], references: [studio_id], onDelete: Cascade, onUpdate: NoAction)
+  media   media   @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([studio_id, media_id, kind])
+  @@index([studio_id])
+  @@index([media_id])
+  @@schema("media")
+}
+
+model band_media {
+  band_id    String   @db.Uuid
+  media_id   String   @db.Uuid
+  kind       String
+  sort_order Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  bands bands @relation(fields: [band_id], references: [band_id], onDelete: Cascade, onUpdate: NoAction)
+  media media @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([band_id, media_id, kind])
+  @@index([band_id])
+  @@index([media_id])
+  @@schema("media")
+}
+
+model event_media {
+  event_id   String   @db.Uuid
+  media_id   String   @db.Uuid
+  kind       String
+  sort_order Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  events events @relation(fields: [event_id], references: [event_id], onDelete: Cascade, onUpdate: NoAction)
+  media  media  @relation(fields: [media_id], references: [media_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([event_id, media_id, kind])
+  @@index([event_id])
+  @@index([media_id])
+  @@schema("media")
 }

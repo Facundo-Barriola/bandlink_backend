@@ -214,6 +214,7 @@ export type bandsWhereInput = {
   places?: Prisma.XOR<Prisma.PlacesNullableScalarRelationFilter, Prisma.placesWhereInput> | null
   event_band_attendance?: Prisma.Event_band_attendanceListRelationFilter
   events?: Prisma.EventsListRelationFilter
+  band_media?: Prisma.Band_mediaListRelationFilter
 }
 
 export type bandsOrderByWithRelationInput = {
@@ -233,6 +234,7 @@ export type bandsOrderByWithRelationInput = {
   places?: Prisma.placesOrderByWithRelationInput
   event_band_attendance?: Prisma.event_band_attendanceOrderByRelationAggregateInput
   events?: Prisma.eventsOrderByRelationAggregateInput
+  band_media?: Prisma.band_mediaOrderByRelationAggregateInput
 }
 
 export type bandsWhereUniqueInput = Prisma.AtLeast<{
@@ -255,6 +257,7 @@ export type bandsWhereUniqueInput = Prisma.AtLeast<{
   places?: Prisma.XOR<Prisma.PlacesNullableScalarRelationFilter, Prisma.placesWhereInput> | null
   event_band_attendance?: Prisma.Event_band_attendanceListRelationFilter
   events?: Prisma.EventsListRelationFilter
+  band_media?: Prisma.Band_mediaListRelationFilter
 }, "band_id">
 
 export type bandsOrderByWithAggregationInput = {
@@ -300,6 +303,7 @@ export type bandsCreateInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateInput = {
@@ -317,6 +321,7 @@ export type bandsUncheckedCreateInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUpdateInput = {
@@ -334,6 +339,7 @@ export type bandsUpdateInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateInput = {
@@ -351,6 +357,7 @@ export type bandsUncheckedUpdateInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateManyInput = {
@@ -607,6 +614,20 @@ export type bandsUncheckedUpdateManyWithoutPlacesNestedInput = {
   deleteMany?: Prisma.bandsScalarWhereInput | Prisma.bandsScalarWhereInput[]
 }
 
+export type bandsCreateNestedOneWithoutBand_mediaInput = {
+  create?: Prisma.XOR<Prisma.bandsCreateWithoutBand_mediaInput, Prisma.bandsUncheckedCreateWithoutBand_mediaInput>
+  connectOrCreate?: Prisma.bandsCreateOrConnectWithoutBand_mediaInput
+  connect?: Prisma.bandsWhereUniqueInput
+}
+
+export type bandsUpdateOneRequiredWithoutBand_mediaNestedInput = {
+  create?: Prisma.XOR<Prisma.bandsCreateWithoutBand_mediaInput, Prisma.bandsUncheckedCreateWithoutBand_mediaInput>
+  connectOrCreate?: Prisma.bandsCreateOrConnectWithoutBand_mediaInput
+  upsert?: Prisma.bandsUpsertWithoutBand_mediaInput
+  connect?: Prisma.bandsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.bandsUpdateToOneWithWhereWithoutBand_mediaInput, Prisma.bandsUpdateWithoutBand_mediaInput>, Prisma.bandsUncheckedUpdateWithoutBand_mediaInput>
+}
+
 export type bandsCreateWithoutUsersInput = {
   band_id?: string
   name: string
@@ -621,6 +642,7 @@ export type bandsCreateWithoutUsersInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutUsersInput = {
@@ -637,6 +659,7 @@ export type bandsUncheckedCreateWithoutUsersInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutUsersInput = {
@@ -693,6 +716,7 @@ export type bandsCreateWithoutBand_genresInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutBand_genresInput = {
@@ -709,6 +733,7 @@ export type bandsUncheckedCreateWithoutBand_genresInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutBand_genresInput = {
@@ -741,6 +766,7 @@ export type bandsUpdateWithoutBand_genresInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutBand_genresInput = {
@@ -757,6 +783,7 @@ export type bandsUncheckedUpdateWithoutBand_genresInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutBand_inviteInput = {
@@ -773,6 +800,7 @@ export type bandsCreateWithoutBand_inviteInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutBand_inviteInput = {
@@ -789,6 +817,7 @@ export type bandsUncheckedCreateWithoutBand_inviteInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutBand_inviteInput = {
@@ -821,6 +850,7 @@ export type bandsUpdateWithoutBand_inviteInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutBand_inviteInput = {
@@ -837,6 +867,7 @@ export type bandsUncheckedUpdateWithoutBand_inviteInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutBand_membersInput = {
@@ -853,6 +884,7 @@ export type bandsCreateWithoutBand_membersInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutBand_membersInput = {
@@ -869,6 +901,7 @@ export type bandsUncheckedCreateWithoutBand_membersInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutBand_membersInput = {
@@ -901,6 +934,7 @@ export type bandsUpdateWithoutBand_membersInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutBand_membersInput = {
@@ -917,6 +951,7 @@ export type bandsUncheckedUpdateWithoutBand_membersInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutBand_openingsInput = {
@@ -933,6 +968,7 @@ export type bandsCreateWithoutBand_openingsInput = {
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutBand_openingsInput = {
@@ -949,6 +985,7 @@ export type bandsUncheckedCreateWithoutBand_openingsInput = {
   band_members?: Prisma.band_membersUncheckedCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutBand_openingsInput = {
@@ -981,6 +1018,7 @@ export type bandsUpdateWithoutBand_openingsInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutBand_openingsInput = {
@@ -997,6 +1035,7 @@ export type bandsUncheckedUpdateWithoutBand_openingsInput = {
   band_members?: Prisma.band_membersUncheckedUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutEvent_band_attendanceInput = {
@@ -1013,6 +1052,7 @@ export type bandsCreateWithoutEvent_band_attendanceInput = {
   users: Prisma.usersCreateNestedOneWithoutBandsInput
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutEvent_band_attendanceInput = {
@@ -1029,6 +1069,7 @@ export type bandsUncheckedCreateWithoutEvent_band_attendanceInput = {
   band_members?: Prisma.band_membersUncheckedCreateNestedOneWithoutBandsInput
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutEvent_band_attendanceInput = {
@@ -1061,6 +1102,7 @@ export type bandsUpdateWithoutEvent_band_attendanceInput = {
   users?: Prisma.usersUpdateOneRequiredWithoutBandsNestedInput
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutEvent_band_attendanceInput = {
@@ -1077,6 +1119,7 @@ export type bandsUncheckedUpdateWithoutEvent_band_attendanceInput = {
   band_members?: Prisma.band_membersUncheckedUpdateOneWithoutBandsNestedInput
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutEventsInput = {
@@ -1093,6 +1136,7 @@ export type bandsCreateWithoutEventsInput = {
   users: Prisma.usersCreateNestedOneWithoutBandsInput
   places?: Prisma.placesCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutEventsInput = {
@@ -1109,6 +1153,7 @@ export type bandsUncheckedCreateWithoutEventsInput = {
   band_members?: Prisma.band_membersUncheckedCreateNestedOneWithoutBandsInput
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutEventsInput = {
@@ -1141,6 +1186,7 @@ export type bandsUpdateWithoutEventsInput = {
   users?: Prisma.usersUpdateOneRequiredWithoutBandsNestedInput
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutEventsInput = {
@@ -1157,6 +1203,7 @@ export type bandsUncheckedUpdateWithoutEventsInput = {
   band_members?: Prisma.band_membersUncheckedUpdateOneWithoutBandsNestedInput
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsCreateWithoutPlacesInput = {
@@ -1173,6 +1220,7 @@ export type bandsCreateWithoutPlacesInput = {
   users: Prisma.usersCreateNestedOneWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaCreateNestedManyWithoutBandsInput
 }
 
 export type bandsUncheckedCreateWithoutPlacesInput = {
@@ -1189,6 +1237,7 @@ export type bandsUncheckedCreateWithoutPlacesInput = {
   band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
   events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+  band_media?: Prisma.band_mediaUncheckedCreateNestedManyWithoutBandsInput
 }
 
 export type bandsCreateOrConnectWithoutPlacesInput = {
@@ -1217,6 +1266,90 @@ export type bandsUpdateManyWithWhereWithoutPlacesInput = {
   data: Prisma.XOR<Prisma.bandsUpdateManyMutationInput, Prisma.bandsUncheckedUpdateManyWithoutPlacesInput>
 }
 
+export type bandsCreateWithoutBand_mediaInput = {
+  band_id?: string
+  name: string
+  description?: string | null
+  is_active?: boolean | null
+  created_at?: Date | string
+  updated_at?: Date | string | null
+  band_genres?: Prisma.band_genresCreateNestedManyWithoutBandsInput
+  band_invite?: Prisma.band_inviteCreateNestedManyWithoutBandsInput
+  band_members?: Prisma.band_membersCreateNestedOneWithoutBandsInput
+  band_openings?: Prisma.band_openingsCreateNestedManyWithoutBandsInput
+  users: Prisma.usersCreateNestedOneWithoutBandsInput
+  places?: Prisma.placesCreateNestedOneWithoutBandsInput
+  event_band_attendance?: Prisma.event_band_attendanceCreateNestedManyWithoutBandsInput
+  events?: Prisma.eventsCreateNestedManyWithoutBandsInput
+}
+
+export type bandsUncheckedCreateWithoutBand_mediaInput = {
+  band_id?: string
+  owner_user_id: string
+  name: string
+  description?: string | null
+  place_id?: string | null
+  is_active?: boolean | null
+  created_at?: Date | string
+  updated_at?: Date | string | null
+  band_genres?: Prisma.band_genresUncheckedCreateNestedManyWithoutBandsInput
+  band_invite?: Prisma.band_inviteUncheckedCreateNestedManyWithoutBandsInput
+  band_members?: Prisma.band_membersUncheckedCreateNestedOneWithoutBandsInput
+  band_openings?: Prisma.band_openingsUncheckedCreateNestedManyWithoutBandsInput
+  event_band_attendance?: Prisma.event_band_attendanceUncheckedCreateNestedManyWithoutBandsInput
+  events?: Prisma.eventsUncheckedCreateNestedManyWithoutBandsInput
+}
+
+export type bandsCreateOrConnectWithoutBand_mediaInput = {
+  where: Prisma.bandsWhereUniqueInput
+  create: Prisma.XOR<Prisma.bandsCreateWithoutBand_mediaInput, Prisma.bandsUncheckedCreateWithoutBand_mediaInput>
+}
+
+export type bandsUpsertWithoutBand_mediaInput = {
+  update: Prisma.XOR<Prisma.bandsUpdateWithoutBand_mediaInput, Prisma.bandsUncheckedUpdateWithoutBand_mediaInput>
+  create: Prisma.XOR<Prisma.bandsCreateWithoutBand_mediaInput, Prisma.bandsUncheckedCreateWithoutBand_mediaInput>
+  where?: Prisma.bandsWhereInput
+}
+
+export type bandsUpdateToOneWithWhereWithoutBand_mediaInput = {
+  where?: Prisma.bandsWhereInput
+  data: Prisma.XOR<Prisma.bandsUpdateWithoutBand_mediaInput, Prisma.bandsUncheckedUpdateWithoutBand_mediaInput>
+}
+
+export type bandsUpdateWithoutBand_mediaInput = {
+  band_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  band_genres?: Prisma.band_genresUpdateManyWithoutBandsNestedInput
+  band_invite?: Prisma.band_inviteUpdateManyWithoutBandsNestedInput
+  band_members?: Prisma.band_membersUpdateOneWithoutBandsNestedInput
+  band_openings?: Prisma.band_openingsUpdateManyWithoutBandsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutBandsNestedInput
+  places?: Prisma.placesUpdateOneWithoutBandsNestedInput
+  event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
+  events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+}
+
+export type bandsUncheckedUpdateWithoutBand_mediaInput = {
+  band_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  place_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  band_genres?: Prisma.band_genresUncheckedUpdateManyWithoutBandsNestedInput
+  band_invite?: Prisma.band_inviteUncheckedUpdateManyWithoutBandsNestedInput
+  band_members?: Prisma.band_membersUncheckedUpdateOneWithoutBandsNestedInput
+  band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
+  event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
+  events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+}
+
 export type bandsCreateManyUsersInput = {
   band_id?: string
   name: string
@@ -1241,6 +1374,7 @@ export type bandsUpdateWithoutUsersInput = {
   places?: Prisma.placesUpdateOneWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutUsersInput = {
@@ -1257,6 +1391,7 @@ export type bandsUncheckedUpdateWithoutUsersInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateManyWithoutUsersInput = {
@@ -1293,6 +1428,7 @@ export type bandsUpdateWithoutPlacesInput = {
   users?: Prisma.usersUpdateOneRequiredWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateWithoutPlacesInput = {
@@ -1309,6 +1445,7 @@ export type bandsUncheckedUpdateWithoutPlacesInput = {
   band_openings?: Prisma.band_openingsUncheckedUpdateManyWithoutBandsNestedInput
   event_band_attendance?: Prisma.event_band_attendanceUncheckedUpdateManyWithoutBandsNestedInput
   events?: Prisma.eventsUncheckedUpdateManyWithoutBandsNestedInput
+  band_media?: Prisma.band_mediaUncheckedUpdateManyWithoutBandsNestedInput
 }
 
 export type bandsUncheckedUpdateManyWithoutPlacesInput = {
@@ -1332,6 +1469,7 @@ export type BandsCountOutputType = {
   band_openings: number
   event_band_attendance: number
   events: number
+  band_media: number
 }
 
 export type BandsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1340,6 +1478,7 @@ export type BandsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   band_openings?: boolean | BandsCountOutputTypeCountBand_openingsArgs
   event_band_attendance?: boolean | BandsCountOutputTypeCountEvent_band_attendanceArgs
   events?: boolean | BandsCountOutputTypeCountEventsArgs
+  band_media?: boolean | BandsCountOutputTypeCountBand_mediaArgs
 }
 
 /**
@@ -1387,6 +1526,13 @@ export type BandsCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.eventsWhereInput
 }
 
+/**
+ * BandsCountOutputType without action
+ */
+export type BandsCountOutputTypeCountBand_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.band_mediaWhereInput
+}
+
 
 export type bandsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   band_id?: boolean
@@ -1405,6 +1551,7 @@ export type bandsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   places?: boolean | Prisma.bands$placesArgs<ExtArgs>
   event_band_attendance?: boolean | Prisma.bands$event_band_attendanceArgs<ExtArgs>
   events?: boolean | Prisma.bands$eventsArgs<ExtArgs>
+  band_media?: boolean | Prisma.bands$band_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.BandsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bands"]>
 
@@ -1455,6 +1602,7 @@ export type bandsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   places?: boolean | Prisma.bands$placesArgs<ExtArgs>
   event_band_attendance?: boolean | Prisma.bands$event_band_attendanceArgs<ExtArgs>
   events?: boolean | Prisma.bands$eventsArgs<ExtArgs>
+  band_media?: boolean | Prisma.bands$band_mediaArgs<ExtArgs>
   _count?: boolean | Prisma.BandsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type bandsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1477,6 +1625,7 @@ export type $bandsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     places: Prisma.$placesPayload<ExtArgs> | null
     event_band_attendance: Prisma.$event_band_attendancePayload<ExtArgs>[]
     events: Prisma.$eventsPayload<ExtArgs>[]
+    band_media: Prisma.$band_mediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     band_id: string
@@ -1889,6 +2038,7 @@ export interface Prisma__bandsClient<T, Null = never, ExtArgs extends runtime.Ty
   places<T extends Prisma.bands$placesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.bands$placesArgs<ExtArgs>>): Prisma.Prisma__placesClient<runtime.Types.Result.GetResult<Prisma.$placesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   event_band_attendance<T extends Prisma.bands$event_band_attendanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.bands$event_band_attendanceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$event_band_attendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   events<T extends Prisma.bands$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.bands$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$eventsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  band_media<T extends Prisma.bands$band_mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.bands$band_mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$band_mediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2477,6 +2627,30 @@ export type bands$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.EventsScalarFieldEnum | Prisma.EventsScalarFieldEnum[]
+}
+
+/**
+ * bands.band_media
+ */
+export type bands$band_mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the band_media
+   */
+  select?: Prisma.band_mediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the band_media
+   */
+  omit?: Prisma.band_mediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.band_mediaInclude<ExtArgs> | null
+  where?: Prisma.band_mediaWhereInput
+  orderBy?: Prisma.band_mediaOrderByWithRelationInput | Prisma.band_mediaOrderByWithRelationInput[]
+  cursor?: Prisma.band_mediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Band_mediaScalarFieldEnum | Prisma.Band_mediaScalarFieldEnum[]
 }
 
 /**
