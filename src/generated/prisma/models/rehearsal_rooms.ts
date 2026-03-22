@@ -46,6 +46,7 @@ export type Rehearsal_roomsMinAggregateOutputType = {
   capacity: number | null
   base_hourly_price: runtime.Decimal | null
   min_booking_minutes: number | null
+  is_active: boolean | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -58,6 +59,7 @@ export type Rehearsal_roomsMaxAggregateOutputType = {
   capacity: number | null
   base_hourly_price: runtime.Decimal | null
   min_booking_minutes: number | null
+  is_active: boolean | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -70,6 +72,7 @@ export type Rehearsal_roomsCountAggregateOutputType = {
   capacity: number
   base_hourly_price: number
   min_booking_minutes: number
+  is_active: number
   created_at: number
   updated_at: number
   _all: number
@@ -96,6 +99,7 @@ export type Rehearsal_roomsMinAggregateInputType = {
   capacity?: true
   base_hourly_price?: true
   min_booking_minutes?: true
+  is_active?: true
   created_at?: true
   updated_at?: true
 }
@@ -108,6 +112,7 @@ export type Rehearsal_roomsMaxAggregateInputType = {
   capacity?: true
   base_hourly_price?: true
   min_booking_minutes?: true
+  is_active?: true
   created_at?: true
   updated_at?: true
 }
@@ -120,6 +125,7 @@ export type Rehearsal_roomsCountAggregateInputType = {
   capacity?: true
   base_hourly_price?: true
   min_booking_minutes?: true
+  is_active?: true
   created_at?: true
   updated_at?: true
   _all?: true
@@ -219,6 +225,7 @@ export type Rehearsal_roomsGroupByOutputType = {
   capacity: number | null
   base_hourly_price: runtime.Decimal | null
   min_booking_minutes: number | null
+  is_active: boolean | null
   created_at: Date
   updated_at: Date | null
   _count: Rehearsal_roomsCountAggregateOutputType | null
@@ -254,6 +261,7 @@ export type rehearsal_roomsWhereInput = {
   capacity?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
   base_hourly_price?: Prisma.DecimalNullableFilter<"rehearsal_rooms"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
+  is_active?: Prisma.BoolNullableFilter<"rehearsal_rooms"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"rehearsal_rooms"> | Date | string
   updated_at?: Prisma.DateTimeNullableFilter<"rehearsal_rooms"> | Date | string | null
   bookings?: Prisma.BookingsListRelationFilter
@@ -272,6 +280,7 @@ export type rehearsal_roomsOrderByWithRelationInput = {
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   base_hourly_price?: Prisma.SortOrderInput | Prisma.SortOrder
   min_booking_minutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   bookings?: Prisma.bookingsOrderByRelationAggregateInput
@@ -293,6 +302,7 @@ export type rehearsal_roomsWhereUniqueInput = Prisma.AtLeast<{
   capacity?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
   base_hourly_price?: Prisma.DecimalNullableFilter<"rehearsal_rooms"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
+  is_active?: Prisma.BoolNullableFilter<"rehearsal_rooms"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"rehearsal_rooms"> | Date | string
   updated_at?: Prisma.DateTimeNullableFilter<"rehearsal_rooms"> | Date | string | null
   bookings?: Prisma.BookingsListRelationFilter
@@ -311,6 +321,7 @@ export type rehearsal_roomsOrderByWithAggregationInput = {
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   base_hourly_price?: Prisma.SortOrderInput | Prisma.SortOrder
   min_booking_minutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.rehearsal_roomsCountOrderByAggregateInput
@@ -331,6 +342,7 @@ export type rehearsal_roomsScalarWhereWithAggregatesInput = {
   capacity?: Prisma.IntNullableWithAggregatesFilter<"rehearsal_rooms"> | number | null
   base_hourly_price?: Prisma.DecimalNullableWithAggregatesFilter<"rehearsal_rooms"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.IntNullableWithAggregatesFilter<"rehearsal_rooms"> | number | null
+  is_active?: Prisma.BoolNullableWithAggregatesFilter<"rehearsal_rooms"> | boolean | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"rehearsal_rooms"> | Date | string
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"rehearsal_rooms"> | Date | string | null
 }
@@ -342,6 +354,7 @@ export type rehearsal_roomsCreateInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -360,6 +373,7 @@ export type rehearsal_roomsUncheckedCreateInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -376,6 +390,7 @@ export type rehearsal_roomsUpdateInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -394,6 +409,7 @@ export type rehearsal_roomsUncheckedUpdateInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -411,6 +427,7 @@ export type rehearsal_roomsCreateManyInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
 }
@@ -422,6 +439,7 @@ export type rehearsal_roomsUpdateManyMutationInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -434,6 +452,7 @@ export type rehearsal_roomsUncheckedUpdateManyInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -451,6 +470,7 @@ export type rehearsal_roomsCountOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
   base_hourly_price?: Prisma.SortOrder
   min_booking_minutes?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -469,6 +489,7 @@ export type rehearsal_roomsMaxOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
   base_hourly_price?: Prisma.SortOrder
   min_booking_minutes?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -481,6 +502,7 @@ export type rehearsal_roomsMinOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
   base_hourly_price?: Prisma.SortOrder
   min_booking_minutes?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -620,6 +642,7 @@ export type rehearsal_roomsCreateWithoutBookingsInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   studios: Prisma.studiosCreateNestedOneWithoutRehearsal_roomsInput
@@ -637,6 +660,7 @@ export type rehearsal_roomsUncheckedCreateWithoutBookingsInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   room_availability_rules?: Prisma.room_availability_rulesUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -668,6 +692,7 @@ export type rehearsal_roomsUpdateWithoutBookingsInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   studios?: Prisma.studiosUpdateOneRequiredWithoutRehearsal_roomsNestedInput
@@ -685,6 +710,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutBookingsInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   room_availability_rules?: Prisma.room_availability_rulesUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -700,6 +726,7 @@ export type rehearsal_roomsCreateWithoutRoom_availability_rulesInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -717,6 +744,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_availability_rulesInput = 
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -748,6 +776,7 @@ export type rehearsal_roomsUpdateWithoutRoom_availability_rulesInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -765,6 +794,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_availability_rulesInput = 
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -780,6 +810,7 @@ export type rehearsal_roomsCreateWithoutRoom_blocksInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -797,6 +828,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_blocksInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -828,6 +860,7 @@ export type rehearsal_roomsUpdateWithoutRoom_blocksInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -845,6 +878,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_blocksInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -860,6 +894,7 @@ export type rehearsal_roomsCreateWithoutRoom_equipmentInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -877,6 +912,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_equipmentInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -908,6 +944,7 @@ export type rehearsal_roomsUpdateWithoutRoom_equipmentInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -925,6 +962,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_equipmentInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -940,6 +978,7 @@ export type rehearsal_roomsCreateWithoutStudiosInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -956,6 +995,7 @@ export type rehearsal_roomsUncheckedCreateWithoutStudiosInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -1002,6 +1042,7 @@ export type rehearsal_roomsScalarWhereInput = {
   capacity?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
   base_hourly_price?: Prisma.DecimalNullableFilter<"rehearsal_rooms"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.IntNullableFilter<"rehearsal_rooms"> | number | null
+  is_active?: Prisma.BoolNullableFilter<"rehearsal_rooms"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"rehearsal_rooms"> | Date | string
   updated_at?: Prisma.DateTimeNullableFilter<"rehearsal_rooms"> | Date | string | null
 }
@@ -1013,6 +1054,7 @@ export type rehearsal_roomsCreateWithoutRoom_mediaInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsCreateNestedManyWithoutRehearsal_roomsInput
@@ -1030,6 +1072,7 @@ export type rehearsal_roomsUncheckedCreateWithoutRoom_mediaInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
   bookings?: Prisma.bookingsUncheckedCreateNestedManyWithoutRehearsal_roomsInput
@@ -1061,6 +1104,7 @@ export type rehearsal_roomsUpdateWithoutRoom_mediaInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -1078,6 +1122,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutRoom_mediaInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -1093,6 +1138,7 @@ export type rehearsal_roomsCreateManyStudiosInput = {
   capacity?: number | null
   base_hourly_price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: number | null
+  is_active?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string | null
 }
@@ -1104,6 +1150,7 @@ export type rehearsal_roomsUpdateWithoutStudiosInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUpdateManyWithoutRehearsal_roomsNestedInput
@@ -1120,6 +1167,7 @@ export type rehearsal_roomsUncheckedUpdateWithoutStudiosInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bookings?: Prisma.bookingsUncheckedUpdateManyWithoutRehearsal_roomsNestedInput
@@ -1136,6 +1184,7 @@ export type rehearsal_roomsUncheckedUpdateManyWithoutStudiosInput = {
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   base_hourly_price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_booking_minutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1215,6 +1264,7 @@ export type rehearsal_roomsSelect<ExtArgs extends runtime.Types.Extensions.Inter
   capacity?: boolean
   base_hourly_price?: boolean
   min_booking_minutes?: boolean
+  is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
   bookings?: boolean | Prisma.rehearsal_rooms$bookingsArgs<ExtArgs>
@@ -1234,6 +1284,7 @@ export type rehearsal_roomsSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   capacity?: boolean
   base_hourly_price?: boolean
   min_booking_minutes?: boolean
+  is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
   studios?: boolean | Prisma.studiosDefaultArgs<ExtArgs>
@@ -1247,6 +1298,7 @@ export type rehearsal_roomsSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   capacity?: boolean
   base_hourly_price?: boolean
   min_booking_minutes?: boolean
+  is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
   studios?: boolean | Prisma.studiosDefaultArgs<ExtArgs>
@@ -1260,11 +1312,12 @@ export type rehearsal_roomsSelectScalar = {
   capacity?: boolean
   base_hourly_price?: boolean
   min_booking_minutes?: boolean
+  is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type rehearsal_roomsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"room_id" | "studio_id" | "name" | "description" | "capacity" | "base_hourly_price" | "min_booking_minutes" | "created_at" | "updated_at", ExtArgs["result"]["rehearsal_rooms"]>
+export type rehearsal_roomsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"room_id" | "studio_id" | "name" | "description" | "capacity" | "base_hourly_price" | "min_booking_minutes" | "is_active" | "created_at" | "updated_at", ExtArgs["result"]["rehearsal_rooms"]>
 export type rehearsal_roomsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.rehearsal_rooms$bookingsArgs<ExtArgs>
   studios?: boolean | Prisma.studiosDefaultArgs<ExtArgs>
@@ -1299,6 +1352,7 @@ export type $rehearsal_roomsPayload<ExtArgs extends runtime.Types.Extensions.Int
     capacity: number | null
     base_hourly_price: runtime.Decimal | null
     min_booking_minutes: number | null
+    is_active: boolean | null
     created_at: Date
     updated_at: Date | null
   }, ExtArgs["result"]["rehearsal_rooms"]>
@@ -1737,6 +1791,7 @@ export interface rehearsal_roomsFieldRefs {
   readonly capacity: Prisma.FieldRef<"rehearsal_rooms", 'Int'>
   readonly base_hourly_price: Prisma.FieldRef<"rehearsal_rooms", 'Decimal'>
   readonly min_booking_minutes: Prisma.FieldRef<"rehearsal_rooms", 'Int'>
+  readonly is_active: Prisma.FieldRef<"rehearsal_rooms", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"rehearsal_rooms", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"rehearsal_rooms", 'DateTime'>
 }

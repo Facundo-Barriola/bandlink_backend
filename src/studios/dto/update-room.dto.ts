@@ -1,4 +1,4 @@
-import { IsInt, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { IsBoolean, IsInt, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
 export class UpdateRoomDTO {
   @IsOptional()
@@ -25,4 +25,7 @@ export class UpdateRoomDTO {
   @IsInt()
   @Min(15)
   min_booking_minutes?: number;
+
+  @IsBoolean()
+  is_active?: boolean;
 }

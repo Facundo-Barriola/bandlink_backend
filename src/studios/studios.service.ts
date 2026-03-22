@@ -1,8 +1,9 @@
-import { Injectable, ConflictException, InternalServerErrorException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, ConflictException, InternalServerErrorException, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { CreateStudioDTO } from './dto/create-studio.dto';
 import { UpdateStudioDTO } from './dto/update-studio.dto';
 import { UpdateRoomDTO } from './dto/update-room.dto';
 import { CreateRoomDTO } from './dto/create-room.dto';
+import { SearchStudiosDTO } from './dto/search-studio.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '../generated/prisma/client';
 
@@ -14,30 +15,53 @@ export class StudiosService {
     async createStudio(userId: string, dto: CreateStudioDTO) {
         try {
             const result = await this.prisma.$transaction(async (tx) => {
+                //await this.ensurePlaceExists(tx, dto.place_id);
+
                 const studio = await tx.studios.create({
                     data: {
                         name: dto.name,
-                        place_id: dto.place_id,
+                        description: dto.description ?? null,
+                        phone: dto.phone ?? null,
+                        place_id: dto.place_id ?? null,
                         owner_user_id: userId,
-                    }
+                    },
+                    select: {
+                        studio_id: true,
+                        owner_user_id: true,
+                        name: true,
+                        description: true,
+                        phone: true,
+                        place_id: true,
+                        is_active: true,
+                        created_at: true,
+                    },
                 });
 
-                await tx.user_roles.create({
-                    data: {
-                        user_id: userId,
-                        role: 'studio_owner'
-                    }
-                });
+                await this.ensureStudioOwnerRole(tx, userId);
+
                 return studio;
             });
 
-
+            return result;
         } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-                throw new ConflictException('Ya existe un perfil de estudio para este usuario');
+            if (
+                error instanceof BadRequestException ||
+                error instanceof ConflictException
+            ) {
+                throw error;
             }
-            console.error('ERROR REGISTER USER =>', error);
-            throw new InternalServerErrorException('Error en la creación del perfil de estudio');
+
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2002'
+            ) {
+                throw new ConflictException('Conflicto al crear el estudio');
+            }
+
+            console.error('ERROR CREATE STUDIO =>', error);
+            throw new InternalServerErrorException(
+                'Error en la creación del perfil de estudio',
+            );
         }
     }
 
@@ -87,7 +111,6 @@ export class StudiosService {
                 phone: true,
                 is_active: true,
                 created_at: true,
-
                 users: {
                     select: {
                         user_id: true,
@@ -95,7 +118,6 @@ export class StudiosService {
                         display_name: true,
                     },
                 },
-
                 places: {
                     select: {
                         place_id: true,
@@ -110,11 +132,7 @@ export class StudiosService {
                         lng: true,
                     },
                 },
-
                 rehearsal_rooms: {
-                    where: {
-                        studio_id: studioId,
-                    },
                     select: {
                         room_id: true,
                         name: true,
@@ -127,7 +145,6 @@ export class StudiosService {
                         name: 'asc',
                     },
                 },
-
                 _count: {
                     select: {
                         rehearsal_rooms: true,
@@ -143,53 +160,40 @@ export class StudiosService {
 
         return studio;
     }
-
     async updateStudio(userId: string, studioId: string, dto: UpdateStudioDTO) {
         try {
-            const existingStudio = await this.prisma.studios.findUnique({
-                where: {
-                    studio_id: studioId,
-                },
-                select: {
-                    studio_id: true,
-                    owner_user_id: true,
-                },
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedStudioOrThrow(tx, userId, studioId);
+                //await this.ensurePlaceExists(tx, dto.place_id);
+
+                return tx.studios.update({
+                    where: {
+                        studio_id: studioId,
+                    },
+                    data: {
+                        ...(dto.name !== undefined && { name: dto.name }),
+                        ...(dto.description !== undefined && {
+                            description: dto.description,
+                        }),
+                        ...(dto.phone !== undefined && { phone: dto.phone }),
+                        ...(dto.place_id !== undefined && { place_id: dto.place_id }),
+                        ...(dto.is_active !== undefined && { is_active: dto.is_active }),
+                    },
+                    select: {
+                        studio_id: true,
+                        name: true,
+                        description: true,
+                        phone: true,
+                        is_active: true,
+                        place_id: true,
+                    },
+                });
             });
-
-            if (!existingStudio) {
-                throw new NotFoundException('Estudio no encontrado');
-            }
-
-            if (existingStudio.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para actualizar este estudio');
-            }
-
-            const updatedStudio = await this.prisma.studios.update({
-                where: {
-                    studio_id: studioId,
-                },
-                data: {
-                    ...(dto.name !== undefined && { name: dto.name }),
-                    ...(dto.description !== undefined && { description: dto.description }),
-                    ...(dto.phone !== undefined && { phone: dto.phone }),
-                    ...(dto.place_id !== undefined && { place_id: dto.place_id }),
-                    ...(dto.is_active !== undefined && { is_active: dto.is_active }),
-                },
-                select: {
-                    studio_id: true,
-                    name: true,
-                    description: true,
-                    phone: true,
-                    is_active: true,
-                    place_id: true,
-                },
-            });
-
-            return updatedStudio;
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
-                error instanceof ForbiddenException
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException
             ) {
                 throw error;
             }
@@ -207,46 +211,28 @@ export class StudiosService {
             );
         }
     }
-
     async setStudioActive(userId: string, studioId: string, isActive: boolean) {
         try {
-            const existingStudio = await this.prisma.studios.findUnique({
-                where: {
-                    studio_id: studioId,
-                },
-                select: {
-                    studio_id: true,
-                    owner_user_id: true,
-                },
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedStudioOrThrow(tx, userId, studioId);
+
+                return tx.studios.update({
+                    where: {
+                        studio_id: studioId,
+                    },
+                    data: {
+                        is_active: isActive,
+                    },
+                    select: {
+                        studio_id: true,
+                        name: true,
+                        description: true,
+                        phone: true,
+                        is_active: true,
+                        place_id: true,
+                    },
+                });
             });
-
-            if (!existingStudio) {
-                throw new NotFoundException('Estudio no encontrado');
-            }
-
-            if (existingStudio.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para actualizar este estudio');
-            }
-
-            const updatedStudio = await this.prisma.studios.update({
-                where: {
-                    studio_id: studioId,
-                },
-                data: {
-                    is_active: isActive,
-                },
-                select: {
-                    studio_id: true,
-                    name: true,
-                    description: true,
-                    phone: true,
-                    is_active: true,
-                    place_id: true,
-                },
-            });
-
-            return updatedStudio;
-
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
@@ -254,106 +240,128 @@ export class StudiosService {
             ) {
                 throw error;
             }
-        }
 
+            console.error('ERROR SET STUDIO ACTIVE =>', error);
+            throw new InternalServerErrorException(
+                'Error al actualizar el estado del estudio',
+            );
+        }
     }
     async deleteStudio(userId: string, studioId: string) {
         try {
-            const studio = await this.prisma.studios.findUnique({
-                where: {
-                    studio_id: studioId,
-                },
-                select: {
-                    studio_id: true,
-                    owner_user_id: true,
-                    _count: {
-                        select: {
-                            rehearsal_rooms: true,
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedStudioOrThrow(tx, userId, studioId);
+
+                const activeBookings = await tx.bookings.findFirst({
+                    where: {
+                        rehearsal_rooms: {
+                            studio_id: studioId,
+                        },
+                        status: {
+                            in: ['PENDING', 'CONFIRMED'],
                         },
                     },
-                },
+                    select: {
+                        booking_id: true,
+                    },
+                });
+
+                if (activeBookings) {
+                    throw new BadRequestException(
+                        'No puedes desactivar el estudio porque tiene reservas activas',
+                    );
+                }
+
+                await tx.rehearsal_rooms.updateMany({
+                    where: {
+                        studio_id: studioId,
+                    },
+                    data: {
+                        is_active: false,
+                    },
+                });
+
+                const studio = await tx.studios.update({
+                    where: {
+                        studio_id: studioId,
+                    },
+                    data: {
+                        is_active: false,
+                    },
+                    select: {
+                        studio_id: true,
+                        is_active: true,
+                    },
+                });
+
+                const otherStudios = await tx.studios.count({
+                    where: {
+                        owner_user_id: userId,
+                        is_active: true,
+                        NOT: {
+                            studio_id: studioId,
+                        },
+                    },
+                });
+
+                if (otherStudios === 0) {
+                    await tx.user_roles.deleteMany({
+                        where: {
+                            user_id: userId,
+                            role: 'STUDIO_OWNER',
+                        },
+                    });
+                }
+
+                return {
+                    message: 'Estudio desactivado correctamente',
+                    studio,
+                };
             });
-
-            if (!studio) {
-                throw new NotFoundException('Estudio no encontrado');
-            }
-
-            if (studio.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para eliminar este estudio');
-            }
-
-            if (studio._count.rehearsal_rooms > 0) {
-                throw new ConflictException('No puedes eliminar un estudio que aún tiene salas');
-            }
-
-            const deletedStudio = await this.prisma.studios.delete({
-                where: {
-                    studio_id: studioId,
-                },
-                select: {
-                    studio_id: true,
-                    name: true,
-                },
-            });
-
-            return deletedStudio;
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
                 error instanceof ForbiddenException ||
-                error instanceof ConflictException
+                error instanceof BadRequestException
             ) {
                 throw error;
             }
 
             console.error('ERROR DELETE STUDIO =>', error);
-            throw new InternalServerErrorException('Error al eliminar el estudio');
+            throw new InternalServerErrorException(
+                'Error al desactivar el estudio',
+            );
         }
     }
 
     async createRoom(userId: string, studioId: string, dto: CreateRoomDTO) {
         try {
-            const studio = await this.prisma.studios.findUnique({
-                where: {
-                    studio_id: studioId,
-                },
-                select: {
-                    studio_id: true,
-                    owner_user_id: true,
-                },
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedStudioOrThrow(tx, userId, studioId);
+
+                return tx.rehearsal_rooms.create({
+                    data: {
+                        studio_id: studioId,
+                        name: dto.name,
+                        description: dto.description ?? null,
+                        capacity: dto.capacity ?? null,
+                        base_hourly_price: dto.base_hourly_price ?? null,
+                        min_booking_minutes: dto.min_booking_minutes ?? null,
+                        is_active: dto.is_active ?? null,
+                    },
+                    select: {
+                        room_id: true,
+                        studio_id: true,
+                        name: true,
+                        description: true,
+                        capacity: true,
+                        base_hourly_price: true,
+                        min_booking_minutes: true,
+                        is_active: true,
+                        created_at: true,
+                    },
+                });
             });
-
-            if (!studio) {
-                throw new NotFoundException('Estudio no encontrado');
-            }
-
-            if (studio.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para crear salas en este estudio');
-            }
-
-            const room = await this.prisma.rehearsal_rooms.create({
-                data: {
-                    studio_id: studioId,
-                    name: dto.name,
-                    ...(dto.description !== undefined && { description: dto.description }),
-                    ...(dto.capacity !== undefined && { capacity: dto.capacity }),
-                    ...(dto.base_hourly_price !== undefined && { base_hourly_price: dto.base_hourly_price }),
-                    ...(dto.min_booking_minutes !== undefined && { min_booking_minutes: dto.min_booking_minutes }),
-                },
-                select: {
-                    room_id: true,
-                    studio_id: true,
-                    name: true,
-                    description: true,
-                    capacity: true,
-                    base_hourly_price: true,
-                    min_booking_minutes: true,
-                    created_at: true,
-                    updated_at: true,
-                },
-            });
-
-            return room;
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
@@ -366,7 +374,7 @@ export class StudiosService {
                 error instanceof Prisma.PrismaClientKnownRequestError &&
                 error.code === 'P2002'
             ) {
-                throw new ConflictException('Ya existe una sala con esos datos en este estudio');
+                throw new ConflictException('Conflicto al crear la sala');
             }
 
             console.error('ERROR CREATE ROOM =>', error);
@@ -374,138 +382,117 @@ export class StudiosService {
         }
     }
 
-    async updateRoom(userId: string, studioId: string, roomId: string, dto: UpdateRoomDTO) {
+    async updateRoom(
+        userId: string,
+        studioId: string,
+        roomId: string,
+        dto: UpdateRoomDTO,
+    ) {
         try {
-            const room = await this.prisma.rehearsal_rooms.findUnique({
-                where: {
-                    room_id: roomId,
-                },
-                select: {
-                    room_id: true,
-                    studio_id: true,
-                    studios: {
-                        select: {
-                            owner_user_id: true,
-                        },
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+
+                return tx.rehearsal_rooms.update({
+                    where: {
+                        room_id: roomId,
                     },
-                },
+                    data: {
+                        ...(dto.name !== undefined && { name: dto.name }),
+                        ...(dto.description !== undefined && {
+                            description: dto.description,
+                        }),
+                        ...(dto.capacity !== undefined && { capacity: dto.capacity }),
+                        ...(dto.base_hourly_price !== undefined && {
+                            base_hourly_price: dto.base_hourly_price,
+                        }),
+                        ...(dto.min_booking_minutes !== undefined && {
+                            min_booking_minutes: dto.min_booking_minutes,
+                        }),
+                        ...(dto.is_active !== undefined && { is_active: dto.is_active }),
+                    },
+                    select: {
+                        room_id: true,
+                        studio_id: true,
+                        name: true,
+                        description: true,
+                        capacity: true,
+                        base_hourly_price: true,
+                        min_booking_minutes: true,
+                        is_active: true,
+                    },
+                });
             });
-
-            if (!room) {
-                throw new NotFoundException('Sala no encontrada');
-            }
-
-            if (room.studio_id !== studioId) {
-                throw new NotFoundException('La sala no pertenece al estudio indicado');
-            }
-
-            if (room.studios.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para actualizar esta sala');
-            }
-
-            const updatedRoom = await this.prisma.rehearsal_rooms.update({
-                where: {
-                    room_id: roomId,
-                },
-                data: {
-                    ...(dto.name !== undefined && { name: dto.name }),
-                    ...(dto.description !== undefined && { description: dto.description }),
-                    ...(dto.capacity !== undefined && { capacity: dto.capacity }),
-                    ...(dto.base_hourly_price !== undefined && { base_hourly_price: dto.base_hourly_price }),
-                    ...(dto.min_booking_minutes !== undefined && { min_booking_minutes: dto.min_booking_minutes }),
-                },
-                select: {
-                    room_id: true,
-                    studio_id: true,
-                    name: true,
-                    description: true,
-                    capacity: true,
-                    base_hourly_price: true,
-                    min_booking_minutes: true,
-                    created_at: true,
-                    updated_at: true,
-                },
-            });
-
-            return updatedRoom;
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
-                error instanceof ForbiddenException
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException
             ) {
                 throw error;
             }
 
-            if (
-                error instanceof Prisma.PrismaClientKnownRequestError &&
-                error.code === 'P2002'
-            ) {
-                throw new ConflictException('Conflicto al actualizar la sala');
-            }
-
             console.error('ERROR UPDATE ROOM =>', error);
-            throw new InternalServerErrorException('Error al actualizar la sala');
+            throw new InternalServerErrorException(
+                'Error en la actualización de la sala',
+            );
         }
     }
 
     async deleteRoom(userId: string, studioId: string, roomId: string) {
         try {
-            const room = await this.prisma.rehearsal_rooms.findUnique({
-                where: {
-                    room_id: roomId,
-                },
-                select: {
-                    room_id: true,
-                    studio_id: true,
-                    studios: {
-                        select: {
-                            owner_user_id: true,
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+
+                const activeBookings = await tx.bookings.findFirst({
+                    where: {
+                        room_id: roomId,
+                        status: {
+                            in: ['PENDING', 'CONFIRMED'],
                         },
                     },
-                },
+                    select: {
+                        booking_id: true,
+                    },
+                });
+
+                if (activeBookings) {
+                    throw new BadRequestException(
+                        'No puedes desactivar la sala porque tiene reservas activas',
+                    );
+                }
+
+                const room = await tx.rehearsal_rooms.update({
+                    where: {
+                        room_id: roomId,
+                    },
+                    data: {
+                        is_active: false,
+                    },
+                    select: {
+                        room_id: true,
+                        studio_id: true,
+                        is_active: true,
+                    },
+                });
+
+                return {
+                    message: 'Sala desactivada correctamente',
+                    room,
+                };
             });
-
-            if (!room) {
-                throw new NotFoundException('Sala no encontrada');
-            }
-
-            if (room.studio_id !== studioId) {
-                throw new NotFoundException('La sala no pertenece al estudio indicado');
-            }
-
-            if (room.studios.owner_user_id !== userId) {
-                throw new ForbiddenException('No tienes permisos para eliminar esta sala');
-            }
-
-            const deletedRoom = await this.prisma.rehearsal_rooms.delete({
-                where: {
-                    room_id: roomId,
-                },
-                select: {
-                    room_id: true,
-                    studio_id: true,
-                    name: true,
-                },
-            });
-
-            return deletedRoom;
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
-                error instanceof ForbiddenException
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException
             ) {
                 throw error;
             }
 
-            if (
-                error instanceof Prisma.PrismaClientKnownRequestError &&
-                (error.code === 'P2003' || error.code === 'P2014')
-            ) {
-                throw new ConflictException('No puedes eliminar una sala con datos relacionados');
-            }
-
             console.error('ERROR DELETE ROOM =>', error);
-            throw new InternalServerErrorException('Error al eliminar la sala');
+            throw new InternalServerErrorException(
+                'Error al desactivar la sala',
+            );
         }
     }
 
@@ -535,33 +522,146 @@ export class StudiosService {
                 capacity: true,
                 base_hourly_price: true,
                 min_booking_minutes: true,
+                is_active: true,
                 created_at: true,
-                updated_at: true,
-                room_equipment: {
+            },
+            orderBy: {
+                name: 'asc',
+            },
+        });
+    }
+
+    async searchStudiosByName(query: SearchStudiosDTO) {
+        const search = query.name.trim();
+
+        if (!search) {
+            throw new BadRequestException('Debes enviar un nombre para buscar estudios');
+        }
+
+        return this.prisma.studios.findMany({
+            where: {
+                is_active: true,
+                name: {
+                    contains: search,
+                    mode: 'insensitive',
+                },
+            },
+            select: {
+                studio_id: true,
+                owner_user_id: true,
+                name: true,
+                description: true,
+                phone: true,
+                is_active: true,
+                created_at: true,
+                places: {
                     select: {
-                        room_equipment_id: true,
-                        quantity: true,
-                        equipment: {
-                            select: {
-                                equipment_id: true,
-                                name: true,
-                                category: true,
-                            },
-                        },
+                        place_id: true,
+                        name: true,
+                        address_line1: true,
+                        city: true,
+                        region: true,
+                        country: true,
+                        lat: true,
+                        lng: true,
                     },
                 },
                 _count: {
                     select: {
-                        bookings: true,
-                        room_blocks: true,
-                        room_availability_rules: true,
+                        rehearsal_rooms: true,
+                        studio_reviews: true,
                     },
                 },
             },
             orderBy: {
                 name: 'asc',
             },
+            take: query.limit ?? 20,
+            skip: query.offset ?? 0,
         });
+    }
+
+    private async ensureStudioOwnerRole(
+        tx: Prisma.TransactionClient,
+        userId: string,
+    ) {
+        const existingRole = await tx.user_roles.findFirst({
+            where: {
+                user_id: userId,
+                role: 'STUDIO_OWNER',
+            },
+            select: {
+                user_role_id: true,
+            },
+        });
+
+        if (!existingRole) {
+            await tx.user_roles.create({
+                data: {
+                    user_id: userId,
+                    role: 'STUDIO_OWNER',
+                },
+            });
+        }
+    }
+
+    private async getOwnedStudioOrThrow(
+        tx: Prisma.TransactionClient,
+        userId: string,
+        studioId: string,
+    ) {
+        const studio = await tx.studios.findUnique({
+            where: {
+                studio_id: studioId,
+            },
+            select: {
+                studio_id: true,
+                owner_user_id: true,
+            },
+        });
+
+        if (!studio) {
+            throw new NotFoundException('Estudio no encontrado');
+        }
+
+        if (studio.owner_user_id !== userId) {
+            throw new ForbiddenException(
+                'No tienes permisos para administrar este estudio',
+            );
+        }
+
+        return studio;
+    }
+
+    private async getOwnedRoomOrThrow(
+        tx: Prisma.TransactionClient,
+        userId: string,
+        studioId: string,
+        roomId: string,
+    ) {
+        await this.getOwnedStudioOrThrow(tx, userId, studioId);
+
+        const room = await tx.rehearsal_rooms.findUnique({
+            where: {
+                room_id: roomId,
+            },
+            select: {
+                room_id: true,
+                studio_id: true,
+            },
+        });
+
+        if (!room) {
+            throw new NotFoundException('Sala no encontrada');
+        }
+
+        if (room.studio_id !== studioId) {
+            throw new BadRequestException(
+                'La sala no pertenece al estudio indicado',
+            );
+        }
+
+        return room;
     }
 
 }

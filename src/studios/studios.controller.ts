@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Delete,
+  Query
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -16,10 +17,11 @@ import { CreateStudioDTO } from './dto/create-studio.dto';
 import { UpdateStudioDTO } from './dto/update-studio.dto';
 import { CreateRoomDTO } from './dto/create-room.dto';
 import { UpdateRoomDTO } from './dto/update-room.dto';
+import { SearchStudiosDTO } from './dto/search-studio.dto';
 
 @Controller('studios')
 export class StudiosController {
-  constructor(private readonly studiosService: StudiosService) {}
+  constructor(private readonly studiosService: StudiosService) { }
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -34,6 +36,12 @@ export class StudiosController {
   @UseGuards(JwtAuthGuard)
   getMyStudios(@Req() req: Request & { user: any }) {
     return this.studiosService.getMyStudios(req.user.userId);
+  }
+
+  @Get('search')
+  @UseGuards(JwtAuthGuard)
+  searchStudiosByName(@Query() query: SearchStudiosDTO) {
+    return this.studiosService.searchStudiosByName(query);
   }
 
   @Get(':studioId')
