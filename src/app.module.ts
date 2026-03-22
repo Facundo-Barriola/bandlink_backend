@@ -6,9 +6,10 @@ import { AuthModule } from './auth/auth.module';
 import { MusiciansModule } from './musicos/musicians.module';
 import { StudiosModule } from './studios/studios.module';
 import { UsersModule } from './users/users.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, MusiciansModule, StudiosModule, UsersModule],
+  imports: [PrismaModule, AuthModule, MusiciansModule, StudiosModule, UsersModule, MediaModule],
   controllers: [AppController],
   providers: [AppService],
 })
