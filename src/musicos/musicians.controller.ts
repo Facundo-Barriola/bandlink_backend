@@ -32,6 +32,12 @@ export class MusiciansController {
     return this.musicianService.updateMusicianProfile(req.user.userId, dto);
   }
 
+  @Delete('profile')
+  @UseGuards(JwtAuthGuard)
+  deleteMusicianProfile(@Req() req: Request & { user: any }) {
+    return this.musicianService.deleteMusicianProfile(req.user.userId);
+  }
+
 
   @Get('profile/bands')
   @UseGuards(JwtAuthGuard)
@@ -98,7 +104,7 @@ export class MusiciansController {
   @Get('profile/:userId')
   @UseGuards(JwtAuthGuard)
   getMusicianProfile(@Param('userId') userId: string) {
-    return this.musicianService.getMyProfilePage(userId);
+    return this.musicianService.getPublicMusicianProfile(userId);
   }
 
   @Get('discover')
@@ -122,4 +128,38 @@ export class MusiciansController {
     return this.musicianService.getGenreCatalog(search);
   }
 
+  @Get('search/instrument/:instrumentId')
+  @UseGuards(JwtAuthGuard)
+  findMusiciansByInstrument(
+    @Req() req: Request & { user: any },
+    @Param('instrumentId') instrumentId: string,
+    @Query('level') level?: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+  ) {
+    return this.musicianService.findMusiciansByInstrument(
+      req.user.userId,
+      instrumentId,
+      level,
+      limit ? Number(limit) : 20,
+      offset ? Number(offset) : 0,
+    );
+  }
+
+  @Get('search/genre/:genreId')
+  @UseGuards(JwtAuthGuard)
+  findMusiciansByGenre(
+    @Req() req: Request & { user: any },
+    @Param('genreId') genreId: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+  ) {
+    return this.musicianService.findMusiciansByGenre(
+      req.user.userId,
+      genreId,
+      limit ? Number(limit) : 20,
+      offset ? Number(offset) : 0,
+    );
+  }
 }
+
