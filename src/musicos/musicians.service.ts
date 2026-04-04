@@ -158,7 +158,7 @@ export class MusicianService {
       const activeBandMembership = await tx.band_members.findFirst({
         where: {
           user_id: userId,
-          status: 'ACTIVE',
+          status: 'Activo',
           left_at: null,
         },
         select: {
@@ -289,6 +289,9 @@ export class MusicianService {
       is_active: true,
       musician_profile: {
         isNot: null,
+      },
+      NOT: {
+        profile_visibility: 'private',
       },
       OR: query.q
         ? [
@@ -537,7 +540,8 @@ export class MusicianService {
     return this.prisma.band_members.findMany({
       where: {
         user_id: userId,
-        status: 'ACTIVE',
+        status: 'Activo',
+        left_at: null,
       },
       select: {
         band_member_id: true,

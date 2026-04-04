@@ -18,6 +18,13 @@ import { UpdateStudioDTO } from './dto/update-studio.dto';
 import { CreateRoomDTO } from './dto/create-room.dto';
 import { UpdateRoomDTO } from './dto/update-room.dto';
 import { SearchStudiosDTO } from './dto/search-studio.dto';
+import { CreateRoomAvailabilityRuleDTO } from './dto/create-room-availability-rule.dto';
+import { UpdateRoomAvailabilityRuleDTO } from './dto/update-room-availability-rule.dto';
+import { CreateRoomEquipmentDTO } from './dto/create-room-equipment.dto';
+import { UpdateRoomEquipmentDTO } from './dto/update-room-equipment.dto';
+import { CreateEquipmentDTO } from './dto/create-equipment.dto';
+import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
+import { SearchEquipmentDTO } from './dto/search-equipment.dto';
 
 @Controller('studios')
 export class StudiosController {
@@ -44,6 +51,45 @@ export class StudiosController {
     return this.studiosService.searchStudiosByName(query);
   }
 
+  @Get('equipment/catalog')
+  @UseGuards(JwtAuthGuard)
+  getEquipmentCatalog(@Query() query: SearchEquipmentDTO) {
+    return this.studiosService.getEquipmentCatalog(query);
+  }
+
+  @Get('equipment')
+  @UseGuards(JwtAuthGuard)
+  getEquipment(@Query() query: SearchEquipmentDTO) {
+    return this.studiosService.getEquipment(query);
+  }
+
+  @Get('equipment/:equipmentId')
+  @UseGuards(JwtAuthGuard)
+  getEquipmentById(@Param('equipmentId') equipmentId: string) {
+    return this.studiosService.getEquipmentById(equipmentId);
+  }
+
+  @Post('equipment')
+  @UseGuards(JwtAuthGuard)
+  createEquipment(@Body() dto: CreateEquipmentDTO) {
+    return this.studiosService.createEquipment(dto);
+  }
+
+  @Patch('equipment/:equipmentId')
+  @UseGuards(JwtAuthGuard)
+  updateEquipment(
+    @Param('equipmentId') equipmentId: string,
+    @Body() dto: UpdateEquipmentDTO,
+  ) {
+    return this.studiosService.updateEquipment(equipmentId, dto);
+  }
+
+  @Delete('equipment/:equipmentId')
+  @UseGuards(JwtAuthGuard)
+  deleteEquipment(@Param('equipmentId') equipmentId: string) {
+    return this.studiosService.deleteEquipment(equipmentId);
+  }
+
   @Get(':studioId')
   @UseGuards(JwtAuthGuard)
   getStudioById(@Param('studioId') studioId: string) {
@@ -59,6 +105,8 @@ export class StudiosController {
   ) {
     return this.studiosService.updateStudio(req.user.userId, studioId, dto);
   }
+
+
 
   @Patch(':studioId/active')
   @UseGuards(JwtAuthGuard)
@@ -84,6 +132,124 @@ export class StudiosController {
   @UseGuards(JwtAuthGuard)
   getRoomsByStudio(@Param('studioId') studioId: string) {
     return this.studiosService.getRoomsByStudio(studioId);
+  }
+
+  @Post(':studioId/rooms/:roomId/equipment')
+  @UseGuards(JwtAuthGuard)
+  addRoomEquipment(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Body() dto: CreateRoomEquipmentDTO,
+  ) {
+    return this.studiosService.addRoomEquipment(
+      req.user.userId,
+      studioId,
+      roomId,
+      dto,
+    );
+  }
+
+  @Get(':studioId/rooms/:roomId/equipment')
+  @UseGuards(JwtAuthGuard)
+  getRoomEquipment(
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+  ) {
+    return this.studiosService.getRoomEquipment(studioId, roomId);
+  }
+
+  @Patch(':studioId/rooms/:roomId/equipment/:equipmentId')
+  @UseGuards(JwtAuthGuard)
+  updateRoomEquipment(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('equipmentId') equipmentId: string,
+    @Body() dto: UpdateRoomEquipmentDTO,
+  ) {
+    return this.studiosService.updateRoomEquipment(
+      req.user.userId,
+      studioId,
+      roomId,
+      equipmentId,
+      dto,
+    );
+  }
+
+  @Delete(':studioId/rooms/:roomId/equipment/:equipmentId')
+  @UseGuards(JwtAuthGuard)
+  deleteRoomEquipment(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('equipmentId') equipmentId: string,
+  ) {
+    return this.studiosService.deleteRoomEquipment(
+      req.user.userId,
+      studioId,
+      roomId,
+      equipmentId,
+    );
+  }
+
+  @Post(':studioId/rooms/:roomId/availability-rules')
+  @UseGuards(JwtAuthGuard)
+  createRoomAvailabilityRule(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Body() dto: CreateRoomAvailabilityRuleDTO,
+  ) {
+    return this.studiosService.createRoomAvailabilityRule(
+      req.user.userId,
+      studioId,
+      roomId,
+      dto,
+    );
+  }
+
+  @Get(':studioId/rooms/:roomId/availability-rules')
+  @UseGuards(JwtAuthGuard)
+  getRoomAvailabilityRules(
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+  ) {
+    return this.studiosService.getRoomAvailabilityRules(studioId, roomId);
+  }
+
+  @Patch(':studioId/rooms/:roomId/availability-rules/:ruleId')
+  @UseGuards(JwtAuthGuard)
+  updateRoomAvailabilityRule(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('ruleId') ruleId: string,
+    @Body() dto: UpdateRoomAvailabilityRuleDTO,
+  ) {
+    return this.studiosService.updateRoomAvailabilityRule(
+      req.user.userId,
+      studioId,
+      roomId,
+      ruleId,
+      dto,
+    );
+  }
+
+  @Delete(':studioId/rooms/:roomId/availability-rules/:ruleId')
+  @UseGuards(JwtAuthGuard)
+  deleteRoomAvailabilityRule(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('ruleId') ruleId: string,
+  ) {
+    return this.studiosService.deleteRoomAvailabilityRule(
+      req.user.userId,
+      studioId,
+      roomId,
+      ruleId,
+    );
   }
 
   @Patch(':studioId/rooms/:roomId')
