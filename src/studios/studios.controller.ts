@@ -25,6 +25,7 @@ import { UpdateRoomEquipmentDTO } from './dto/update-room-equipment.dto';
 import { CreateEquipmentDTO } from './dto/create-equipment.dto';
 import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
 import { SearchEquipmentDTO } from './dto/search-equipment.dto';
+import { GetRoomAvailabilityDTO } from './dto/get-room-availability.dto';
 
 @Controller('studios')
 export class StudiosController {
@@ -133,6 +134,20 @@ export class StudiosController {
   getRoomsByStudio(@Param('studioId') studioId: string) {
     return this.studiosService.getRoomsByStudio(studioId);
   }
+
+  @Get(':studioId/rooms/:roomId/availability')
+@UseGuards(JwtAuthGuard)
+getRoomAvailability(
+  @Param('roomId') roomId: string,
+  @Query() query: GetRoomAvailabilityDTO,
+) {
+  return this.studiosService.getRoomAvailability(
+    roomId,
+    query.date,
+    query.durationMinutes,
+    query.slotStepMinutes,
+  );
+}
 
   @Post(':studioId/rooms/:roomId/equipment')
   @UseGuards(JwtAuthGuard)

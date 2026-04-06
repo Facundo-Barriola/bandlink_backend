@@ -14,7 +14,10 @@ import { SearchEquipmentDTO } from './dto/search-equipment.dto';
 import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
 import { CreateEquipmentDTO } from './dto/create-equipment.dto';
 
-
+type TimeInterval = {
+    start: Date;
+    end: Date;
+};
 
 @Injectable()
 export class StudiosService {
@@ -1064,7 +1067,7 @@ export class StudiosService {
         }
     }
 
-        async getEquipment(query: SearchEquipmentDTO) {
+    async getEquipment(query: SearchEquipmentDTO) {
         return this.prisma.equipment.findMany({
             where: {
                 ...(query.q && {
@@ -1277,6 +1280,249 @@ export class StudiosService {
                 'Error al eliminar el equipamiento',
             );
         }
+    }
+
+    async getRoomAvailability(roomId: string, date: string, durationMinutes = 60,
+        slotStepMinutes = 60) {
+        const room = await this.prisma.rehearsal_rooms.findUnique({
+            where: {
+                room_id: roomId,
+            },
+            select: {
+                room_id: true,
+                studio_id: true,
+            },
+        });
+        if (!room) {
+            throw new NotFoundException('Sala no encontrada');
+        }
+
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            throw new BadRequestException('Fecha inválida. Use YYYY-MM-DD');
+        }
+        const dayStart = new Date(`${date}T00:00:00.000Z`);
+        const dayEnd = new Date(`${date}T23:59:59.999Z`);
+
+        if (isNaN(dayStart.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+
+        const dayOfWeek = dayStart.getUTCDay();
+
+        const availabilityRules = await this.prisma.room_availability_rules.findMany({
+            where: {
+                room_id: roomId,
+                day_of_week: dayOfWeek,
+            },
+            orderBy: {
+                start_time: 'asc',
+            },
+            select: {
+                rule_id: true,
+                day_of_week: true,
+                start_time: true,
+                end_time: true,
+                timezone: true,
+            },
+        });
+
+        if (!availabilityRules.length) {
+            return {
+                room_id: roomId,
+                date,
+                slots: [],
+            };
+        }
+
+        const blocks = await this.prisma.room_blocks.findMany({
+            where: {
+                room_id: roomId,
+                starts_at: { lt: dayEnd },
+                ends_at: { gt: dayStart },
+            },
+            select: {
+                block_id: true,
+                starts_at: true,
+                ends_at: true,
+                reason: true,
+            },
+            orderBy: {
+                starts_at: 'asc',
+            }
+        });
+
+        const bookings = await this.prisma.bookings.findMany({
+            where: {
+                room_id: roomId,
+                starts_at: { lt: dayEnd },
+                ends_at: { gt: dayStart },
+                status: {
+                    in: ['hold', 'pending_payment', 'confirmed'],
+                },
+            },
+            select: {
+                booking_id: true,
+                starts_at: true,
+                ends_at: true,
+                status: true,
+            },
+            orderBy: {
+                starts_at: 'asc',
+            }
+        });
+
+        const validRules = availabilityRules.filter(
+            (rule): rule is typeof rule & { start_time: Date; end_time: Date } =>
+                rule.start_time !== null && rule.end_time !== null,
+        );
+
+        const ruleIntervals: TimeInterval[] = validRules.map((rule) => ({
+            start: this.combineDateAndTimeUtc(date, rule.start_time),
+            end: this.combineDateAndTimeUtc(date, rule.end_time),
+        }));
+
+        const busyIntervals: TimeInterval[] = [
+            ...blocks
+                .filter((b) => b.starts_at && b.ends_at)
+                .map((b) => ({
+                    start: b.starts_at as Date,
+                    end: b.ends_at as Date,
+                })),
+            ...bookings
+                .filter((b) => b.starts_at && b.ends_at)
+                .map((b) => ({
+                    start: b.starts_at as Date,
+                    end: b.ends_at as Date,
+                })),
+        ];
+
+        const mergedBusy = this.mergeIntervals(busyIntervals);
+
+        const freeIntervals = ruleIntervals.flatMap((ruleInterval) =>
+            this.subtractIntervals(ruleInterval, mergedBusy),
+        );
+
+
+        const slots = this.generateSlots(freeIntervals, durationMinutes, slotStepMinutes);
+
+        return {
+            room_id: roomId,
+            date,
+            slots,
+        };
+
+    }
+
+    private combineDateAndTimeUtc(date: string, timeValue: string | Date): Date {
+        const time = this.normalizeTimeValue(timeValue);
+        return new Date(`${date}T${time}.000Z`);
+    }
+
+    private normalizeTimeValue(timeValue: string | Date): string {
+        if (typeof timeValue === 'string') {
+            return timeValue.slice(0, 8);
+        }
+
+        const hh = String(timeValue.getUTCHours()).padStart(2, '0');
+        const mm = String(timeValue.getUTCMinutes()).padStart(2, '0');
+        const ss = String(timeValue.getUTCSeconds()).padStart(2, '0');
+
+        return `${hh}:${mm}:${ss}`;
+    }
+
+    private mergeIntervals(intervals: TimeInterval[]): TimeInterval[] {
+        if (!intervals.length) return [];
+
+        const sorted = [...intervals].sort(
+            (a, b) => a.start.getTime() - b.start.getTime(),
+        );
+
+        const merged: TimeInterval[] = [sorted[0]];
+
+        for (let i = 1; i < sorted.length; i++) {
+            const current = sorted[i];
+            const last = merged[merged.length - 1];
+
+            if (current.start.getTime() <= last.end.getTime()) {
+                if (current.end.getTime() > last.end.getTime()) {
+                    last.end = current.end;
+                }
+            } else {
+                merged.push({ ...current });
+            }
+        }
+
+        return merged;
+    }
+
+    private subtractIntervals(
+        baseInterval: TimeInterval,
+        busyIntervals: TimeInterval[],
+    ): TimeInterval[] {
+        let free: TimeInterval[] = [{ ...baseInterval }];
+
+        for (const busy of busyIntervals) {
+            const nextFree: TimeInterval[] = [];
+
+            for (const current of free) {
+                const noOverlap =
+                    busy.end.getTime() <= current.start.getTime() ||
+                    busy.start.getTime() >= current.end.getTime();
+
+                if (noOverlap) {
+                    nextFree.push(current);
+                    continue;
+                }
+
+                if (busy.start.getTime() > current.start.getTime()) {
+                    nextFree.push({
+                        start: current.start,
+                        end: busy.start,
+                    });
+                }
+
+                if (busy.end.getTime() < current.end.getTime()) {
+                    nextFree.push({
+                        start: busy.end,
+                        end: current.end,
+                    });
+                }
+            }
+
+            free = nextFree;
+            if (!free.length) break;
+        }
+
+        return free.filter((i) => i.end.getTime() > i.start.getTime());
+    }
+
+    private generateSlots(
+        freeIntervals: TimeInterval[],
+        durationMinutes: number,
+        slotStepMinutes: number,
+    ) {
+        const slots: Array<{ starts_at: string; ends_at: string }> = [];
+        const durationMs = durationMinutes * 60 * 1000;
+        const stepMs = slotStepMinutes * 60 * 1000;
+
+        for (const interval of freeIntervals) {
+            let cursor = interval.start.getTime();
+            const intervalEnd = interval.end.getTime();
+
+            while (cursor + durationMs <= intervalEnd) {
+                const slotStart = new Date(cursor);
+                const slotEnd = new Date(cursor + durationMs);
+
+                slots.push({
+                    starts_at: slotStart.toISOString(),
+                    ends_at: slotEnd.toISOString(),
+                });
+
+                cursor += stepMs;
+            }
+        }
+
+        return slots;
     }
 
     private async ensureStudioOwnerRole(
@@ -1598,7 +1844,7 @@ export class StudiosService {
         return item;
     }
 
-        private normalizeEquipmentInput(input: {
+    private normalizeEquipmentInput(input: {
         name?: string;
         category?: string | null;
     }) {
