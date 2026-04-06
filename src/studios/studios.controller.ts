@@ -26,6 +26,8 @@ import { CreateEquipmentDTO } from './dto/create-equipment.dto';
 import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
 import { SearchEquipmentDTO } from './dto/search-equipment.dto';
 import { GetRoomAvailabilityDTO } from './dto/get-room-availability.dto';
+import { CreateRoomBlockDTO } from './dto/create-room-block.dto';
+import { UpdateRoomBlockDTO } from './dto/update-room-block.dto';
 
 @Controller('studios')
 export class StudiosController {
@@ -135,19 +137,99 @@ export class StudiosController {
     return this.studiosService.getRoomsByStudio(studioId);
   }
 
+  @Post(':studioId/rooms/:roomId/blocks')
+  @UseGuards(JwtAuthGuard)
+  createRoomBlock(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Body() dto: CreateRoomBlockDTO,
+  ) {
+    return this.studiosService.createRoomBlock(
+      req.user.userId,
+      studioId,
+      roomId,
+      dto,
+    );
+  }
+
+  @Get(':studioId/rooms/:roomId/blocks')
+  @UseGuards(JwtAuthGuard)
+  getRoomBlocks(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+  ) {
+    return this.studiosService.getRoomBlocks(
+      req.user.userId,
+      studioId,
+      roomId,
+    );
+  }
+
+  @Get(':studioId/rooms/:roomId/blocks/:blockId')
+  @UseGuards(JwtAuthGuard)
+  getRoomBlockById(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('blockId') blockId: string,
+  ) {
+    return this.studiosService.getRoomBlockById(
+      req.user.userId,
+      studioId,
+      roomId,
+      blockId,
+    );
+  }
+
+  @Patch(':studioId/rooms/:roomId/blocks/:blockId')
+  @UseGuards(JwtAuthGuard)
+  updateRoomBlock(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('blockId') blockId: string,
+    @Body() dto: UpdateRoomBlockDTO,
+  ) {
+    return this.studiosService.updateRoomBlock(
+      req.user.userId,
+      studioId,
+      roomId,
+      blockId,
+      dto,
+    );
+  }
+
+  @Delete(':studioId/rooms/:roomId/blocks/:blockId')
+  @UseGuards(JwtAuthGuard)
+  deleteRoomBlock(
+    @Req() req: Request & { user: any },
+    @Param('studioId') studioId: string,
+    @Param('roomId') roomId: string,
+    @Param('blockId') blockId: string,
+  ) {
+    return this.studiosService.deleteRoomBlock(
+      req.user.userId,
+      studioId,
+      roomId,
+      blockId,
+    );
+  }
+
   @Get(':studioId/rooms/:roomId/availability')
-@UseGuards(JwtAuthGuard)
-getRoomAvailability(
-  @Param('roomId') roomId: string,
-  @Query() query: GetRoomAvailabilityDTO,
-) {
-  return this.studiosService.getRoomAvailability(
-    roomId,
-    query.date,
-    query.durationMinutes,
-    query.slotStepMinutes,
-  );
-}
+  @UseGuards(JwtAuthGuard)
+  getRoomAvailability(
+    @Param('roomId') roomId: string,
+    @Query() query: GetRoomAvailabilityDTO,
+  ) {
+    return this.studiosService.getRoomAvailability(
+      roomId,
+      query.date,
+      query.durationMinutes,
+      query.slotStepMinutes,
+    );
+  }
 
   @Post(':studioId/rooms/:roomId/equipment')
   @UseGuards(JwtAuthGuard)

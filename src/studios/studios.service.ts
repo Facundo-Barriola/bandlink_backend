@@ -13,6 +13,8 @@ import { CreateRoomEquipmentDTO } from './dto/create-room-equipment.dto';
 import { SearchEquipmentDTO } from './dto/search-equipment.dto';
 import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
 import { CreateEquipmentDTO } from './dto/create-equipment.dto';
+import { UpdateRoomBlockDTO } from './dto/update-room-block.dto';
+import { CreateRoomBlockDTO } from './dto/create-room-block.dto';
 
 type TimeInterval = {
     start: Date;
@@ -1411,6 +1413,337 @@ export class StudiosService {
             slots,
         };
 
+    }
+    async createRoomBlock(
+        userId: string,
+        studioId: string,
+        roomId: string,
+        dto: CreateRoomBlockDTO,
+    ) {
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+
+                const normalized = this.normalizeRoomBlockInput({
+                    starts_at: dto.starts_at,
+                    ends_at: dto.ends_at,
+                    reason: dto.reason,
+                });
+
+                await this.ensureRoomBlockDoesNotConflict(
+                    tx,
+                    roomId,
+                    normalized.starts_at,
+                    normalized.ends_at,
+                );
+
+                const block = await tx.room_blocks.create({
+                    data: {
+                        room_id: roomId,
+                        starts_at: normalized.starts_at,
+                        ends_at: normalized.ends_at,
+                        reason: normalized.reason,
+                        created_by: userId,
+                    },
+                    select: {
+                        block_id: true,
+                        room_id: true,
+                        starts_at: true,
+                        ends_at: true,
+                        reason: true,
+                        created_by: true,
+                        created_at: true,
+                    },
+                });
+
+                return block;
+            });
+        } catch (error) {
+            if (
+                error instanceof NotFoundException ||
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException ||
+                error instanceof ConflictException
+            ) {
+                throw error;
+            }
+
+            console.error('ERROR CREATE ROOM BLOCK =>', error);
+            throw new InternalServerErrorException(
+                'Error al crear el bloqueo de la sala',
+            );
+        }
+    }
+
+    async getRoomBlocks(
+        userId: string,
+        studioId: string,
+        roomId: string,
+    ) {
+        await this.prisma.$transaction(async (tx) => {
+            await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+        });
+
+        return this.prisma.room_blocks.findMany({
+            where: {
+                room_id: roomId,
+            },
+            select: {
+                block_id: true,
+                room_id: true,
+                starts_at: true,
+                ends_at: true,
+                reason: true,
+                created_by: true,
+                created_at: true,
+            },
+            orderBy: {
+                starts_at: 'asc',
+            },
+        });
+    }
+
+    async getRoomBlockById(
+        userId: string,
+        studioId: string,
+        roomId: string,
+        blockId: string,
+    ) {
+        return this.prisma.$transaction(async (tx) => {
+            await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+            return this.getRoomBlockOrThrow(tx, roomId, blockId);
+        });
+    }
+
+    async updateRoomBlock(
+        userId: string,
+        studioId: string,
+        roomId: string,
+        blockId: string,
+        dto: UpdateRoomBlockDTO,
+    ) {
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+
+                const existingBlock = await this.getRoomBlockOrThrow(
+                    tx,
+                    roomId,
+                    blockId,
+                );
+
+                const normalized = this.normalizeRoomBlockInput({
+                    starts_at: dto.starts_at ?? existingBlock.starts_at,
+                    ends_at: dto.ends_at ?? existingBlock.ends_at,
+                    reason: dto.reason ?? existingBlock.reason ?? undefined,
+                });
+
+                await this.ensureRoomBlockDoesNotConflict(
+                    tx,
+                    roomId,
+                    normalized.starts_at,
+                    normalized.ends_at,
+                    blockId,
+                );
+
+                const block = await tx.room_blocks.update({
+                    where: {
+                        block_id: blockId,
+                    },
+                    data: {
+                        starts_at: normalized.starts_at,
+                        ends_at: normalized.ends_at,
+                        reason: normalized.reason,
+                    },
+                    select: {
+                        block_id: true,
+                        room_id: true,
+                        starts_at: true,
+                        ends_at: true,
+                        reason: true,
+                        created_by: true,
+                        created_at: true,
+                    },
+                });
+
+                return block;
+            });
+        } catch (error) {
+            if (
+                error instanceof NotFoundException ||
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException ||
+                error instanceof ConflictException
+            ) {
+                throw error;
+            }
+
+            console.error('ERROR UPDATE ROOM BLOCK =>', error);
+            throw new InternalServerErrorException(
+                'Error al actualizar el bloqueo de la sala',
+            );
+        }
+    }
+
+    async deleteRoomBlock(
+        userId: string,
+        studioId: string,
+        roomId: string,
+        blockId: string,
+    ) {
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                await this.getOwnedRoomOrThrow(tx, userId, studioId, roomId);
+                await this.getRoomBlockOrThrow(tx, roomId, blockId);
+
+                await tx.room_blocks.delete({
+                    where: {
+                        block_id: blockId,
+                    },
+                });
+
+                return {
+                    message: 'Bloqueo eliminado correctamente',
+                    block_id: blockId,
+                };
+            });
+        } catch (error) {
+            if (
+                error instanceof NotFoundException ||
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException
+            ) {
+                throw error;
+            }
+
+            console.error('ERROR DELETE ROOM BLOCK =>', error);
+            throw new InternalServerErrorException(
+                'Error al eliminar el bloqueo de la sala',
+            );
+        }
+    }
+
+    private async getRoomBlockOrThrow(
+        tx: Prisma.TransactionClient,
+        roomId: string,
+        blockId: string,
+    ) {
+        const block = await tx.room_blocks.findUnique({
+            where: {
+                block_id: blockId,
+            },
+            select: {
+                block_id: true,
+                room_id: true,
+                starts_at: true,
+                ends_at: true,
+                reason: true,
+                created_by: true,
+                created_at: true,
+            },
+        });
+
+        if (!block) {
+            throw new NotFoundException('Bloqueo no encontrado');
+        }
+
+        if (block.room_id !== roomId) {
+            throw new BadRequestException(
+                'El bloqueo no pertenece a la sala indicada',
+            );
+        }
+
+        return block;
+    }
+
+    private normalizeRoomBlockInput(input: {
+        starts_at?: Date;
+        ends_at?: Date;
+        reason?: string;
+    }) {
+        if (!input.starts_at || !input.ends_at) {
+            throw new BadRequestException(
+                'Debes indicar fecha y hora de inicio y fin',
+            );
+        }
+
+        const startsAt = new Date(input.starts_at);
+        const endsAt = new Date(input.ends_at);
+
+        if (isNaN(startsAt.getTime()) || isNaN(endsAt.getTime())) {
+            throw new BadRequestException('Las fechas del bloqueo son inválidas');
+        }
+
+        if (startsAt.getTime() >= endsAt.getTime()) {
+            throw new BadRequestException(
+                'La fecha/hora de inicio debe ser menor a la de fin',
+            );
+        }
+
+        return {
+            starts_at: startsAt,
+            ends_at: endsAt,
+            reason: input.reason?.trim() || null,
+        };
+    }
+
+    private async ensureRoomBlockDoesNotConflict(
+        tx: Prisma.TransactionClient,
+        roomId: string,
+        startsAt: Date,
+        endsAt: Date,
+        ignoreBlockId?: string,
+    ) {
+        const overlappingBlock = await tx.room_blocks.findFirst({
+            where: {
+                room_id: roomId,
+                starts_at: {
+                    lt: endsAt,
+                },
+                ends_at: {
+                    gt: startsAt,
+                },
+                ...(ignoreBlockId && {
+                    NOT: {
+                        block_id: ignoreBlockId,
+                    },
+                }),
+            },
+            select: {
+                block_id: true,
+            },
+        });
+
+        if (overlappingBlock) {
+            throw new ConflictException(
+                'El bloqueo se superpone con otro bloqueo existente',
+            );
+        }
+
+        const overlappingBooking = await tx.bookings.findFirst({
+            where: {
+                room_id: roomId,
+                starts_at: {
+                    lt: endsAt,
+                },
+                ends_at: {
+                    gt: startsAt,
+                },
+                status: {
+                    in: ['pending', 'pending_payment', 'confirmed', 'hold'],
+                },
+            },
+            select: {
+                booking_id: true,
+                status: true,
+            },
+        });
+
+        if (overlappingBooking) {
+            throw new ConflictException(
+                'El bloqueo se superpone con una reserva activa',
+            );
+        }
     }
 
     private combineDateAndTimeUtc(date: string, timeValue: string | Date): Date {
