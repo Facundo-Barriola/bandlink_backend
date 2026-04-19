@@ -6,15 +6,17 @@ import {
     Post,
     Query,
     Req,
+    Res,
     UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
+import type { Request, Response as ExpressResponse } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PaymentsService } from './payments.service';
+import {CreateRefundDTO} from "./dto/create-refund.dto";
 
 @Controller('payments')
 export class PaymentsController {
-    constructor(private readonly paymentsService: PaymentsService) {}
+    constructor(private readonly paymentsService: PaymentsService) { }
 
     @Post('bookings/:bookingId/checkout-pro')
     @UseGuards(JwtAuthGuard)
@@ -37,6 +39,47 @@ export class PaymentsController {
         return this.paymentsService.getLatestBookingPayment(
             req.user.userId,
             bookingId,
+        );
+    }
+
+    @Get('bookings/:bookingId/status')
+    @UseGuards(JwtAuthGuard)
+    getBookingPaymentStatus(
+        @Req() req: Request & { user: any },
+        @Param('bookingId') bookingId: string,
+    ) {
+        return this.paymentsService.getBookingPaymentStatus(
+            req.user.userId,
+            bookingId,
+        );
+    }
+
+    @Get('bookings/:bookingId/receipt')
+    @UseGuards(JwtAuthGuard)
+    downloadBookingReceipt(
+        @Req() req: Request & { user: any },
+        @Param('bookingId') bookingId: string,
+        @Res() res: ExpressResponse,
+    ) {
+        return this.paymentsService.downloadBookingReceipt(
+            req.user.userId,
+            bookingId,
+            res,
+        );
+    }
+
+    @Post('bookings/:bookingId/refund')
+    @UseGuards(JwtAuthGuard)
+    refundBookingPayment(
+        @Req() req: Request & { user: any },
+        @Param('bookingId') bookingId: string,
+        @Body() dto: CreateRefundDTO,
+        
+    ) {
+        return this.paymentsService.refundBookingPayment(
+            req.user.userId,
+            bookingId,
+            dto,
         );
     }
 

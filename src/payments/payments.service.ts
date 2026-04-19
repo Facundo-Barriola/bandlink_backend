@@ -11,6 +11,7 @@ import type { Response } from 'express';
 import { Resend } from 'resend';
 import { Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import type { Response as ExpressResponse } from 'express';
 const MERCADO_PAGO_API_BASE = 'https://api.mercadopago.com';
 @Injectable()
 export class PaymentsService {
@@ -629,7 +630,7 @@ export class PaymentsService {
     async downloadBookingReceipt(
         userId: string,
         bookingId: string,
-        res: Response,
+        res: ExpressResponse,
     ) {
         try {
             const context = await this.getReceiptContextOrThrow(userId, bookingId);
