@@ -15,6 +15,7 @@ import { UpdateEquipmentDTO } from './dto/update-equipment.dto';
 import { CreateEquipmentDTO } from './dto/create-equipment.dto';
 import { UpdateRoomBlockDTO } from './dto/update-room-block.dto';
 import { CreateRoomBlockDTO } from './dto/create-room-block.dto';
+import { BookingsService } from 'src/bookings/bookings.service';
 
 type TimeInterval = {
     start: Date;
@@ -23,7 +24,9 @@ type TimeInterval = {
 
 @Injectable()
 export class StudiosService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(private readonly prisma: PrismaService,
+        private readonly bookingService: BookingsService
+    ) { }
 
     async createStudio(userId: string, dto: CreateStudioDTO) {
         try {
@@ -1286,6 +1289,8 @@ export class StudiosService {
 
     async getRoomAvailability(roomId: string, date: string, durationMinutes = 60,
         slotStepMinutes = 60) {
+            await this.bookingService.expireOldHolds(10);
+
         const room = await this.prisma.rehearsal_rooms.findUnique({
             where: {
                 room_id: roomId,

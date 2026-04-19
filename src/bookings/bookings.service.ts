@@ -23,7 +23,7 @@ export class BookingsService {
         try {
             return await this.prisma.$transaction(async (tx) => {
                 await this.ensureMusicianProfileExists(tx, userId);
-
+                await this.expireOldHolds(10);
                 const room = await tx.rehearsal_rooms.findUnique({
                     where: {
                         room_id: roomId,
@@ -658,6 +658,68 @@ export class BookingsService {
             console.error('ERROR GET BOOKING BY ID =>', error);
             throw new InternalServerErrorException(
                 'Error al obtener la reserva',
+            );
+        }
+    }
+
+    async expireOldHolds(ttlMinutes = 10) {
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                const cutoffDate = this.getBookingHoldCutoffDate(ttlMinutes);
+
+                const expiredCandidates = await tx.bookings.findMany({
+                    where: {
+                        status: 'hold',
+                        created_at: {
+                            lt: cutoffDate,
+                        },
+                    },
+                    select: {
+                        booking_id: true,
+                    },
+                });
+
+                if (!expiredCandidates.length) {
+                    return {
+                        expired_count: 0,
+                        items: [],
+                    };
+                }
+
+                const bookingIds = expiredCandidates.map((booking) => booking.booking_id);
+                const now = new Date();
+
+                await tx.bookings.updateMany({
+                    where: {
+                        booking_id: {
+                            in: bookingIds,
+                        },
+                    },
+                    data: {
+                        status: 'expired',
+                        updated_at: now,
+                    },
+                });
+
+                await tx.booking_status_history.createMany({
+                    data: bookingIds.map((bookingId) => ({
+                        booking_id: bookingId,
+                        status: 'expired',
+                        changed_at: now,
+                        changed_by: null,
+                        note: 'Hold expirado automáticamente',
+                    })),
+                });
+
+                return {
+                    expired_count: bookingIds.length,
+                    items: bookingIds,
+                };
+            });
+        } catch (error) {
+            console.error('ERROR EXPIRE OLD HOLDS =>', error);
+            throw new InternalServerErrorException(
+                'Error al expirar holds vencidos',
             );
         }
     }

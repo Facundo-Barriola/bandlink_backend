@@ -227,7 +227,7 @@ export type refundsWhereInput = {
   NOT?: Prisma.refundsWhereInput | Prisma.refundsWhereInput[]
   refund_id?: Prisma.UuidFilter<"refunds"> | string
   payment_id?: Prisma.UuidFilter<"refunds"> | string
-  provider_refund_id?: Prisma.UuidFilter<"refunds"> | string
+  provider_refund_id?: Prisma.StringFilter<"refunds"> | string
   amount?: Prisma.DecimalNullableFilter<"refunds"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.StringNullableFilter<"refunds"> | string | null
   created_at?: Prisma.DateTimeFilter<"refunds"> | Date | string
@@ -252,7 +252,7 @@ export type refundsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.refundsWhereInput[]
   NOT?: Prisma.refundsWhereInput | Prisma.refundsWhereInput[]
   payment_id?: Prisma.UuidFilter<"refunds"> | string
-  provider_refund_id?: Prisma.UuidFilter<"refunds"> | string
+  provider_refund_id?: Prisma.StringFilter<"refunds"> | string
   amount?: Prisma.DecimalNullableFilter<"refunds"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.StringNullableFilter<"refunds"> | string | null
   created_at?: Prisma.DateTimeFilter<"refunds"> | Date | string
@@ -281,7 +281,7 @@ export type refundsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.refundsScalarWhereWithAggregatesInput | Prisma.refundsScalarWhereWithAggregatesInput[]
   refund_id?: Prisma.UuidWithAggregatesFilter<"refunds"> | string
   payment_id?: Prisma.UuidWithAggregatesFilter<"refunds"> | string
-  provider_refund_id?: Prisma.UuidWithAggregatesFilter<"refunds"> | string
+  provider_refund_id?: Prisma.StringWithAggregatesFilter<"refunds"> | string
   amount?: Prisma.DecimalNullableWithAggregatesFilter<"refunds"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.StringNullableWithAggregatesFilter<"refunds"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"refunds"> | Date | string
@@ -497,7 +497,7 @@ export type refundsScalarWhereInput = {
   NOT?: Prisma.refundsScalarWhereInput | Prisma.refundsScalarWhereInput[]
   refund_id?: Prisma.UuidFilter<"refunds"> | string
   payment_id?: Prisma.UuidFilter<"refunds"> | string
-  provider_refund_id?: Prisma.UuidFilter<"refunds"> | string
+  provider_refund_id?: Prisma.StringFilter<"refunds"> | string
   amount?: Prisma.DecimalNullableFilter<"refunds"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   status?: Prisma.StringNullableFilter<"refunds"> | string | null
   created_at?: Prisma.DateTimeFilter<"refunds"> | Date | string

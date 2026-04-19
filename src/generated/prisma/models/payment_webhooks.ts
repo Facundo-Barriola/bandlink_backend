@@ -169,7 +169,7 @@ export type payment_webhooksGroupByArgs<ExtArgs extends runtime.Types.Extensions
 
 export type Payment_webhooksGroupByOutputType = {
   payment_webhook_id: string
-  webhook_id: string
+  webhook_id: string | null
   payment_id: string
   provider: string | null
   event_type: string | null
@@ -202,7 +202,7 @@ export type payment_webhooksWhereInput = {
   OR?: Prisma.payment_webhooksWhereInput[]
   NOT?: Prisma.payment_webhooksWhereInput | Prisma.payment_webhooksWhereInput[]
   payment_webhook_id?: Prisma.UuidFilter<"payment_webhooks"> | string
-  webhook_id?: Prisma.UuidFilter<"payment_webhooks"> | string
+  webhook_id?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   payment_id?: Prisma.UuidFilter<"payment_webhooks"> | string
   provider?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   event_type?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
@@ -215,7 +215,7 @@ export type payment_webhooksWhereInput = {
 
 export type payment_webhooksOrderByWithRelationInput = {
   payment_webhook_id?: Prisma.SortOrder
-  webhook_id?: Prisma.SortOrder
+  webhook_id?: Prisma.SortOrderInput | Prisma.SortOrder
   payment_id?: Prisma.SortOrder
   provider?: Prisma.SortOrderInput | Prisma.SortOrder
   event_type?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -231,7 +231,7 @@ export type payment_webhooksWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.payment_webhooksWhereInput | Prisma.payment_webhooksWhereInput[]
   OR?: Prisma.payment_webhooksWhereInput[]
   NOT?: Prisma.payment_webhooksWhereInput | Prisma.payment_webhooksWhereInput[]
-  webhook_id?: Prisma.UuidFilter<"payment_webhooks"> | string
+  webhook_id?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   payment_id?: Prisma.UuidFilter<"payment_webhooks"> | string
   provider?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   event_type?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
@@ -244,7 +244,7 @@ export type payment_webhooksWhereUniqueInput = Prisma.AtLeast<{
 
 export type payment_webhooksOrderByWithAggregationInput = {
   payment_webhook_id?: Prisma.SortOrder
-  webhook_id?: Prisma.SortOrder
+  webhook_id?: Prisma.SortOrderInput | Prisma.SortOrder
   payment_id?: Prisma.SortOrder
   provider?: Prisma.SortOrderInput | Prisma.SortOrder
   event_type?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -262,7 +262,7 @@ export type payment_webhooksScalarWhereWithAggregatesInput = {
   OR?: Prisma.payment_webhooksScalarWhereWithAggregatesInput[]
   NOT?: Prisma.payment_webhooksScalarWhereWithAggregatesInput | Prisma.payment_webhooksScalarWhereWithAggregatesInput[]
   payment_webhook_id?: Prisma.UuidWithAggregatesFilter<"payment_webhooks"> | string
-  webhook_id?: Prisma.UuidWithAggregatesFilter<"payment_webhooks"> | string
+  webhook_id?: Prisma.StringNullableWithAggregatesFilter<"payment_webhooks"> | string | null
   payment_id?: Prisma.UuidWithAggregatesFilter<"payment_webhooks"> | string
   provider?: Prisma.StringNullableWithAggregatesFilter<"payment_webhooks"> | string | null
   event_type?: Prisma.StringNullableWithAggregatesFilter<"payment_webhooks"> | string | null
@@ -274,7 +274,7 @@ export type payment_webhooksScalarWhereWithAggregatesInput = {
 
 export type payment_webhooksCreateInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   provider?: string | null
   event_type?: string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -286,7 +286,7 @@ export type payment_webhooksCreateInput = {
 
 export type payment_webhooksUncheckedCreateInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   payment_id: string
   provider?: string | null
   event_type?: string | null
@@ -298,7 +298,7 @@ export type payment_webhooksUncheckedCreateInput = {
 
 export type payment_webhooksUpdateInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -310,7 +310,7 @@ export type payment_webhooksUpdateInput = {
 
 export type payment_webhooksUncheckedUpdateInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -322,7 +322,7 @@ export type payment_webhooksUncheckedUpdateInput = {
 
 export type payment_webhooksCreateManyInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   payment_id: string
   provider?: string | null
   event_type?: string | null
@@ -334,7 +334,7 @@ export type payment_webhooksCreateManyInput = {
 
 export type payment_webhooksUpdateManyMutationInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -345,7 +345,7 @@ export type payment_webhooksUpdateManyMutationInput = {
 
 export type payment_webhooksUncheckedUpdateManyInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -443,7 +443,7 @@ export type payment_webhooksUncheckedUpdateManyWithoutPaymentsNestedInput = {
 
 export type payment_webhooksCreateWithoutPaymentsInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   provider?: string | null
   event_type?: string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -454,7 +454,7 @@ export type payment_webhooksCreateWithoutPaymentsInput = {
 
 export type payment_webhooksUncheckedCreateWithoutPaymentsInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   provider?: string | null
   event_type?: string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -494,7 +494,7 @@ export type payment_webhooksScalarWhereInput = {
   OR?: Prisma.payment_webhooksScalarWhereInput[]
   NOT?: Prisma.payment_webhooksScalarWhereInput | Prisma.payment_webhooksScalarWhereInput[]
   payment_webhook_id?: Prisma.UuidFilter<"payment_webhooks"> | string
-  webhook_id?: Prisma.UuidFilter<"payment_webhooks"> | string
+  webhook_id?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   payment_id?: Prisma.UuidFilter<"payment_webhooks"> | string
   provider?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
   event_type?: Prisma.StringNullableFilter<"payment_webhooks"> | string | null
@@ -506,7 +506,7 @@ export type payment_webhooksScalarWhereInput = {
 
 export type payment_webhooksCreateManyPaymentsInput = {
   payment_webhook_id?: string
-  webhook_id: string
+  webhook_id?: string | null
   provider?: string | null
   event_type?: string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -517,7 +517,7 @@ export type payment_webhooksCreateManyPaymentsInput = {
 
 export type payment_webhooksUpdateWithoutPaymentsInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -528,7 +528,7 @@ export type payment_webhooksUpdateWithoutPaymentsInput = {
 
 export type payment_webhooksUncheckedUpdateWithoutPaymentsInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -539,7 +539,7 @@ export type payment_webhooksUncheckedUpdateWithoutPaymentsInput = {
 
 export type payment_webhooksUncheckedUpdateManyWithoutPaymentsInput = {
   payment_webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
-  webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
+  webhook_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -619,7 +619,7 @@ export type $payment_webhooksPayload<ExtArgs extends runtime.Types.Extensions.In
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     payment_webhook_id: string
-    webhook_id: string
+    webhook_id: string | null
     payment_id: string
     provider: string | null
     event_type: string | null

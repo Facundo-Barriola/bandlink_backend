@@ -243,9 +243,9 @@ export type PaymentsGroupByOutputType = {
   currency: string | null
   status: string | null
   status_detail: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id: string | null
+  mp_payment_id: string | null
+  mp_merchant_order_id: string | null
   external_reference: string | null
   raw_last_response: runtime.JsonValue | null
   created_at: Date
@@ -284,9 +284,9 @@ export type paymentsWhereInput = {
   currency?: Prisma.StringNullableFilter<"payments"> | string | null
   status?: Prisma.StringNullableFilter<"payments"> | string | null
   status_detail?: Prisma.StringNullableFilter<"payments"> | string | null
-  mp_preference_id?: Prisma.UuidFilter<"payments"> | string
-  mp_payment_id?: Prisma.UuidFilter<"payments"> | string
-  mp_merchant_order_id?: Prisma.UuidFilter<"payments"> | string
+  mp_preference_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_payment_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_merchant_order_id?: Prisma.StringNullableFilter<"payments"> | string | null
   external_reference?: Prisma.StringNullableFilter<"payments"> | string | null
   raw_last_response?: Prisma.JsonNullableFilter<"payments">
   created_at?: Prisma.DateTimeFilter<"payments"> | Date | string
@@ -305,9 +305,9 @@ export type paymentsOrderByWithRelationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   status_detail?: Prisma.SortOrderInput | Prisma.SortOrder
-  mp_preference_id?: Prisma.SortOrder
-  mp_payment_id?: Prisma.SortOrder
-  mp_merchant_order_id?: Prisma.SortOrder
+  mp_preference_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  mp_payment_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  mp_merchant_order_id?: Prisma.SortOrderInput | Prisma.SortOrder
   external_reference?: Prisma.SortOrderInput | Prisma.SortOrder
   raw_last_response?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -329,9 +329,9 @@ export type paymentsWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringNullableFilter<"payments"> | string | null
   status?: Prisma.StringNullableFilter<"payments"> | string | null
   status_detail?: Prisma.StringNullableFilter<"payments"> | string | null
-  mp_preference_id?: Prisma.UuidFilter<"payments"> | string
-  mp_payment_id?: Prisma.UuidFilter<"payments"> | string
-  mp_merchant_order_id?: Prisma.UuidFilter<"payments"> | string
+  mp_preference_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_payment_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_merchant_order_id?: Prisma.StringNullableFilter<"payments"> | string | null
   external_reference?: Prisma.StringNullableFilter<"payments"> | string | null
   raw_last_response?: Prisma.JsonNullableFilter<"payments">
   created_at?: Prisma.DateTimeFilter<"payments"> | Date | string
@@ -350,9 +350,9 @@ export type paymentsOrderByWithAggregationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   status_detail?: Prisma.SortOrderInput | Prisma.SortOrder
-  mp_preference_id?: Prisma.SortOrder
-  mp_payment_id?: Prisma.SortOrder
-  mp_merchant_order_id?: Prisma.SortOrder
+  mp_preference_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  mp_payment_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  mp_merchant_order_id?: Prisma.SortOrderInput | Prisma.SortOrder
   external_reference?: Prisma.SortOrderInput | Prisma.SortOrder
   raw_last_response?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -376,9 +376,9 @@ export type paymentsScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
   status?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
   status_detail?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
-  mp_preference_id?: Prisma.UuidWithAggregatesFilter<"payments"> | string
-  mp_payment_id?: Prisma.UuidWithAggregatesFilter<"payments"> | string
-  mp_merchant_order_id?: Prisma.UuidWithAggregatesFilter<"payments"> | string
+  mp_preference_id?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
+  mp_payment_id?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
+  mp_merchant_order_id?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
   external_reference?: Prisma.StringNullableWithAggregatesFilter<"payments"> | string | null
   raw_last_response?: Prisma.JsonNullableWithAggregatesFilter<"payments">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"payments"> | Date | string
@@ -393,9 +393,9 @@ export type paymentsCreateInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -414,9 +414,9 @@ export type paymentsUncheckedCreateInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -433,9 +433,9 @@ export type paymentsUpdateInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,9 +454,9 @@ export type paymentsUncheckedUpdateInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -474,9 +474,9 @@ export type paymentsCreateManyInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -491,9 +491,9 @@ export type paymentsUpdateManyMutationInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -509,9 +509,9 @@ export type paymentsUncheckedUpdateManyInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -671,9 +671,9 @@ export type paymentsCreateWithoutBookingsInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -690,9 +690,9 @@ export type paymentsUncheckedCreateWithoutBookingsInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -739,9 +739,9 @@ export type paymentsScalarWhereInput = {
   currency?: Prisma.StringNullableFilter<"payments"> | string | null
   status?: Prisma.StringNullableFilter<"payments"> | string | null
   status_detail?: Prisma.StringNullableFilter<"payments"> | string | null
-  mp_preference_id?: Prisma.UuidFilter<"payments"> | string
-  mp_payment_id?: Prisma.UuidFilter<"payments"> | string
-  mp_merchant_order_id?: Prisma.UuidFilter<"payments"> | string
+  mp_preference_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_payment_id?: Prisma.StringNullableFilter<"payments"> | string | null
+  mp_merchant_order_id?: Prisma.StringNullableFilter<"payments"> | string | null
   external_reference?: Prisma.StringNullableFilter<"payments"> | string | null
   raw_last_response?: Prisma.JsonNullableFilter<"payments">
   created_at?: Prisma.DateTimeFilter<"payments"> | Date | string
@@ -756,9 +756,9 @@ export type paymentsCreateWithoutPayment_webhooksInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -776,9 +776,9 @@ export type paymentsUncheckedCreateWithoutPayment_webhooksInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -810,9 +810,9 @@ export type paymentsUpdateWithoutPayment_webhooksInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -830,9 +830,9 @@ export type paymentsUncheckedUpdateWithoutPayment_webhooksInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -848,9 +848,9 @@ export type paymentsCreateWithoutRefundsInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -868,9 +868,9 @@ export type paymentsUncheckedCreateWithoutRefundsInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -902,9 +902,9 @@ export type paymentsUpdateWithoutRefundsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -922,9 +922,9 @@ export type paymentsUncheckedUpdateWithoutRefundsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -940,9 +940,9 @@ export type paymentsCreateManyBookingsInput = {
   currency?: string | null
   status?: string | null
   status_detail?: string | null
-  mp_preference_id: string
-  mp_payment_id: string
-  mp_merchant_order_id: string
+  mp_preference_id?: string | null
+  mp_payment_id?: string | null
+  mp_merchant_order_id?: string | null
   external_reference?: string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -957,9 +957,9 @@ export type paymentsUpdateWithoutBookingsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -976,9 +976,9 @@ export type paymentsUncheckedUpdateWithoutBookingsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -995,9 +995,9 @@ export type paymentsUncheckedUpdateManyWithoutBookingsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status_detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mp_preference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_payment_id?: Prisma.StringFieldUpdateOperationsInput | string
-  mp_merchant_order_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mp_preference_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_payment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mp_merchant_order_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   external_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   raw_last_response?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1152,9 +1152,9 @@ export type $paymentsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     currency: string | null
     status: string | null
     status_detail: string | null
-    mp_preference_id: string
-    mp_payment_id: string
-    mp_merchant_order_id: string
+    mp_preference_id: string | null
+    mp_payment_id: string | null
+    mp_merchant_order_id: string | null
     external_reference: string | null
     raw_last_response: runtime.JsonValue | null
     created_at: Date
