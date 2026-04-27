@@ -11,9 +11,23 @@ import { EventssModule } from './events/events.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { PaymentsModule } from './payments/payments.module';
 import { BandsModule } from './bands/bands.module';
+import { SocialModule } from './social/social.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, MusiciansModule, StudiosModule, UsersModule, MediaModule, EventssModule, BookingsModule, PaymentsModule, BandsModule],
+  imports: [
+    PrismaModule, 
+    AuthModule, 
+    MusiciansModule, 
+    StudiosModule, 
+    UsersModule, 
+    MediaModule, 
+    EventssModule, 
+    BookingsModule, 
+    PaymentsModule, 
+    BandsModule, 
+    SocialModule, 
+    NotificationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -10,12 +10,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '../generated/prisma/client';
 import { CreateBandDTO } from './dto/create-band.dto';
 import { UpdateBandDTO } from './dto/update-band.dto';
-import { CreateOpeningDTO } from './dto/create-opening.dto';
+import { CreateOpeningDTO } from './dto/create-band-opening.dto';
 import { UpdateOpeningDTO } from './dto/update-opening.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class BandsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
+  ) {}
 
   async createBand(userId: string, dto: CreateBandDTO) {
     try {
@@ -286,6 +289,13 @@ export class BandsService {
         where: { band_member_id: memberId },
         data: { left_at: new Date(), status: 'Inactivo' },
       });
+
+      await this.notificationsService.createNotification(
+          member.user_id,
+          'band_member_kicked',
+          { band_id: bandId },
+      );
+
 
       return { message: 'Miembro expulsado correctamente' };
     } catch (error) {

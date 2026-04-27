@@ -14,7 +14,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { BandsService } from './bands.service';
 import { CreateBandDTO } from './dto/create-band.dto';
 import { UpdateBandDTO } from './dto/update-band.dto';
-import { CreateOpeningDTO } from './dto/create-opening.dto';
+import { CreateOpeningDTO } from './dto/create-band-opening.dto';
 import { UpdateOpeningDTO } from './dto/update-opening.dto';
 
 @Controller('bands')

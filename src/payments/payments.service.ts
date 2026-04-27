@@ -12,10 +12,15 @@ import { Resend } from 'resend';
 import { Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import type { Response as ExpressResponse } from 'express';
+import { NotificationsService } from 'src/notifications/notifications.service';
+
+
 const MERCADO_PAGO_API_BASE = 'https://api.mercadopago.com';
 @Injectable()
 export class PaymentsService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(private readonly prisma: PrismaService,
+        private readonly notificationsService: NotificationsService,
+    ) { }
 
     async createCheckoutProPreference(userId: string, bookingId: string) {
         try {
@@ -431,6 +436,13 @@ export class PaymentsService {
                 };
             }
 
+            let notifData: {
+            type: 'payment_approved' | 'payment_rejected';
+            userId: string;
+            bookingId: string;
+            paymentId: string;
+            } | null = null;
+
             await this.prisma.$transaction(async (tx) => {
                 await tx.payment_webhooks.create({
                     data: {
@@ -500,6 +512,13 @@ export class PaymentsService {
                             note: 'Reserva confirmada automáticamente por pago aprobado en Mercado Pago',
                         },
                     });
+
+                    notifData = {
+                    type: 'payment_approved',
+                    userId: internalPayment.bookings.user_id,
+                    bookingId: internalPayment.booking_id,
+                    paymentId: internalPayment.payment_id,
+                    };
                 }
 
                 if (
@@ -533,8 +552,29 @@ export class PaymentsService {
                             note: `Estado actualizado por webhook de Mercado Pago: ${providerPayment?.status ?? 'unknown'}`,
                         },
                     });
+
+                    notifData = {
+                    type: 'payment_rejected',
+                    userId: internalPayment.bookings.user_id,
+                    bookingId: internalPayment.booking_id,
+                    paymentId: internalPayment.payment_id,
+                    };
                 }
             });
+
+            if (notifData) {
+                const { type, userId, bookingId, paymentId } = notifData;
+
+                await this.notificationsService.createNotification(
+                    userId,
+                    type,
+                    { booking_id: bookingId, payment_id: paymentId },
+                );
+
+                if (type === 'payment_approved') {
+                    this.sendApprovedPaymentEmail(bookingId, paymentId).catch(() => {});
+                }
+            }
 
             return {
                 received: true,
@@ -726,8 +766,54 @@ export class PaymentsService {
                     'Mercado Pago no devolvió un identificador de reembolso',
                 );
             }
+            console.log('REFUND MP OK =>', {
+                providerRefundId,
+                bookingId,
+                paymentId: payment.payment_id,
+                refundAmount,
+            });
 
-            await this.prisma.$executeRaw`
+                    const totalRefundedAfter = Number(
+            (alreadyRefunded + refundAmount).toFixed(2),
+        );
+        const isFullyRefunded = totalRefundedAfter >= totalAmount;
+
+        await this.prisma.$transaction(async (tx) => {
+            await tx.refunds.create({
+                data: {
+                    payment_id: payment.payment_id,
+                    provider_refund_id: providerRefundId,
+                    amount: new Prisma.Decimal(refundAmount),
+                    status: String(refundResponse?.status ?? 'approved'),
+                },
+            });
+
+            await tx.payments.update({
+                where: { payment_id: payment.payment_id },
+                data: {
+                    ...(isFullyRefunded && { status: 'refunded' }),
+                    status_detail: isFullyRefunded
+                        ? 'fully_refunded'
+                        : 'partially_refunded',
+                    updated_at: new Date(),
+                },
+            });
+        });
+
+        return {
+            booking_id: bookingId,
+            payment_id: payment.payment_id,
+            provider_refund_id: providerRefundId,
+            refunded_amount: refundAmount,
+            total_refunded: totalRefundedAfter,
+            remaining_refundable_amount: Number(
+                (totalAmount - totalRefundedAfter).toFixed(2),
+            ),
+            status: isFullyRefunded ? 'fully_refunded' : 'partially_refunded',
+            reason: dto.reason ?? null,
+        };
+
+/*            await this.prisma.$executeRaw`
       INSERT INTO payments.refunds (
         refund_id,
         payment_id,
@@ -785,7 +871,7 @@ export class PaymentsService {
                         ? 'fully_refunded'
                         : 'partially_refunded',
                 reason: dto.reason ?? null,
-            };
+            };*/
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
@@ -869,7 +955,10 @@ export class PaymentsService {
         mercadoPagoPaymentId: string,
         amount?: number,
     ) {
-        const accessToken = this.getMercadoPagoAccessToken();
+        const accessToken = this.getRequiredEnv(
+        'MP_ACCESS_TOKEN',
+        'Falta configurar MP_ACCESS_TOKEN',
+        );
 
         const response = await fetch(
             `${MERCADO_PAGO_API_BASE}/v1/payments/${mercadoPagoPaymentId}/refunds`,
@@ -1368,17 +1457,6 @@ export class PaymentsService {
     private isHoldStillActive(createdAt: Date, ttlMinutes = 10) {
         const expiresAt = new Date(createdAt.getTime() + ttlMinutes * 60 * 1000);
         return expiresAt.getTime() > Date.now();
-    }
-    private getMercadoPagoAccessToken() {
-        const accessToken = process.env.MP_ACCESS_TOKEN;
-
-        if (!accessToken) {
-            throw new BadRequestException(
-                'Falta configurar MP_ACCESS_TOKEN',
-            );
-        }
-
-        return accessToken;
     }
 
     private formatDateRange(startsAt: Date, endsAt: Date) {

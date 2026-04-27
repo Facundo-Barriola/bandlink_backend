@@ -11,10 +11,13 @@ import { CreateEventDTO } from './dto/create-event.dto';
 import { UpdateEventDTO } from './dto/update-event.dto';
 import { CancelEventDTO } from './dto/cancel-event.dto';
 import { SearchEventsDTO } from './dto/search-events.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class EventsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
+  ) {}
 
   async createEvent(userId: string, dto: CreateEventDTO) {
     try {
@@ -138,11 +141,29 @@ export class EventsService {
           select: this.eventSelect(),
         });
 
+        const attendees = await this.prisma.event_attendees.findMany({
+          where: { event_id: eventId, status: { not: 'declined' } },
+          select: { user_id: true },
+        });
+
+        await Promise.allSettled(
+          attendees.map((a) =>
+            this.notificationsService.createNotification(
+              a.user_id,
+              'event_cancelled',
+              { event_id: eventId },
+            ),
+          ),
+        );
+
         return {
           message: 'Evento cancelado correctamente',
           event: cancelledEvent,
         };
       });
+
+
+
     } catch (error) {
       if (
         error instanceof BadRequestException ||

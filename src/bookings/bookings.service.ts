@@ -10,10 +10,14 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { CreateBookingHoldDTO } from "./dto/create-booking-hold.dto";
 import { Prisma, rehearsal_rooms } from "src/generated/prisma/client";
 import { GetStudioBookingHistoryDTO } from "./dto/get-studio-booking-history.dto";
+import { NotificationsService } from "src/notifications/notifications.service";
 
 @Injectable()
 export class BookingsService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly notificationsService: NotificationsService
+    ) { }
 
     async createBookingHold(
         userId: string,
@@ -222,8 +226,13 @@ export class BookingsService {
                     },
                 });
 
+                this.notificationsService
+                .createNotification(userId!, 'booking_confirmed', { booking_id: bookingId })
+                .catch(() => {});
+
                 return updated;
             });
+
         } catch (error) {
             if (
                 error instanceof NotFoundException ||
@@ -309,6 +318,16 @@ export class BookingsService {
                         note: reason?.trim() || 'Reserva cancelada',
                     },
                 });
+
+                const notifyUserId = isStudioOwner
+                    ? booking.user_id
+                    : booking.rehearsal_rooms.studios.owner_user_id;
+
+                await this.notificationsService.createNotification(
+                    notifyUserId,
+                    isStudioOwner ? 'booking_cancelled_by_studio' : 'booking_cancelled_by_user',
+                    { booking_id: bookingId },
+                );
 
                 return updated;
             });
