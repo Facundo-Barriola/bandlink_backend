@@ -13,6 +13,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { BandsModule } from './bands/bands.module';
 import { SocialModule } from './social/social.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { GeoModule } from './geo/geo.module';
 
 @Module({
   imports: [
@@ -27,7 +28,9 @@ import { NotificationsModule } from './notifications/notifications.module';
     PaymentsModule, 
     BandsModule, 
     SocialModule, 
-    NotificationsModule],
+    NotificationsModule,
+    GeoModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
